@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fura Málmendurvinnsla</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:   #1a1512;
+      --warm:  #f5f0ea;
+      --mid:   #e8e0d5;
+      --rust:  #c4621a;
+      --green: #2f5233;
+      --muted: #6b6259;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--warm);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(26,21,18,0.93);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo img { height: 30px; filter: brightness(0) invert(1); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      background: var(--rust);
+      color: #fff !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 5% 8%;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://assets.mango.is/media/8/czdM_s_0E9Fx2Omq.jpeg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,21,18,0.88) 0%, rgba(26,21,18,0.35) 55%, rgba(26,21,18,0.1) 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 500px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-rust {
+      background: var(--rust);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-rust:hover { background: #d4731f; transform: translateY(-1px); }
+
+    .btn-outline-white {
+      border: 1.5px solid rgba(255,255,255,0.45);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .btn-outline-white:hover { border-color: #fff; transform: translateY(-1px); }
+
+    /* INTRO STRIP */
+    .intro-strip {
+      background: var(--green);
+      color: #fff;
+      padding: 2.5rem 5%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      border-bottom: 4px solid var(--rust);
+    }
+
+    .strip-item { text-align: center; }
+    .strip-num { font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .strip-label { font-size: 0.8rem; color: rgba(255,255,255,0.65); margin-top: 0.3rem; }
+
+    /* SHARED */
+    .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1rem;
+    }
+
+    .rule { width: 40px; height: 3px; background: var(--rust); border-radius: 2px; margin-bottom: 2rem; }
+
+    .big-heading {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      margin-bottom: 1.5rem;
+    }
+
+    .body-text { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+
+    /* ABOUT */
+    .about { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .about-photo { position: relative; min-height: 560px; overflow: hidden; }
+
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .about-text {
+      background: var(--white);
+      padding: 6rem 6%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* PHOTO GRID */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 300px 300px;
+    }
+
+    .photo-grid-item { overflow: hidden; position: relative; }
+    .photo-grid-item.wide { grid-column: span 2; }
+
+    .photo-grid-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-grid-item:hover img { transform: scale(1.05); }
+
+    .photo-grid-item .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,21,18,0.7) 0%, transparent 55%);
+      display: flex; align-items: flex-end; padding: 1.5rem;
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    .photo-grid-item:hover .overlay { opacity: 1; }
+    .overlay-text { color: #fff; font-size: 1rem; font-weight: 700; }
+
+    /* SERVICES */
+    .services { background: var(--warm); padding: 7rem 5%; }
+
+    .services-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 3.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--mid);
+      border: 1px solid var(--mid);
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      transition: background 0.2s;
+    }
+
+    .service-card:hover { background: var(--warm); }
+
+    .service-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--mid);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .service-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* ENVIRONMENT */
+    .environment { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .env-text {
+      background: var(--green);
+      color: #fff;
+      padding: 6rem 6%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .env-text .label { color: rgba(255,255,255,0.55); }
+    .env-text .big-heading { color: #fff; }
+    .env-text .body-text { color: rgba(255,255,255,0.7); }
+    .env-text .rule { background: rgba(255,255,255,0.3); }
+
+    .env-steps { display: flex; flex-direction: column; margin-top: 2rem; }
+
+    .env-step {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .env-step:last-child { border-bottom: none; }
+
+    .env-step-num {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35);
+      padding-top: 0.15rem;
+      flex-shrink: 0;
+      width: 24px;
+    }
+
+    .env-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; color: #fff; }
+    .env-step p { font-size: 0.825rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    .env-photo { position: relative; min-height: 600px; overflow: hidden; }
+    .env-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .env-photo-label {
+      position: absolute;
+      top: 2rem; left: 2rem;
+      background: var(--green);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border-radius: 2px;
+    }
+
+    /* METALS */
+    .metals-banner {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      padding: 6rem 5%;
+      overflow: hidden;
+    }
+
+    .metals-banner-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://assets.mango.is/media/8/KfJ3p385taRh_euJ.jpg');
+      background-size: cover;
+      background-position: center 40%;
+    }
+
+    .metals-banner-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(26,21,18,0.75);
+    }
+
+    .metals-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .metals-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .metal-item {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .metal-item:nth-child(even) { border-right: none; }
+    .metal-item h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .metal-item p { font-size: 0.775rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* FURUFLÍS */
+    .furoflis { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .furoflis-text {
+      background: var(--ink);
+      color: #fff;
+      padding: 6rem 6%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .furoflis-text .label { color: rgba(255,255,255,0.45); }
+    .furoflis-text .big-heading { color: #fff; }
+    .furoflis-text .body-text { color: rgba(255,255,255,0.65); }
+    .furoflis-text .rule { background: var(--rust); }
+
+    .furoflis-facts { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+
+    .fact {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.5;
+    }
+
+    .fact-check { color: var(--rust); font-weight: 900; flex-shrink: 0; }
+
+    .furoflis-photo { position: relative; min-height: 500px; overflow: hidden; }
+    .furoflis-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* NEWS */
+    .news { padding: 7rem 5%; background: var(--white); }
+
+    .news-top { margin-bottom: 3rem; }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--mid);
+      border: 1px solid var(--mid);
+    }
+
+    .news-card {
+      background: var(--white);
+      padding: 2.5rem;
+      transition: background 0.2s;
+    }
+
+    .news-card:hover { background: var(--warm); }
+
+    .news-date {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--rust);
+      letter-spacing: 0.07em;
+      margin-bottom: 0.75rem;
+    }
+
+    .news-card h3 { font-size: 1.05rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.75rem; }
+    .news-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    .news-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.25rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--rust);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* CONTACT */
+    .contact { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .contact-photo { position: relative; min-height: 500px; overflow: hidden; }
+    .contact-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .contact-text {
+      background: var(--warm);
+      padding: 6rem 6%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+
+    .contact-item h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-item p,
+    .contact-item a {
+      font-size: 1rem;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.6;
+    }
+
+    .contact-item a:hover { color: var(--rust); }
+
+    .hours-grid { display: flex; flex-direction: column; }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--mid);
+    }
+
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day { color: var(--muted); }
+    .hours-row .time { color: var(--ink); font-weight: 600; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.45);
+      padding: 2.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo img { height: 26px; filter: brightness(0) invert(1); opacity: 0.65; }
+    footer p { font-size: 0.78rem; }
+
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: rgba(255,255,255,0.9); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .about, .environment, .furoflis, .contact { grid-template-columns: 1fr; }
+      .about-photo, .env-photo, .furoflis-photo, .contact-photo { min-height: 280px; }
+      .intro-strip { grid-template-columns: 1fr; text-align: center; }
+      .services-top, .metals-content { grid-template-columns: 1fr; }
+      .services-grid, .news-grid { grid-template-columns: 1fr 1fr; }
+      .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .photo-grid-item.wide { grid-column: span 1; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 580px) {
+      .services-grid, .news-grid, .metals-list { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#um-furu">Um Furu</a></li>
+    <li><a href="#thjonusta">Þjónusta</a></li>
+    <li><a href="#endurnyting">Endurnýting</a></li>
+    <li><a href="#malmar">Málmar</a></li>
+    <li><a href="#frettir">Fréttir</a></li>
+    <li><a href="#hafdu-samband" class="nav-cta">Hafðu samband</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Málmendurvinnsla · Hafnarfjörður · Síðan 1981</p>
+    <h1>Í vinnu<br />fyrir<br />framtíðina</h1>
+    <p class="hero-sub">
+      Með endurvinnslu á málmum og timbri breytum við fyrirferðarmiklum og oft mengandi úrgangi í verðmæta auðlind.
+    </p>
+    <div class="hero-actions">
+      <a href="#hafdu-samband" class="btn-rust">Hafðu samband</a>
+      <a href="#thjonusta" class="btn-outline-white">Skoða þjónustu</a>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <div class="strip-item">
+    <div class="strip-label">Starfað síðan</div>
+    <div class="strip-num">1981</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-label">Hafðu samband</div>
+    <div class="strip-num">565 3557</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-label">Opnunartímar</div>
+    <div class="strip-num" style="font-size:1.1rem; line-height:1.7;">Mán–Fös: 08–20<br>Lau: 08–14<br>Sun: Lokað</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="um-furu">
+  <div class="about">
+    <div class="about-photo">
+      <img src="https://assets.mango.is/media/8/LccEr1NB7Ysl8WoW.jpeg" alt="Fura starfsfólk" />
+    </div>
+    <div class="about-text">
+      <p class="label">Um Furu</p>
+      <div class="rule"></div>
+      <h2 class="big-heading">Úrgangur breytist í verðmæti</h2>
+      <p class="body-text">
+        Fura Málmendurvinnsla hefur frá 1981 sinnt endurvinnslu á málmum og timbri á Íslandi. Við breytum fyrirferðarmiklum og oft mengandi úrgangi í verðmæta auðlind — til hagsbóta fyrir umhverfið og samfélagið.
+      </p>
+      <p class="body-text">
+        Fyrirtækið er staðsett að Hringhellu 3 í Hafnarfirði og þjónar viðskiptavinum um allt land. Við leggjum áherslu á gæðaþjónustu, faglega meðhöndlun og sjálfbærar lausnir.
+      </p>
+      <p style="font-size:0.8rem; color:var(--muted);">Kt. 621281-1009</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GRID -->
+<div class="photo-grid">
+  <div class="photo-grid-item wide">
+    <img src="https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg" alt="Starfsemi Furu" />
+    <div class="overlay"><span class="overlay-text">Endurvinnslusvæðið</span></div>
+  </div>
+  <div class="photo-grid-item">
+    <img src="https://assets.mango.is/media/8/cvYg0pAODDDtwtRj.jpeg" alt="Málmar" />
+    <div class="overlay"><span class="overlay-text">Málmavinnsla</span></div>
+  </div>
+  <div class="photo-grid-item">
+    <img src="https://assets.mango.is/media/8/gIVgXzTvshoQVhye.jpg" alt="Tæki" />
+    <div class="overlay"><span class="overlay-text">Tækjabúnaður</span></div>
+  </div>
+  <div class="photo-grid-item wide">
+    <img src="https://assets.mango.is/media/8/JfDYXzedg498PNfo.jpeg" alt="Fura svæðið" />
+    <div class="overlay"><span class="overlay-text">Hafnarfjörður</span></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="thjonusta">
+  <div class="services-top">
+    <div>
+      <p class="label">Þjónusta</p>
+      <div class="rule"></div>
+      <h2 class="big-heading">Við sækjum —<br />þú selur</h2>
+    </div>
+    <p class="body-text" style="margin-bottom:0;">
+      Við sækjum brotajárn til viðskiptavina um allt land og útvegum gáma undir málma og úrgang til endurvinnslu. Einfalt og þægilegt fyrir þig.
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <h3>Sóknþjónusta um land allt</h3>
+      <p>Við sækjum brotajárn og málma beint til þín — hvar sem þú ert á Íslandi.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <h3>Gámar til leigu</h3>
+      <p>Við útvegum gáma undir málma og úrgang til endurvinnslu. Við sækjum þegar gámurinn er fullur.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <h3>Niðurrif skipa og báta</h3>
+      <p>Við höndlum niðurrif skipa og báta á faglegan og umhverfisvænan hátt.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <h3>Niðurrif mannvirkja</h3>
+      <p>Fura annast niðurrif á mannvirkjum og endurvinnur efnið — s.s. Drafnarslippur.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <h3>Bílhræ og brotajárn</h3>
+      <p>Bílar teknir í frumeindir og allir hlutir flokkaðir og endurnýttir að fullu.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <h3>Kopar og rafbúnaður</h3>
+      <p>Við fleytum kápu af koparvírum og unnum allt kopar og rafefni vandlega.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ENVIRONMENT -->
+<section id="endurnyting">
+  <div class="environment">
+    <div class="env-text">
+      <p class="label">Endurnýting</p>
+      <div class="rule"></div>
+      <h2 class="big-heading">Umhverfið er okkur hjartans mál</h2>
+      <p class="body-text">
+        Við leggjum mikinn metnað og vinnu í að flokka og endurvinna sem mest hérlendis áður en málmar eru sendir úr landi. Þannig sköpum við störf og verðmæti í samfélaginu.
+      </p>
+      <div class="env-steps">
+        <div class="env-step">
+          <div class="env-step-num">01</div>
+          <div>
+            <h4>Söfnun</h4>
+            <p>Málmar og úrgangur sóttur til viðskiptavina eða skilað í gáma hjá okkur.</p>
+          </div>
+        </div>
+        <div class="env-step">
+          <div class="env-step-num">02</div>
+          <div>
+            <h4>Flokkun hérlendis</h4>
+            <p>Allt efni flokkað nákvæmlega eftir gerð áður en það er unnið frekar.</p>
+          </div>
+        </div>
+        <div class="env-step">
+          <div class="env-step-num">03</div>
+          <div>
+            <h4>Vinnsla</h4>
+            <p>Með öflugum tækjabúnaði eru málmar brotaðir niður í verðmætar hráefnistegundir.</p>
+          </div>
+        </div>
+        <div class="env-step">
+          <div class="env-step-num">04</div>
+          <div>
+            <h4>Útflutningur</h4>
+            <p>Fullunnið efni sent á markað hérlendis og erlendis sem hráefni í nýjar vörur.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="env-photo">
+      <img src="https://assets.mango.is/media/8/izZdYpPV4CnzRhYJ.jpg" alt="Endurnýting" />
+      <div class="env-photo-label">Endurnýting</div>
+    </div>
+  </div>
+</section>
+
+<!-- METALS -->
+<section id="malmar">
+  <div class="metals-banner">
+    <div class="metals-banner-bg"></div>
+    <div class="metals-content">
+      <div>
+        <p class="label" style="color:rgba(255,255,255,0.5);">Málmar</p>
+        <div class="rule"></div>
+        <h2 class="big-heading" style="color:#fff;">Við kaupum allar gerðir málma</h2>
+        <p class="body-text" style="color:rgba(255,255,255,0.68);">
+          Með öflugum tækjabúnaði flokkum við málma eftir tegundum og tökum til dæmis bílhræ í frumeindir, flettum kápu af koparvírum og vinnum úr öllu efninu sem mest verðmæti.
+        </p>
+      </div>
+      <div class="metals-list">
+        <div class="metal-item"><h4>Járn &amp; Stál</h4><p>Brotajárn, bílhræ, byggingarefni</p></div>
+        <div class="metal-item"><h4>Kopar</h4><p>Vírar, pípulagnir, rafbúnaður</p></div>
+        <div class="metal-item"><h4>Álumíníum</h4><p>Felgur, kassaprófílar, rör</p></div>
+        <div class="metal-item"><h4>Blý &amp; Rafgeymar</h4><p>Bifreiðarafgeymar, blýpípulagnir</p></div>
+        <div class="metal-item"><h4>Ryðfrítt stál</h4><p>Tæki, búnaður, eldhúsvörur</p></div>
+        <div class="metal-item"><h4>Látún &amp; Brons</h4><p>Handfang, kranar, búnaður</p></div>
+        <div class="metal-item"><h4>Vélar &amp; Tæki</h4><p>Iðnaðartæki, vélar, búnaður</p></div>
+        <div class="metal-item"><h4>Skip &amp; Bátar</h4><p>Niðurrif og endurvinnsla skipa</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FURUFLÍS -->
+<section id="furoflis">
+  <div class="furoflis">
+    <div class="furoflis-text">
+      <p class="label">Vara</p>
+      <div class="rule"></div>
+      <h2 class="big-heading">Furuflís —<br />umhverfisvætt undirlag</h2>
+      <p class="body-text">
+        Furuflís er umhverfisvætt undirlag framleitt úr endurunnum timburúrgangi. Fullkomið fyrir hross, smárgripi og dýrastöður — áhrifaríkt, þægilegt og sjálfbært val.
+      </p>
+      <div class="furoflis-facts">
+        <div class="fact"><span class="fact-check">✓</span> Framleitt úr 100% endurunnum timburúrgangi</div>
+        <div class="fact"><span class="fact-check">✓</span> Umhverfisvænt og endurnýjanlegt</div>
+        <div class="fact"><span class="fact-check">✓</span> Hentar vel í hrossahús og dýrastöður</div>
+        <div class="fact"><span class="fact-check">✓</span> Mjúkt og þægilegt undirlag fyrir dýr</div>
+        <div class="fact"><span class="fact-check">✓</span> Góð frásog raka og lyktareyðing</div>
+      </div>
+    </div>
+    <div class="furoflis-photo">
+      <img src="https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg" alt="Furuflís" />
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="news" id="frettir">
+  <div class="news-top">
+    <p class="label">Fréttir</p>
+    <div class="rule"></div>
+    <h2 class="big-heading">Nýjustu fréttir</h2>
+  </div>
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-date">05. APRÍL 2023</div>
+      <h3>Fura annast niðurrif Drafnarslipps</h3>
+      <p>Fura var falin sú heiðurleg verk að annast niðurrif hins sögulega Drafnarslipps. Allt efni flokkað og endurnýtt.</p>
+      <a href="#" class="news-link">Lesa meira →</a>
+    </div>
+    <div class="news-card">
+      <div class="news-date">20. JANÚAR 2023</div>
+      <h3>Hertar flokkunarreglur</h3>
+      <p>Nýjar og hertar flokkunarreglur tóku gildi í ársbyrjun. Við höfum uppfært ferli okkar til að uppfylla allar kröfur.</p>
+      <a href="#" class="news-link">Lesa meira →</a>
+    </div>
+    <div class="news-card">
+      <div class="news-date">18. JANÚAR 2023</div>
+      <h3>Niðurrif skipa og báta</h3>
+      <p>Fura býður nú upp á faglega þjónustu við niðurrif skipa og báta. Hafðu samband til að fá nánari upplýsingar.</p>
+      <a href="#" class="news-link">Lesa meira →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="hafdu-samband">
+  <div class="contact">
+    <div class="contact-photo">
+      <img src="https://assets.mango.is/media/8/cvYg0pAODDDtwtRj.jpeg" alt="Hafa samband" />
+    </div>
+    <div class="contact-text">
+      <p class="label">Hafðu samband</p>
+      <div class="rule"></div>
+      <h2 class="big-heading">Við erum hér fyrir þig</h2>
+      <p class="body-text">
+        Ertu með málma til sölu? Þarftu gám? Hafðu samband og við finnum lausnina sem hentar þér best.
+      </p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <h4>Staðsetning</h4>
+          <p>Hringhellu 3, 221 Hafnarfjörður, Ísland</p>
+        </div>
+        <div class="contact-item">
+          <h4>Sími</h4>
+          <a href="tel:5653557">565 3557</a>
+        </div>
+        <div class="contact-item">
+          <h4>Netfang</h4>
+          <a href="mailto:fura@fura.is">fura@fura.is</a>
+        </div>
+        <div class="contact-item">
+          <h4>Opnunartímar</h4>
+          <div class="hours-grid">
+            <div class="hours-row">
+              <span class="day">Mánudagur – Föstudagur</span>
+              <span class="time">08:00 – 20:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Laugardagur</span>
+              <span class="time">08:00 – 14:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Sunnudagur</span>
+              <span class="time">Lokað</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+  </div>
+  <p>© 2024 Fura Málmendurvinnsla · Kt. 621281-1009 · Hringhellu 3, 221 Hafnarfjörður</p>
+  <ul class="footer-links">
+    <li><a href="#um-furu">Um Furu</a></li>
+    <li><a href="#thjonusta">Þjónusta</a></li>
+    <li><a href="#hafdu-samband">Samband</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
