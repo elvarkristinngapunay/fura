@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Umhverfisstefna — Fura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:   #1a1512;
+      --warm:  #f5f0ea;
+      --mid:   #e8e0d5;
+      --blue:  #1a50a2;
+      --green: #2f5233;
+      --muted: #6b6259;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--warm);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(20,16,13,0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 80px;
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { height: 28px; filter: brightness(0) invert(1); }
+
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: #fff; }
+    .nav-links .nav-ff { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .nav-links .nav-ff img {
+      height: 36px;
+      display: block;
+      filter: invert(1);
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+    .nav-links .nav-ff:hover img { opacity: 1; }
+    .nav-cta {
+      background: var(--blue) !important;
+      color: #fff !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+    }
+
+    /* Right cluster + language switch */
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .lang-switch { display: flex; gap: 4px; flex-shrink: 0; }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .lang-btn:hover { opacity: 1; }
+    .lang-btn.active { opacity: 1; border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.12); }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      background: rgba(20,16,13,0.98);
+      padding: 1rem 5% 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-mobile a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile .nav-cta { margin-top: 0.5rem; text-align: center; border-radius: 4px; border-bottom: none !important; }
+    .nav-mobile.open { display: flex; }
+
+    /* ── PAGE ── */
+    .page {
+      padding: 7rem 5% 5rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .page-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.6rem;
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0;
+    }
+
+    .rule {
+      width: 40px; height: 3px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin: 0.75rem 0 2.5rem;
+    }
+
+    .about-text {
+      font-size: 1.0rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .about-text:last-child { margin-bottom: 0; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .back-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .back-top:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+    /* On desktop the drawer must never show, even if left open on mobile */
+    @media (min-width: 1101px) {
+      .nav-mobile { display: none !important; }
+    }
+    @media (max-width: 600px) {
+      .nav-top { padding: 0 4%; }
+      .nav-logo img { height: auto; max-width: 200px; }
+      .nav-right { gap: 0.85rem; }
+    }
+    @media (max-width: 380px) {
+      .nav-logo img { max-width: 150px; }
+      .nav-right { gap: 0.55rem; }
+      .lang-btn { padding: 2px 5px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a href="index.html" class="nav-logo">
+      <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+    </a>
+    <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html#thjonusta" data-en="Services">Þjónusta</a></li>
+      <li><a href="index.html#malmar" data-en="Metals">Málmar</a></li>
+      <li><a href="index.html#bilaforgun" data-en="Car scrapping">Bílaförgun</a></li>
+      <li><a href="um-furu.html" data-en="About Fura">Um Furu</a></li>
+      <li><a href="furuflis.html" class="nav-ff"><img src="furuflis-logo.png" alt="Furuflís" /></a></li>
+      <li><a href="index.html#samband" class="nav-cta" data-en="Contact">Hafa samband</a></li>
+    </ul>
+    <div class="lang-switch" role="group" aria-label="Tungumál / Language">
+      <button type="button" class="lang-btn" data-lang="is" aria-label="Íslenska" title="Íslenska">🇮🇸</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-label="English" title="English">🇬🇧</button>
+    </div>
+    <button class="nav-burger" id="burger" aria-label="Valmynd">
+      <span></span><span></span><span></span>
+    </button>
+    </div>
+  </div>
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html#thjonusta" data-en="Services">Þjónusta</a>
+    <a href="index.html#malmar" data-en="Metals">Málmar</a>
+    <a href="index.html#bilaforgun" data-en="Car scrapping">Bílaförgun</a>
+    <a href="um-furu.html" data-en="About Fura">Um Furu</a>
+    <a href="furuflis.html" class="nav-ff-mobile"><img src="furuflis-logo.png" alt="Furuflís" /></a>
+    <a href="index.html#samband" class="nav-cta" data-en="Contact">Hafa samband</a>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="page">
+  <a href="index.html#afhverju-fura" class="back-top" data-en="← Back">← Til baka</a>
+  <h1 class="page-title" data-en="Fura's Environmental Policy">Umhverfisstefna Furu</h1>
+  <div class="rule"></div>
+
+  <p class="about-text" data-en="From the very beginning, Fura has focused on sorting, recycling and reusing raw materials. At our facility at Hringhella 3 in Hafnarfjörður we receive a wide range of materials that are sorted and processed for further use.">Fura hefur frá upphafi lagt áherslu á flokkun, endurvinnslu og endurnýtingu hráefna. Á starfsstöðinni við Hringhellu 3 í Hafnarfirði er tekið við fjölbreyttum efnum sem eru flokkuð og unnin til frekari notkunar.</p>
+  <p class="about-text" data-en="Most of the material goes to specialised recycling partners in Europe, where it becomes new raw material. Steel, for example, is melted down and reused in production, while tyres are processed into new products such as rubber tiles and other rubber material.">Stærstur hluti efnanna fer til sérhæfðra endurvinnsluaðila í Evrópu þar sem þau verða að nýju hráefni. Stál er til dæmis brætt og nýtt aftur í framleiðslu, á meðan hjólbarðar eru unnir í nýjar vörur á borð við gúmmíhellur og annað gúmmíefni.</p>
+  <p class="about-text" data-en="In Iceland, Furuflís (wood chips) is produced from timber waste generated in our operations. Furuflís is used, among other things, as bedding for animals and in other projects where timber takes on a new role.">Á Íslandi er Furuflís framleidd úr timburúrgangi sem fellur til í starfseminni. Furuflís er meðal annars nýtt sem undirlag fyrir dýr og í önnur verkefni þar sem timbur fær nýtt hlutverk.</p>
+  <p class="about-text" data-en="With powerful equipment and systematic sorting, as much of the material as possible is given new life. In this way metals, timber and tyres become valuable resources instead of waste.">Með öflugum tækjabúnaði og markvissri flokkun fær sem mest af efnunum nýtt líf. Þannig verða málmar, timbur og hjólbarðar að verðmætum auðlindum í stað úrgangs.</p>
+</div>
+
+<script>
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+  // Close the mobile drawer if the window grows past the mobile breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1100) menu.classList.remove('open');
+  });
+
+  // ── Language switch (IS default, EN optional) ──
+  (function () {
+    const KEY = 'fura-lang';
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.is === undefined) el.dataset.is = el.innerHTML;
+        el.innerHTML = (lang === 'en') ? el.dataset.en : el.dataset.is;
+      });
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang));
+      try { localStorage.setItem(KEY, lang); } catch (e) {}
+    }
+    let saved = 'is';
+    try { saved = localStorage.getItem(KEY) || 'is'; } catch (e) {}
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.addEventListener('click', () => apply(b.dataset.lang)));
+    apply(saved);
+  })();
+</script>
+
+</body>
+</html>

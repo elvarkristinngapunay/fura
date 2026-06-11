@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fura Málmendurvinnsla</title>
+  <title>Fura — Málmendurvinnsla</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -11,7 +13,7 @@
       --ink:   #1a1512;
       --warm:  #f5f0ea;
       --mid:   #e8e0d5;
-      --rust:  #c4621a;
+      --blue:  #1a50a2;
       --green: #2f5233;
       --muted: #6b6259;
       --white: #ffffff;
@@ -26,47 +28,150 @@
       line-height: 1.6;
     }
 
-    /* NAV */
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
+      background: rgba(20,16,13,0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 5%;
-      height: 64px;
-      background: rgba(26,21,18,0.93);
-      backdrop-filter: blur(10px);
+      height: 80px;
     }
 
-    .nav-logo img { height: 30px; filter: brightness(0) invert(1); }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { height: 28px; filter: brightness(0) invert(1); }
+    .nav-logo-sub {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding-left: 0.75rem;
+      border-left: 1px solid rgba(255,255,255,0.15);
+    }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
     .nav-links a {
-      color: rgba(255,255,255,0.65);
+      position: relative;
+      color: rgba(255,255,255,0.85);
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
       transition: color 0.2s;
     }
-
     .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: #fff; }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: #5b8def;
+      border-radius: 2px;
+    }
+    .nav-links .nav-ff.active::after { left: 0; right: 0; bottom: -2px; }
+    .nav-links .nav-ff img {
+      height: 36px;
+      display: block;
+      filter: invert(1);
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-links .nav-ff:hover img, .nav-links .nav-ff.active img { opacity: 1; }
+
+    .nav-mobile .nav-ff-mobile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-mobile .nav-ff-mobile img {
+      height: 44px !important;
+      width: auto !important;
+      max-width: 180px !important;
+      filter: brightness(0) invert(1);
+      opacity: 0.7;
+    }
 
     .nav-cta {
-      background: var(--rust);
+      background: var(--blue) !important;
       color: #fff !important;
       padding: 0.45rem 1.1rem;
       border-radius: 4px;
       font-weight: 600 !important;
     }
 
-    /* HERO */
+    /* Right cluster + language switch */
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .lang-switch { display: flex; gap: 4px; flex-shrink: 0; }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .lang-btn:hover { opacity: 1; }
+    .lang-btn.active {
+      opacity: 1;
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Hamburger */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    /* Mobile drawer */
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      background: rgba(20,16,13,0.98);
+      padding: 1rem 5% 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-mobile a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile .nav-cta { margin-top: 0.5rem; text-align: center; border-radius: 4px; border-bottom: none !important; }
+    .nav-mobile.open { display: flex; }
+
+    /* ── HERO ── */
     .hero {
       position: relative;
       height: 100vh;
-      min-height: 600px;
+      min-height: 620px;
       display: flex;
       align-items: flex-end;
       padding: 0 5% 8%;
@@ -78,464 +183,943 @@
       background-image: url('https://assets.mango.is/media/8/czdM_s_0E9Fx2Omq.jpeg');
       background-size: cover;
       background-position: center;
+      filter: brightness(1.13) contrast(1.08) saturate(1.12);
     }
 
     .hero-bg::after {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(26,21,18,0.88) 0%, rgba(26,21,18,0.35) 55%, rgba(26,21,18,0.1) 100%);
+      background: linear-gradient(to top, rgba(20,16,13,0.9) 0%, rgba(20,16,13,0.3) 60%, rgba(20,16,13,0.05) 100%);
     }
 
-    .hero-content { position: relative; z-index: 1; max-width: 780px; }
-
-    .hero-eyebrow {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 1.2rem;
-    }
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
 
     .hero h1 {
-      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
       font-weight: 800;
-      line-height: 0.98;
-      letter-spacing: -0.03em;
+      line-height: 1.08;
       color: #fff;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: #7aaee8; }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .btn-blue {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      padding: 0.8rem 1.8rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-blue:hover { opacity: 0.88; }
+
+    /* ── INTRO STRIP ── */
+    .intro-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .intro-item {
+      padding: 2.25rem 5%;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .intro-item:last-child { border-right: none; }
+
+    .intro-num {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .intro-num span { font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.45); margin-left: 0.25rem; }
+    .intro-label { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      background: var(--blue);
+      padding: 5rem 5%;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.6rem;
+    }
+
+    .how .section-title { color: #fff; }
+
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .step {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .step-text {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step-num {
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .step-anim {
+      width: 200px;
+      height: 95px;
+      flex-shrink: 0;
+    }
+    .step-anim svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    /* All animated layers hidden by default */
+    .step-anim .anim-forklift,
+    .step-anim .anim-forks,
+    .step-anim .anim-tub-1,
+    .step-anim .anim-tub-fill,
+    .step-anim .anim-chunk-1,
+    .step-anim .anim-chunk-2,
+    .step-anim .anim-chunk-3,
+    .step-anim .anim-scale,
+    .step-anim .anim-forklift-2,
+    .step-anim .anim-forks-2,
+    .step-anim .anim-tub-2,
+    .step-anim .w,
+    .step-anim .anim-wallet,
+    .step-anim .anim-bill {
+      opacity: 0;
+    }
+
+    /* ── Step 1 keyframes ── */
+    @keyframes s1-body {
+      0%   { transform: translateX(-70px); opacity: 1; }
+      25%  { transform: translateX(0);     opacity: 1; }
+      60%  { transform: translateX(0);     opacity: 1; }
+      90%  { transform: translateX(-70px); opacity: 1; }
+      100% { transform: translateX(-70px); opacity: 0; }
+    }
+    @keyframes s1-forks {
+      0%   { transform: translate(-70px, -22px); opacity: 1; }
+      25%  { transform: translate(0, -22px);     opacity: 1; }
+      45%  { transform: translate(0, 0);         opacity: 1; }
+      60%  { transform: translate(0, 0);         opacity: 1; }
+      90%  { transform: translate(-70px, 0);     opacity: 1; }
+      100% { transform: translate(-70px, 0);     opacity: 0; }
+    }
+    @keyframes s1-tub {
+      0%   { transform: translate(-70px, -22px); opacity: 1; }
+      25%  { transform: translate(0, -22px);     opacity: 1; }
+      45%  { transform: translate(0, 0);         opacity: 1; }
+      100% { transform: translate(0, 0);         opacity: 1; }
+    }
+
+    /* ── Step 2 fill keyframe (metal chunks drop into tub) ── */
+    @keyframes chunk-drop {
+      0%   { transform: translateY(-50px); opacity: 0; }
+      15%  { opacity: 1; }
+      55%  { transform: translateY(3px);   opacity: 1; }
+      70%  { transform: translateY(0);     opacity: 1; }
+      100% { transform: translateY(0);     opacity: 1; }
+    }
+
+    /* ── Step 2 keyframes ── */
+    @keyframes s2-fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes s2-body {
+      0%   { transform: translateX(-70px); opacity: 1; }
+      18%  { transform: translateX(-6px);  opacity: 1; }
+      35%  { transform: translateX(-6px);  opacity: 1; }
+      55%  { transform: translateX(40px);  opacity: 1; }
+      72%  { transform: translateX(40px);  opacity: 1; }
+      92%  { transform: translateX(-70px); opacity: 1; }
+      100% { transform: translateX(-70px); opacity: 0; }
+    }
+    @keyframes s2-forks {
+      0%   { transform: translate(-70px, 8px); opacity: 1; }
+      18%  { transform: translate(-6px, 8px);  opacity: 1; }
+      35%  { transform: translate(-6px, 0);    opacity: 1; }
+      55%  { transform: translate(40px, 0);    opacity: 1; }
+      72%  { transform: translate(40px, 8px);  opacity: 1; }
+      92%  { transform: translate(-70px, 8px); opacity: 1; }
+      100% { transform: translate(-70px, 8px); opacity: 0; }
+    }
+    @keyframes s2-tub-pickup {
+      0%   { transform: translate(-46px, 10px); opacity: 1; }
+      18%  { transform: translate(-46px, 10px); opacity: 1; }
+      35%  { transform: translate(-46px, -8px); opacity: 1; }
+      55%  { transform: translate(0, -8px);     opacity: 1; }
+      72%  { transform: translate(0, 0);        opacity: 1; }
+      100% { transform: translate(0, 0);        opacity: 1; }
+    }
+    @keyframes w-a { 0%, 70% { opacity: 0; } 72%, 82% { opacity: 1; } 83%, 100% { opacity: 0; } }
+    @keyframes w-b { 0%, 82% { opacity: 0; } 83%, 91% { opacity: 1; } 92%, 100% { opacity: 0; } }
+    @keyframes w-c { 0%, 91% { opacity: 0; } 92%, 100% { opacity: 1; } }
+
+    /* ── Step 3 keyframes ── */
+    @keyframes s3-bill {
+      0%   { transform: translate(0, 10px); opacity: 0; }
+      30%  { transform: translate(0, -4px); opacity: 1; }
+      100% { transform: translate(0, -4px); opacity: 1; }
+    }
+
+    /* === DESKTOP: hover-triggered === */
+    @media (hover: hover) {
+      .step.step-1:hover .anim-forklift { animation: s1-body 3s ease-in-out forwards; }
+      .step.step-1:hover .anim-forks    { animation: s1-forks 3s ease-in-out forwards; }
+      .step.step-1:hover .anim-tub-1    { animation: s1-tub 3s ease-in-out forwards; }
+
+      .step.step-2:hover .anim-tub-fill { animation: s2-fadein 0.3s ease-out forwards; }
+      .step.step-2:hover .anim-chunk-1  { animation: chunk-drop 1.1s 0.2s ease-in forwards; }
+      .step.step-2:hover .anim-chunk-2  { animation: chunk-drop 1.1s 1.0s ease-in forwards; }
+      .step.step-2:hover .anim-chunk-3  { animation: chunk-drop 1.1s 1.8s ease-in forwards; }
+
+      .step.step-3:hover .anim-scale       { animation: s2-fadein 0.3s 0.05s ease-out forwards; }
+      .step.step-3:hover .anim-forklift-2  { animation: s2-body 3.5s ease-in-out forwards; }
+      .step.step-3:hover .anim-forks-2     { animation: s2-forks 3.5s ease-in-out forwards; }
+      .step.step-3:hover .anim-tub-2       { animation: s2-tub-pickup 3.5s ease-in-out forwards; }
+      .step.step-3:hover .w-a { animation: w-a 3.5s ease-in-out forwards; }
+      .step.step-3:hover .w-b { animation: w-b 3.5s ease-in-out forwards; }
+      .step.step-3:hover .w-c { animation: w-c 3.5s ease-in-out forwards; }
+      .step.step-3:hover .anim-wallet { animation: s2-fadein 0.4s 3.5s ease-out forwards; }
+      .step.step-3:hover .anim-bill   { animation: s3-bill 1.0s 3.8s ease-out forwards; }
+    }
+
+    /* === TOUCH / NO-HOVER: scroll-triggered via .play === */
+    @media (hover: none) {
+      .step.step-1.play .anim-forklift { animation: s1-body 3s ease-in-out forwards; }
+      .step.step-1.play .anim-forks    { animation: s1-forks 3s ease-in-out forwards; }
+      .step.step-1.play .anim-tub-1    { animation: s1-tub 3s ease-in-out forwards; }
+
+      .step.step-2.play .anim-tub-fill { animation: s2-fadein 0.3s ease-out forwards; }
+      .step.step-2.play .anim-chunk-1  { animation: chunk-drop 1.1s 0.2s ease-in forwards; }
+      .step.step-2.play .anim-chunk-2  { animation: chunk-drop 1.1s 1.0s ease-in forwards; }
+      .step.step-2.play .anim-chunk-3  { animation: chunk-drop 1.1s 1.8s ease-in forwards; }
+
+      .step.step-3.play .anim-scale       { animation: s2-fadein 0.3s 0.05s ease-out forwards; }
+      .step.step-3.play .anim-forklift-2  { animation: s2-body 3.5s ease-in-out forwards; }
+      .step.step-3.play .anim-forks-2     { animation: s2-forks 3.5s ease-in-out forwards; }
+      .step.step-3.play .anim-tub-2       { animation: s2-tub-pickup 3.5s ease-in-out forwards; }
+      .step.step-3.play .w-a { animation: w-a 3.5s ease-in-out forwards; }
+      .step.step-3.play .w-b { animation: w-b 3.5s ease-in-out forwards; }
+      .step.step-3.play .w-c { animation: w-c 3.5s ease-in-out forwards; }
+      .step.step-3.play .anim-wallet { animation: s2-fadein 0.4s 3.5s ease-out forwards; }
+      .step.step-3.play .anim-bill   { animation: s3-bill 1.0s 3.8s ease-out forwards; }
+    }
+
+    .step h3 { font-size: 1.5rem; font-weight: 700; color: #fff; line-height: 1.3; }
+
+    /* ── METALS ── */
+    .metals { padding: 3rem 5% 5rem; background: var(--white); }
+    .metals .section-label { color: var(--blue); }
+    .metals .rule { width: 40px; height: 3px; background: var(--blue); border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+
+    .metals .section-title { color: var(--ink); margin-bottom: 0.5rem; }
+
+    .metals-sub { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 560px; line-height: 1.65; }
+    .metals-sub a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .metals-sub a:hover { text-decoration: underline; }
+
+    .metals-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      background: var(--mid);
+      color: var(--ink);
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--blue); color: var(--blue); }
+    .chip.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .metal-display {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      align-items: stretch;
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 2rem auto 0;
+      max-width: 880px;
+      box-shadow: 0 18px 40px -22px rgba(20,16,13,0.35), 0 2px 0 rgba(20,16,13,0.04);
+    }
+    .metal-image {
+      aspect-ratio: 4 / 3;
+      background-color: #ffffff;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      align-self: stretch;
+    }
+    .metal-text {
+      position: relative;
+      padding: 2.5rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(120% 120% at 100% 0%, rgba(26,80,162,0.07) 0%, transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, #faf7f2 100%);
+    }
+    .metal-text::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #5b8def, var(--blue));
+    }
+    .metal-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.9rem;
+    }
+    .metal-kicker svg { width: 14px; height: 14px; }
+    .metal-text h3 {
+      font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.1rem);
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0 0 0.55rem;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+    .metal-text h3::after {
+      content: '';
+      display: block;
+      width: 42px; height: 3px;
+      margin-top: 0.85rem;
+      background: var(--blue);
+      border-radius: 2px;
+    }
+    .metal-text p {
+      font-size: 1.05rem;
+      color: #45403a;
+      line-height: 1.75;
+      margin: 1.1rem 0 0;
+    }
+    .metal-pane { display: none; }
+    .metal-pane.active { display: contents; }
+    @media (max-width: 860px) {
+      .metal-display { grid-template-columns: 1fr; max-width: 520px; }
+      .metal-image { aspect-ratio: 16 / 10; }
+      .metal-text { padding: 2rem 1.6rem; }
+    }
+
+    /* ── SERVICES ── */
+    .services { background: var(--warm); }
+
+    .services-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .services-text {
+      padding: 4rem 5%;
+    }
+
+    .services-text .section-label { color: var(--blue); }
+    .services-text .section-title { color: var(--ink); margin-bottom: 1.5rem; }
+    .services-text .rule { width: 40px; height: 3px; background: var(--blue); border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+
+    .services-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .service-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .services-intro {
+      font-size: 0.925rem;
+      color: var(--muted);
+      line-height: 1.75;
       margin-bottom: 1.5rem;
     }
 
-    .hero-sub {
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.72);
-      max-width: 500px;
-      line-height: 1.75;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    .btn-rust {
-      background: var(--rust);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 0.85rem 2rem;
+    .btn-outline {
+      display: inline-block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+      padding: 0.5rem 1.2rem;
       border-radius: 4px;
       text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { background: var(--blue); color: #fff; }
+
+    .service-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
     }
 
-    .btn-rust:hover { background: #d4731f; transform: translateY(-1px); }
+    /* ── BÍLAFÖRGUN ── */
+    .bilaforgun-wrap {
+      position: relative;
+      padding: 3.5rem 5% 6rem;
+      background: var(--ink);
+      overflow: hidden;
+    }
 
-    .btn-outline-white {
-      border: 1.5px solid rgba(255,255,255,0.45);
+    .bilaf-bg {
+      position: absolute; inset: 0;
+      background-image: url('bilaforgun.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.28;
+    }
+
+    .bilaf-content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+    }
+    .bilaf-main { width: 100%; }
+    .bilaf-side { width: 100%; margin-top: 2.5rem; }
+
+    .bilaforgun-wrap .section-label { color: #5b8def; }
+    .bilaforgun-wrap .rule { width: 40px; height: 3px; background: #5b8def; border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+    .bilaforgun-wrap .section-title { color: #fff; margin-bottom: 0.25rem; }
+
+    .bilaf-intro {
+      color: rgba(255,255,255,0.82);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 1.1rem 0 1.75rem;
+    }
+
+    .bilaf-more { max-width: 540px; margin-top: 1.75rem; }
+    .bilaf-more summary {
+      cursor: pointer;
       color: #fff;
       font-weight: 600;
       font-size: 0.95rem;
-      padding: 0.85rem 2rem;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: border-color 0.2s, transform 0.15s;
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0;
+      user-select: none;
     }
+    .bilaf-more summary::-webkit-details-marker { display: none; }
+    .bilaf-more summary::after {
+      content: '▾';
+      margin-left: 0.4rem;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    .bilaf-more[open] summary::after { transform: rotate(180deg); }
 
-    .btn-outline-white:hover { border-color: #fff; transform: translateY(-1px); }
-
-    /* INTRO STRIP */
-    .intro-strip {
-      background: var(--green);
+    .bilaf-contact {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 1.5rem 1.6rem;
+      max-width: 520px;
+    }
+    .bilaf-contact-label {
+      display: block;
+      font-size: 1.02rem;
+      font-weight: 600;
       color: #fff;
-      padding: 2.5rem 5%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      border-bottom: 4px solid var(--rust);
-    }
-
-    .strip-item { text-align: center; }
-    .strip-num { font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
-    .strip-label { font-size: 0.8rem; color: rgba(255,255,255,0.65); margin-top: 0.3rem; }
-
-    /* SHARED */
-    .label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--rust);
+      line-height: 1.45;
       margin-bottom: 1rem;
     }
+    .bilaf-contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .bilaf-contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.65rem 1.05rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .bilaf-contact-links a:hover { background: #5b8def; border-color: #5b8def; }
+    .bilaf-contact-links a svg { width: 17px; height: 17px; flex-shrink: 0; }
+    .bilaf-more-body { margin-top: 0.85rem; }
+    .bilaf-more-body p {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+    .bilaf-more-body p:last-child { margin-bottom: 0; }
 
-    .rule { width: 40px; height: 3px; background: var(--rust); border-radius: 2px; margin-bottom: 2rem; }
-
-    .big-heading {
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.12;
-      margin-bottom: 1.5rem;
+    /* Licence plate */
+    .plate-wrap {
+      display: inline-flex;
+      align-items: stretch;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 4px solid #b0b0b0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 0 0 2px #e8e8e8;
+      background: #e8e8e8;
+      margin: 1.75rem 0 2rem;
     }
 
-    .body-text { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
-
-    /* ABOUT */
-    .about { display: grid; grid-template-columns: 1fr 1fr; }
-
-    .about-photo { position: relative; min-height: 560px; overflow: hidden; }
-
-    .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .about-text {
-      background: var(--white);
-      padding: 6rem 6%;
+    /* Icelandic flag strip */
+    .plate-strip {
+      background: #e8e8e8;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 0.7rem;
+      gap: 0.4rem;
+      min-width: 44px;
+      border-right: 2px solid #ccc;
+    }
+
+    .is-flag {
+      width: 28px; height: 20px;
+      background:
+        linear-gradient(to right, transparent 33%, #D72828 33%, #D72828 46%, transparent 46%),
+        linear-gradient(to bottom, transparent 38%, #D72828 38%, #D72828 62%, transparent 62%),
+        linear-gradient(to right, transparent 30%, #fff 30%, #fff 49%, transparent 49%),
+        linear-gradient(to bottom, transparent 33%, #fff 33%, #fff 67%, transparent 67%),
+        #003897;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    .plate-strip .country {
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      color: #111;
+      line-height: 1;
+      font-family: 'Arial Black', Arial, sans-serif;
+    }
+
+    /* Left number */
+    .plate-left {
+      background: #e8e8e8;
+      padding: 0.7rem 1.1rem;
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
 
-    /* PHOTO GRID */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 300px 300px;
+    .plate-left span {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #111;
+      font-family: 'Arial Black', Arial, sans-serif;
+      line-height: 1;
     }
 
-    .photo-grid-item { overflow: hidden; position: relative; }
-    .photo-grid-item.wide { grid-column: span 2; }
-
-    .photo-grid-item img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      transition: transform 0.5s ease;
+    /* Yellow year sticker */
+    .plate-center {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      border-left: 2px solid #bbb;
+      border-right: 2px solid #bbb;
     }
 
-    .photo-grid-item:hover img { transform: scale(1.05); }
-
-    .photo-grid-item .overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(26,21,18,0.7) 0%, transparent 55%);
-      display: flex; align-items: flex-end; padding: 1.5rem;
-      opacity: 0; transition: opacity 0.3s;
+    .sticker-main {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      overflow: hidden;
+      min-width: 64px;
     }
 
-    .photo-grid-item:hover .overlay { opacity: 1; }
-    .overlay-text { color: #fff; font-size: 1rem; font-weight: 700; }
-
-    /* SERVICES */
-    .services { background: var(--warm); padding: 7rem 5%; }
-
-    .services-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: end;
-      margin-bottom: 3.5rem;
+    .sticker-top {
+      background: #f0c020;
+      padding: 0.55rem 0.9rem 0.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex: 1;
     }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--mid);
-      border: 1px solid var(--mid);
+    .sticker-top::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Coat_of_arms_of_Iceland.svg/300px-Coat_of_arms_of_Iceland.svg.png');
+      background-size: 110%;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.18;
+      filter: contrast(2);
     }
 
-    .service-card {
-      background: var(--white);
-      padding: 2.5rem 2rem;
-      transition: background 0.2s;
-    }
-
-    .service-card:hover { background: var(--warm); }
-
-    .service-num {
+    .sticker-year-big {
+      position: relative;
+      z-index: 1;
       font-size: 2.5rem;
       font-weight: 900;
-      color: var(--mid);
-      letter-spacing: -0.04em;
+      color: #111;
+      font-family: 'Arial Black', Arial, sans-serif;
       line-height: 1;
-      margin-bottom: 1.25rem;
     }
 
-    .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
-    .service-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
-
-    /* ENVIRONMENT */
-    .environment { display: grid; grid-template-columns: 1fr 1fr; }
-
-    .env-text {
-      background: var(--green);
-      color: #fff;
-      padding: 6rem 6%;
+    .sticker-bottom {
+      background: #d4a800;
+      padding: 0.18rem 0.9rem;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid rgba(0,0,0,0.12);
+    }
+
+    .sticker-year-small {
+      font-size: 0.6rem;
+      font-weight: 900;
+      color: #111;
+      font-family: 'Arial Black', Arial, sans-serif;
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    /* Right */
+    .plate-right {
+      background: #e8e8e8;
+      padding: 0.7rem 1.1rem;
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
 
-    .env-text .label { color: rgba(255,255,255,0.55); }
-    .env-text .big-heading { color: #fff; }
-    .env-text .body-text { color: rgba(255,255,255,0.7); }
-    .env-text .rule { background: rgba(255,255,255,0.3); }
-
-    .env-steps { display: flex; flex-direction: column; margin-top: 2rem; }
-
-    .env-step {
-      display: flex;
-      gap: 1.5rem;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+    .plate-right span {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #111;
+      font-family: 'Arial Black', Arial, sans-serif;
+      line-height: 1;
     }
 
-    .env-step:last-child { border-bottom: none; }
-
-    .env-step-num {
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.35);
-      padding-top: 0.15rem;
-      flex-shrink: 0;
-      width: 24px;
-    }
-
-    .env-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; color: #fff; }
-    .env-step p { font-size: 0.825rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
-
-    .env-photo { position: relative; min-height: 600px; overflow: hidden; }
-    .env-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .env-photo-label {
-      position: absolute;
-      top: 2rem; left: 2rem;
-      background: var(--green);
-      color: #fff;
+    .plate-sub {
+      display: block;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 0.45rem 0.9rem;
-      border-radius: 2px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.5rem;
     }
 
-    /* METALS */
-    .metals-banner {
-      position: relative;
-      min-height: 420px;
-      display: flex;
-      align-items: center;
-      padding: 6rem 5%;
-      overflow: hidden;
-    }
+    .bilaf-sub { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 2rem; }
 
-    .metals-banner-bg {
-      position: absolute; inset: 0;
-      background-image: url('https://assets.mango.is/media/8/KfJ3p385taRh_euJ.jpg');
-      background-size: cover;
-      background-position: center 40%;
-    }
+    /* ── WHY FURA ── */
+    .why { padding: 5rem 5%; background: var(--white); }
+    .why .section-label { color: var(--blue); }
+    .why .rule { width: 40px; height: 3px; background: var(--blue); border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+    .why .section-title { color: var(--ink); }
 
-    .metals-banner-bg::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(26,21,18,0.75);
-    }
-
-    .metals-content {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      width: 100%;
-    }
-
-    .metals-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .metal-item {
-      padding: 1.25rem 1.5rem;
-      border-right: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      color: #fff;
-    }
-
-    .metal-item:nth-child(even) { border-right: none; }
-    .metal-item h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .metal-item p { font-size: 0.775rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
-
-    /* FURUFLÍS */
-    .furoflis { display: grid; grid-template-columns: 1fr 1fr; }
-
-    .furoflis-text {
-      background: var(--ink);
-      color: #fff;
-      padding: 6rem 6%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .furoflis-text .label { color: rgba(255,255,255,0.45); }
-    .furoflis-text .big-heading { color: #fff; }
-    .furoflis-text .body-text { color: rgba(255,255,255,0.65); }
-    .furoflis-text .rule { background: var(--rust); }
-
-    .furoflis-facts { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
-
-    .fact {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.68);
-      line-height: 1.5;
-    }
-
-    .fact-check { color: var(--rust); font-weight: 900; flex-shrink: 0; }
-
-    .furoflis-photo { position: relative; min-height: 500px; overflow: hidden; }
-    .furoflis-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    /* NEWS */
-    .news { padding: 7rem 5%; background: var(--white); }
-
-    .news-top { margin-bottom: 3rem; }
-
-    .news-grid {
+    .why-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
+      margin-top: 2.5rem;
       background: var(--mid);
-      border: 1px solid var(--mid);
     }
 
-    .news-card {
+    .why-card {
       background: var(--white);
-      padding: 2.5rem;
-      transition: background 0.2s;
+      padding: 2.25rem 1.75rem;
+      display: flex;
+      flex-direction: column;
     }
 
-    .news-card:hover { background: var(--warm); }
-
-    .news-date {
-      font-size: 0.72rem;
+    .why-card h3 {
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--rust);
-      letter-spacing: 0.07em;
-      margin-bottom: 0.75rem;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
     }
 
-    .news-card h3 { font-size: 1.05rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.75rem; }
-    .news-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+    .why-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
 
-    .news-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-top: 1.25rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--rust);
+    .why-card-link {
+      margin-top: 0.75rem;
+      align-self: flex-start;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--blue);
       text-decoration: none;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+    }
+    .why-card-link:hover { text-decoration: underline; }
+
+    .why-link-main {
+      display: inline-block;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      border: 1.5px solid var(--blue);
+      padding: 0.6rem 1.3rem;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .why-link-main:hover { background: var(--blue); color: #fff; }
+
+    /* ── ENVIRONMENT ── */
+    .env-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
-    /* CONTACT */
-    .contact { display: grid; grid-template-columns: 1fr 1fr; }
+    .env-img {
+      background-image: url('https://assets.mango.is/media/8/izZdYpPV4CnzRhYJ.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 420px;
+    }
 
-    .contact-photo { position: relative; min-height: 500px; overflow: hidden; }
-    .contact-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .contact-text {
-      background: var(--warm);
-      padding: 6rem 6%;
+    .env-text {
+      background: var(--blue);
+      padding: 4rem 5%;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
-    .contact-info { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+    .env-text .section-label { color: rgba(255,255,255,0.5); }
+    .env-text .section-title { color: #fff; margin-bottom: 1rem; }
 
-    .contact-item h4 {
-      font-size: 0.68rem;
+    .env-text p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+      max-width: 440px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.6);
+    }
+
+    .footer-locations {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .location-card {
+      padding: 3rem 5%;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .location-card:last-child { border-right: none; }
+
+    .location-name {
+      font-size: 1.1rem;
       font-weight: 700;
-      letter-spacing: 0.13em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-col h4 {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.4rem;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.75rem;
     }
 
-    .contact-item p,
-    .contact-item a {
-      font-size: 1rem;
-      color: var(--ink);
-      text-decoration: none;
-      line-height: 1.6;
-    }
-
-    .contact-item a:hover { color: var(--rust); }
-
-    .hours-grid { display: flex; flex-direction: column; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { font-size: 0.82rem; margin-bottom: 0.35rem; color: rgba(255,255,255,0.6); }
+    .footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .footer-col a:hover { color: #fff; }
 
     .hours-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.9rem;
-      padding: 0.45rem 0;
-      border-bottom: 1px solid var(--mid);
+      font-size: 0.82rem;
+      margin-bottom: 0.3rem;
+      color: rgba(255,255,255,0.6);
     }
+    .hours-row span:last-child { font-weight: 600; color: rgba(255,255,255,0.8); }
 
-    .hours-row:last-child { border-bottom: none; }
-    .hours-row .day { color: var(--muted); }
-    .hours-row .time { color: var(--ink); font-weight: 600; }
+    .footer-map-btn {
+      display: inline-block;
+      margin-top: 1.25rem;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 4px;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .footer-map-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
-    /* FOOTER */
-    footer {
-      background: var(--ink);
-      color: rgba(255,255,255,0.45);
-      padding: 2.5rem 5%;
+    .footer-bottom {
+      padding: 1.25rem 5%;
+      border-top: 1px solid rgba(255,255,255,0.07);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
     }
+    .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+    .footer-bottom > a { color: rgba(255,255,255,0.3); text-decoration: none; }
+    .footer-bottom > a:hover { color: rgba(255,255,255,0.65); }
 
-    .footer-logo img { height: 26px; filter: brightness(0) invert(1); opacity: 0.65; }
-    footer p { font-size: 0.78rem; }
-
-    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
-
-    .footer-links a {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.4);
+    .footer-ig {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.8rem;
+      font-weight: 600;
       text-decoration: none;
       transition: color 0.2s;
     }
+    .footer-ig svg {
+      width: 22px; height: 22px;
+      stroke: currentColor;
+    }
+    .footer-ig:hover { color: #fff; }
 
-    .footer-links a:hover { color: rgba(255,255,255,0.9); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .about, .environment, .furoflis, .contact { grid-template-columns: 1fr; }
-      .about-photo, .env-photo, .furoflis-photo, .contact-photo { min-height: 280px; }
-      .intro-strip { grid-template-columns: 1fr; text-align: center; }
-      .services-top, .metals-content { grid-template-columns: 1fr; }
-      .services-grid, .news-grid { grid-template-columns: 1fr 1fr; }
-      .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-      .photo-grid-item.wide { grid-column: span 1; }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
       .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+    /* On desktop the drawer must never show, even if left open on mobile */
+    @media (min-width: 1101px) {
+      .nav-mobile { display: none !important; }
     }
 
-    @media (max-width: 580px) {
-      .services-grid, .news-grid, .metals-list { grid-template-columns: 1fr; }
-      .photo-grid { grid-template-columns: 1fr; }
+    @media (max-width: 900px) {
+      .step-anim { width: 130px; height: 65px; }
+      .services-wrap, .env-wrap { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .footer-locations { grid-template-columns: 1fr; }
+      .location-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    }
+
+    @media (max-width: 600px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .location-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      /* stats: stack and swap the vertical divider for a horizontal one */
+      .intro-strip { grid-template-columns: 1fr; }
+      .intro-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 1.6rem 5%; }
+      .intro-item:last-child { border-bottom: none; }
+      /* steps: keep tidy on narrow screens */
+      .step { padding: 1.1rem 1.25rem; gap: 1rem; }
+      .step-num { font-size: 2.6rem; }
+      .step h3 { font-size: 1.2rem; }
+      .step-anim { width: 96px; height: 48px; }
+      /* nav: keep logo + flags + burger on screen */
+      .nav-top { padding: 0 4%; }
+      .nav-logo img { height: auto; max-width: 200px; }
+      .nav-right { gap: 0.85rem; }
+    }
+
+    @media (max-width: 380px) {
+      .step-anim { display: none; }
+      .metals-chips { gap: 0.4rem; }
+      .chip { padding: 0.4rem 0.8rem; font-size: 0.82rem; }
+      .nav-logo img { max-width: 150px; }
+      .nav-right { gap: 0.55rem; }
+      .lang-btn { padding: 2px 5px; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -543,326 +1127,509 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">
-    <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
-  </a>
-  <ul class="nav-links">
-    <li><a href="#um-furu">Um Furu</a></li>
-    <li><a href="#thjonusta">Þjónusta</a></li>
-    <li><a href="#endurnyting">Endurnýting</a></li>
-    <li><a href="#malmar">Málmar</a></li>
-    <li><a href="#frettir">Fréttir</a></li>
-    <li><a href="#hafdu-samband" class="nav-cta">Hafðu samband</a></li>
-  </ul>
+  <div class="nav-top">
+    <a href="#" class="nav-logo">
+      <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+    </a>
+    <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="thjonusta.html" data-spy="thjonusta" data-en="Services">Þjónusta</a></li>
+      <li><a href="#malmar" data-spy="malmar" data-en="Metals">Málmar</a></li>
+      <li><a href="#bilaforgun" data-spy="bilaforgun" data-en="Car scrapping">Bílaförgun</a></li>
+      <li><a href="um-furu.html" data-en="About Fura">Um Furu</a></li>
+      <li><a href="furuflis.html" class="nav-ff"><img src="furuflis-logo.png" alt="Furuflís" /></a></li>
+      <li><a href="#samband" class="nav-cta" data-en="Contact">Hafa samband</a></li>
+    </ul>
+    <div class="lang-switch" role="group" aria-label="Tungumál / Language">
+      <button type="button" class="lang-btn" data-lang="is" aria-label="Íslenska" title="Íslenska">🇮🇸</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-label="English" title="English">🇬🇧</button>
+    </div>
+    <button class="nav-burger" id="burger" aria-label="Valmynd">
+      <span></span><span></span><span></span>
+    </button>
+    </div>
+  </div>
+  <!-- Mobile drawer -->
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="thjonusta.html" data-en="Services">Þjónusta</a>
+    <a href="#malmar" data-en="Metals">Málmar</a>
+    <a href="#bilaforgun" data-en="Car scrapping">Bílaförgun</a>
+    <a href="um-furu.html" data-en="About Fura">Um Furu</a>
+    <a href="furuflis.html" class="nav-ff-mobile"><img src="furuflis-logo.png" alt="Furuflís" /></a>
+    <a href="#samband" class="nav-cta" data-en="Contact">Hafa samband</a>
+  </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="top">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Málmendurvinnsla · Hafnarfjörður · Síðan 1981</p>
-    <h1>Í vinnu<br />fyrir<br />framtíðina</h1>
-    <p class="hero-sub">
-      Með endurvinnslu á málmum og timbri breytum við fyrirferðarmiklum og oft mengandi úrgangi í verðmæta auðlind.
-    </p>
-    <div class="hero-actions">
-      <a href="#hafdu-samband" class="btn-rust">Hafðu samband</a>
-      <a href="#thjonusta" class="btn-outline-white">Skoða þjónustu</a>
-    </div>
+    <h1 data-en="Let your metal <em>pay off</em>">Láttu málminn <em>borga sig</em></h1>
+    <p class="hero-sub" data-en="We assess the value, find the right solution, and handle the transport when needed.">Við metum verðmætið, finnum lausnina og sjáum um flutninginn ef þarf.</p>
+    <a href="#samband" class="btn-blue" data-en="Contact us">Hafa samband</a>
   </div>
 </section>
 
-<!-- INTRO STRIP -->
-<div class="intro-strip">
-  <div class="strip-item">
-    <div class="strip-label">Starfað síðan</div>
-    <div class="strip-num">1981</div>
-  </div>
-  <div class="strip-item">
-    <div class="strip-label">Hafðu samband</div>
-    <div class="strip-num">565 3557</div>
-  </div>
-  <div class="strip-item">
-    <div class="strip-label">Opnunartímar</div>
-    <div class="strip-num" style="font-size:1.1rem; line-height:1.7;">Mán–Fös: 08–20<br>Lau: 08–14<br>Sun: Lokað</div>
-  </div>
-</div>
 
-<!-- ABOUT -->
-<section id="um-furu">
-  <div class="about">
-    <div class="about-photo">
-      <img src="https://assets.mango.is/media/8/LccEr1NB7Ysl8WoW.jpeg" alt="Fura starfsfólk" />
+<!-- HOW IT WORKS -->
+<section class="how" id="um-furu">
+  <div class="section-label" data-en="How does it work?">Hvernig virkar þetta?</div>
+  <h2 class="section-title" data-en="Three simple steps">Þrjú einföld skref</h2>
+  <div class="steps">
+
+    <div class="step step-1">
+      <div class="step-text">
+        <div class="step-num">1</div>
+        <h3 data-en="We bring a container">Við komum með ílát</h3>
+      </div>
+      <div class="step-anim">
+        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Forklift body (faces right) -->
+          <g class="anim-forklift">
+            <!-- Cabin / driver -->
+            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
+            <path d="M 8 26 L 14 26"/>
+            <!-- Chassis -->
+            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
+            <!-- Mast -->
+            <path d="M 22 14 L 22 52"/>
+            <path d="M 26 14 L 26 52"/>
+            <path d="M 22 14 L 26 14"/>
+            <!-- Wheels -->
+            <circle cx="5" cy="52" r="4"/>
+            <circle cx="17" cy="52" r="4"/>
+          </g>
+          <!-- Forks (lift independently) -->
+          <g class="anim-forks">
+            <path d="M 26 40 L 54 40"/>
+            <path d="M 26 48 L 54 48"/>
+            <path d="M 26 40 L 26 48"/>
+          </g>
+          <!-- Tub (final position on ground) -->
+          <g class="anim-tub-1">
+            <path d="M 32 40 L 35 60 L 71 60 L 74 40 Z"/>
+            <path d="M 35 44 L 71 44"/>
+          </g>
+        </svg>
+      </div>
     </div>
-    <div class="about-text">
-      <p class="label">Um Furu</p>
-      <div class="rule"></div>
-      <h2 class="big-heading">Úrgangur breytist í verðmæti</h2>
-      <p class="body-text">
-        Fura Málmendurvinnsla hefur frá 1981 sinnt endurvinnslu á málmum og timbri á Íslandi. Við breytum fyrirferðarmiklum og oft mengandi úrgangi í verðmæta auðlind — til hagsbóta fyrir umhverfið og samfélagið.
-      </p>
-      <p class="body-text">
-        Fyrirtækið er staðsett að Hringhellu 3 í Hafnarfirði og þjónar viðskiptavinum um allt land. Við leggjum áherslu á gæðaþjónustu, faglega meðhöndlun og sjálfbærar lausnir.
-      </p>
-      <p style="font-size:0.8rem; color:var(--muted);">Kt. 621281-1009</p>
+
+    <div class="step step-2">
+      <div class="step-text">
+        <div class="step-num">2</div>
+        <h3 data-en="You fill it with metal">Þú setur málmana í ílátið</h3>
+      </div>
+      <div class="step-anim">
+        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Tub sitting on the ground (already delivered in step 1) -->
+          <g class="anim-tub-fill">
+            <path d="M 43 40 L 46 60 L 84 60 L 87 40 Z"/>
+            <path d="M 46 44 L 84 44"/>
+          </g>
+          <!-- Metal chunk 1 (lands bottom-left) -->
+          <g class="anim-chunk-1">
+            <path d="M 50 49 L 49 58 L 61 59 L 62 50 Z"/>
+            <path d="M 52 52 L 59 53"/>
+          </g>
+          <!-- Metal chunk 2 (lands bottom-right) -->
+          <g class="anim-chunk-2">
+            <path d="M 66 51 L 65 59 L 80 58 L 81 50 Z"/>
+            <path d="M 69 53 L 77 53"/>
+          </g>
+          <!-- Metal chunk 3 (lands on top, sticking out above rim) -->
+          <g class="anim-chunk-3">
+            <path d="M 57 31 L 55 42 L 76 42 L 74 30 Z"/>
+            <path d="M 60 35 L 70 35"/>
+          </g>
+        </svg>
+      </div>
     </div>
+
+    <div class="step step-3">
+      <div class="step-text">
+        <div class="step-num">3</div>
+        <h3 data-en="We collect, weigh and assess">Við sækjum, vigtum og metum</h3>
+      </div>
+      <div class="step-anim">
+        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Scale (right side) -->
+          <g class="anim-scale">
+            <path d="M 66 50 L 104 50"/>
+            <path d="M 72 50 L 72 60"/>
+            <path d="M 98 50 L 98 60"/>
+            <path d="M 104 50 L 104 26"/>
+            <rect x="98" y="18" width="30" height="14" rx="2"/>
+          </g>
+          <!-- Forklift body (faces right) -->
+          <g class="anim-forklift-2">
+            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
+            <path d="M 8 26 L 14 26"/>
+            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
+            <path d="M 22 14 L 22 52"/>
+            <path d="M 26 14 L 26 52"/>
+            <path d="M 22 14 L 26 14"/>
+            <circle cx="5" cy="52" r="4"/>
+            <circle cx="17" cy="52" r="4"/>
+          </g>
+          <!-- Forks (lift independently) -->
+          <g class="anim-forks-2">
+            <path d="M 26 40 L 58 40"/>
+            <path d="M 26 48 L 58 48"/>
+            <path d="M 26 40 L 26 48"/>
+          </g>
+          <!-- Full tub (chunks sticking out); animates from ground left onto scale -->
+          <g class="anim-tub-2">
+            <path d="M 68 30 L 71 50 L 99 50 L 102 30 Z"/>
+            <path d="M 71 34 L 99 34"/>
+            <!-- chunks inside -->
+            <path d="M 74 39 L 73 48 L 83 49 L 84 40 Z"/>
+            <path d="M 76 42 L 82 42"/>
+            <path d="M 86 40 L 85 49 L 97 48 L 98 39 Z"/>
+            <path d="M 88 42 L 95 42"/>
+            <!-- chunk sticking out above the rim -->
+            <path d="M 78 21 L 76 32 L 94 32 L 92 20 Z"/>
+            <path d="M 81 25 L 90 25"/>
+          </g>
+          <!-- Weight display numbers -->
+          <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="9" font-weight="700" fill="#fff" stroke="none">
+            <text x="113" y="28" text-anchor="middle" class="w w-a">0 kg</text>
+            <text x="113" y="28" text-anchor="middle" class="w w-b">50 kg</text>
+            <text x="113" y="28" text-anchor="middle" class="w w-c">100 kg</text>
+          </g>
+          <!-- Wallet (appears bottom-left after weighing) -->
+          <g class="anim-wallet">
+            <rect x="2" y="34" width="42" height="26" rx="2.5"/>
+            <path d="M 2 42 L 44 42"/>
+            <circle cx="36" cy="53" r="2"/>
+          </g>
+          <!-- Bill popping out of wallet -->
+          <g class="anim-bill">
+            <rect x="9" y="22" width="28" height="14" rx="1.5"/>
+            <text x="23" y="33" text-anchor="middle" font-size="9" font-weight="700" font-family="ui-monospace, Menlo, monospace" fill="#fff" stroke="none">kr</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
   </div>
 </section>
-
-<!-- PHOTO GRID -->
-<div class="photo-grid">
-  <div class="photo-grid-item wide">
-    <img src="https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg" alt="Starfsemi Furu" />
-    <div class="overlay"><span class="overlay-text">Endurvinnslusvæðið</span></div>
-  </div>
-  <div class="photo-grid-item">
-    <img src="https://assets.mango.is/media/8/cvYg0pAODDDtwtRj.jpeg" alt="Málmar" />
-    <div class="overlay"><span class="overlay-text">Málmavinnsla</span></div>
-  </div>
-  <div class="photo-grid-item">
-    <img src="https://assets.mango.is/media/8/gIVgXzTvshoQVhye.jpg" alt="Tæki" />
-    <div class="overlay"><span class="overlay-text">Tækjabúnaður</span></div>
-  </div>
-  <div class="photo-grid-item wide">
-    <img src="https://assets.mango.is/media/8/JfDYXzedg498PNfo.jpeg" alt="Fura svæðið" />
-    <div class="overlay"><span class="overlay-text">Hafnarfjörður</span></div>
-  </div>
-</div>
 
 <!-- SERVICES -->
 <section class="services" id="thjonusta">
-  <div class="services-top">
-    <div>
-      <p class="label">Þjónusta</p>
+  <div class="services-wrap">
+    <div class="services-text">
+      <div class="section-label" data-en="Services">Þjónusta</div>
       <div class="rule"></div>
-      <h2 class="big-heading">Við sækjum —<br />þú selur</h2>
-    </div>
-    <p class="body-text" style="margin-bottom:0;">
-      Við sækjum brotajárn til viðskiptavina um allt land og útvegum gáma undir málma og úrgang til endurvinnslu. Einfalt og þægilegt fyrir þig.
-    </p>
-  </div>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-num">01</div>
-      <h3>Sóknþjónusta um land allt</h3>
-      <p>Við sækjum brotajárn og málma beint til þín — hvar sem þú ert á Íslandi.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">02</div>
-      <h3>Gámar til leigu</h3>
-      <p>Við útvegum gáma undir málma og úrgang til endurvinnslu. Við sækjum þegar gámurinn er fullur.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">03</div>
-      <h3>Niðurrif skipa og báta</h3>
-      <p>Við höndlum niðurrif skipa og báta á faglegan og umhverfisvænan hátt.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">04</div>
-      <h3>Niðurrif mannvirkja</h3>
-      <p>Fura annast niðurrif á mannvirkjum og endurvinnur efnið — s.s. Drafnarslippur.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">05</div>
-      <h3>Bílhræ og brotajárn</h3>
-      <p>Bílar teknir í frumeindir og allir hlutir flokkaðir og endurnýttir að fullu.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">06</div>
-      <h3>Kopar og rafbúnaður</h3>
-      <p>Við fleytum kápu af koparvírum og unnum allt kopar og rafefni vandlega.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ENVIRONMENT -->
-<section id="endurnyting">
-  <div class="environment">
-    <div class="env-text">
-      <p class="label">Endurnýting</p>
-      <div class="rule"></div>
-      <h2 class="big-heading">Umhverfið er okkur hjartans mál</h2>
-      <p class="body-text">
-        Við leggjum mikinn metnað og vinnu í að flokka og endurvinna sem mest hérlendis áður en málmar eru sendir úr landi. Þannig sköpum við störf og verðmæti í samfélaginu.
-      </p>
-      <div class="env-steps">
-        <div class="env-step">
-          <div class="env-step-num">01</div>
-          <div>
-            <h4>Söfnun</h4>
-            <p>Málmar og úrgangur sóttur til viðskiptavina eða skilað í gáma hjá okkur.</p>
-          </div>
-        </div>
-        <div class="env-step">
-          <div class="env-step-num">02</div>
-          <div>
-            <h4>Flokkun hérlendis</h4>
-            <p>Allt efni flokkað nákvæmlega eftir gerð áður en það er unnið frekar.</p>
-          </div>
-        </div>
-        <div class="env-step">
-          <div class="env-step-num">03</div>
-          <div>
-            <h4>Vinnsla</h4>
-            <p>Með öflugum tækjabúnaði eru málmar brotaðir niður í verðmætar hráefnistegundir.</p>
-          </div>
-        </div>
-        <div class="env-step">
-          <div class="env-step-num">04</div>
-          <div>
-            <h4>Útflutningur</h4>
-            <p>Fullunnið efni sent á markað hérlendis og erlendis sem hráefni í nýjar vörur.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="env-photo">
-      <img src="https://assets.mango.is/media/8/izZdYpPV4CnzRhYJ.jpg" alt="Endurnýting" />
-      <div class="env-photo-label">Endurnýting</div>
+      <h2 class="section-title" data-en="We handle the process<br>from start to finish">Við sjáum um ferlið<br>frá upphafi til enda</h2>
+      <p class="services-intro" data-en="Fura offers customers in the capital area, Akureyri and the surrounding regions a range of container sizes for metal recycling.">Fura býður viðskiptavinum á höfuðborgarsvæðinu, Akureyri og nágrenni upp á mismunandi gámastærðir fyrir málma til endurvinnslu.</p>
+      <a href="thjonusta.html" class="btn-outline" data-en="Learn more →">Nánari upplýsingar →</a>
     </div>
   </div>
 </section>
 
 <!-- METALS -->
-<section id="malmar">
-  <div class="metals-banner">
-    <div class="metals-banner-bg"></div>
-    <div class="metals-content">
-      <div>
-        <p class="label" style="color:rgba(255,255,255,0.5);">Málmar</p>
-        <div class="rule"></div>
-        <h2 class="big-heading" style="color:#fff;">Við kaupum allar gerðir málma</h2>
-        <p class="body-text" style="color:rgba(255,255,255,0.68);">
-          Með öflugum tækjabúnaði flokkum við málma eftir tegundum og tökum til dæmis bílhræ í frumeindir, flettum kápu af koparvírum og vinnum úr öllu efninu sem mest verðmæti.
-        </p>
+<section class="metals" id="malmar">
+  <div class="section-label" data-en="Metals">Málmar</div>
+  <div class="rule"></div>
+  <h2 class="section-title" data-en="What we recycle">Það sem við endurnýtum</h2>
+  <p class="metals-sub" data-en='Whether you are getting rid of a little or a lot — we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið — við tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
+  <div class="metals-chips">
+    <button class="chip active" data-target="jarn" data-en="Iron">Járn</button>
+    <button class="chip" data-target="al" data-en="Aluminium">Ál</button>
+    <button class="chip" data-target="kopar" data-en="Copper">Kopar</button>
+    <button class="chip" data-target="messing" data-en="Brass">Messing</button>
+    <button class="chip" data-target="bly" data-en="Lead">Blý</button>
+    <button class="chip" data-target="rydfritt" data-en="Stainless steel">Ryðfrítt stál</button>
+    <button class="chip" data-target="alfelgur" data-en="Alloy wheels">Álfelgur</button>
+    <button class="chip" data-target="kaplar" data-en="Cables">Kaplar</button>
+    <button class="chip" data-target="rafgeymar" data-en="Batteries">Rafgeymar</button>
+  </div>
+
+  <div class="metal-display">
+    <div class="metal-pane active" data-pane="jarn">
+      <div class="metal-image" style="background-image: url('jarn.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Iron">Járn</h3>
+        <p data-en="Iron is widely used in buildings, machinery and vehicles. What mainly sets iron apart from aluminium and stainless steel is that it rusts easily when exposed to moisture and weather. You can also use a magnet on iron to rule out that it is aluminium.">Járn er mikið notað í byggingum, vélum og farartækjum. Það sem helst aðgreinir járn frá áli og ryðfríu stáli er að það ryðgar auðveldlega þegar það verður fyrir raka og veðri. Einnig er hægt að nota segul við járn til að útiloka að það sé ál.</p>
       </div>
-      <div class="metals-list">
-        <div class="metal-item"><h4>Járn &amp; Stál</h4><p>Brotajárn, bílhræ, byggingarefni</p></div>
-        <div class="metal-item"><h4>Kopar</h4><p>Vírar, pípulagnir, rafbúnaður</p></div>
-        <div class="metal-item"><h4>Álumíníum</h4><p>Felgur, kassaprófílar, rör</p></div>
-        <div class="metal-item"><h4>Blý &amp; Rafgeymar</h4><p>Bifreiðarafgeymar, blýpípulagnir</p></div>
-        <div class="metal-item"><h4>Ryðfrítt stál</h4><p>Tæki, búnaður, eldhúsvörur</p></div>
-        <div class="metal-item"><h4>Látún &amp; Brons</h4><p>Handfang, kranar, búnaður</p></div>
-        <div class="metal-item"><h4>Vélar &amp; Tæki</h4><p>Iðnaðartæki, vélar, búnaður</p></div>
-        <div class="metal-item"><h4>Skip &amp; Bátar</h4><p>Niðurrif og endurvinnsla skipa</p></div>
+    </div>
+    <div class="metal-pane" data-pane="al">
+      <div class="metal-image" style="background-image: url('al.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Aluminium">Ál</h3>
+        <p data-en="Aluminium is a metal commonly found in windows, doors, vehicles and packaging. Unlike iron, aluminium does not rust and weighs far less.">Ál er málmur sem er algengur í gluggum, hurðum, farartækjum og umbúðum. Ólíkt járni ryðgar ál ekki og vegur mun minna.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="kopar">
+      <div class="metal-image" style="background-image: url('kopar.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Copper">Kopar</h3>
+        <p data-en="Copper is widely used in electrical systems, cables and connectors. Its reddish colour makes it easy to tell apart from most other metals.">Kopar er mikið notaður í rafkerfum, kaplum og tengingum. Rauðleitur litur hans gerir hann auðþekkjanlegan frá flestum öðrum málmum.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="messing">
+      <div class="metal-image" style="background-image: url('messing.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Brass">Messing</h3>
+        <p data-en="A blend of copper and zinc, common in taps, fittings, decorations and musical instruments. We accept brass for recycling.">Blanda af kopar og zinki, algeng í krönum, tengjum, skreytingum og hljóðfærum. Við tökum við messingi til endurvinnslu.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="bly">
+      <div class="metal-image" style="background-image: url('bly.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Lead">Blý</h3>
+        <p data-en="A heavy metal that must be handled correctly. We accept lead and take care of safe, environmentally friendly recycling.">Þungur málmur sem þarf að meðhöndla rétt. Við tökum við blýi og sjáum um örugga og umhverfisvæna endurvinnslu.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="rydfritt">
+      <div class="metal-image" style="background-image: url('rydfritt.jpg');"></div>
+      <div class="metal-text">
+        <h3 data-en="Stainless steel">Ryðfrítt stál</h3>
+        <p data-en="Stainless steel is a durable material used in all kinds of products. It often looks like ordinary steel but contains elements that protect it against rust and corrosion.">Ryðfrítt stál er endingargott efni sem er mikið notað í allskyns hluti. Það líkist oft venjulegu stáli en inniheldur efni sem vernda það gegn ryði og tæringu.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="alfelgur">
+      <div class="metal-image" style="background-image: url('alfelgur.jpg?v=2');"></div>
+      <div class="metal-text">
+        <h3 data-en="Alloy wheels">Álfelgur</h3>
+        <p data-en="Alloy wheels are light and do not rust. We accept alloy wheels for recycling, where the aluminium is reused in new production.">Álfelgur eru léttar og ryðga ekki. Við tökum við álfelgum til endurvinnslu þar sem álið nýtist aftur í nýja framleiðslu.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="kaplar">
+      <div class="metal-image" style="background-image: url('kaplar.jpg');"></div>
+      <div class="metal-text">
+        <h3 data-en="Cables">Kaplar</h3>
+        <p data-en="Cables contain metals such as copper and aluminium beneath the insulation. We accept all kinds of cables and electrical wiring for recycling.">Kaplar innihalda málma eins og kopar og ál undir einangruninni. Við tökum við alls kyns köplum og rafmagnsvírum til endurvinnslu.</p>
+      </div>
+    </div>
+    <div class="metal-pane" data-pane="rafgeymar">
+      <div class="metal-image" style="background-image: url('rafgeymar.jpg');"></div>
+      <div class="metal-text">
+        <h3 data-en="Batteries">Rafgeymar</h3>
+        <p data-en="We accept all types of batteries and take care of their safe disposal and recycling.">Við tökum við öllum gerðum rafgeyma og sjáum um örugga förgun og endurvinnslu á þeim.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FURUFLÍS -->
-<section id="furoflis">
-  <div class="furoflis">
-    <div class="furoflis-text">
-      <p class="label">Vara</p>
-      <div class="rule"></div>
-      <h2 class="big-heading">Furuflís —<br />umhverfisvætt undirlag</h2>
-      <p class="body-text">
-        Furuflís er umhverfisvætt undirlag framleitt úr endurunnum timburúrgangi. Fullkomið fyrir hross, smárgripi og dýrastöður — áhrifaríkt, þægilegt og sjálfbært val.
-      </p>
-      <div class="furoflis-facts">
-        <div class="fact"><span class="fact-check">✓</span> Framleitt úr 100% endurunnum timburúrgangi</div>
-        <div class="fact"><span class="fact-check">✓</span> Umhverfisvænt og endurnýjanlegt</div>
-        <div class="fact"><span class="fact-check">✓</span> Hentar vel í hrossahús og dýrastöður</div>
-        <div class="fact"><span class="fact-check">✓</span> Mjúkt og þægilegt undirlag fyrir dýr</div>
-        <div class="fact"><span class="fact-check">✓</span> Góð frásog raka og lyktareyðing</div>
-      </div>
-    </div>
-    <div class="furoflis-photo">
-      <img src="https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg" alt="Furuflís" />
-    </div>
-  </div>
-</section>
-
-<!-- NEWS -->
-<section class="news" id="frettir">
-  <div class="news-top">
-    <p class="label">Fréttir</p>
+<!-- CAR SCRAPPING -->
+<section class="bilaforgun-wrap" id="bilaforgun">
+  <div class="bilaf-bg"></div>
+  <div class="bilaf-content">
+    <div class="bilaf-main">
+    <div class="section-label" data-en="Car scrapping">Bílaförgun</div>
     <div class="rule"></div>
-    <h2 class="big-heading">Nýjustu fréttir</h2>
-  </div>
-  <div class="news-grid">
-    <div class="news-card">
-      <div class="news-date">05. APRÍL 2023</div>
-      <h3>Fura annast niðurrif Drafnarslipps</h3>
-      <p>Fura var falin sú heiðurleg verk að annast niðurrif hins sögulega Drafnarslipps. Allt efni flokkað og endurnýtt.</p>
-      <a href="#" class="news-link">Lesa meira →</a>
+    <h2 class="section-title" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
+    <p class="bilaf-intro" data-en="We accept all vehicles for scrapping. You can now complete the deregistration with electronic ID, and vehicle owners are paid 30,000 ISK in return from the State Treasury (Fjársýsla ríkisins).">Við tökum á móti öllum ökutækjum í förgun. Nú er hægt að klára afskráningu með rafrænum skilríkjum og eigendur ökutækja fá í staðinn greiddar 30.000 kr. frá Fjársýslu ríkisins.</p>
+    <a href="https://innskra.island.is/app/login/sim?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3D%40island.is%252Fweb%26redirect_uri%3Dhttps%253A%252F%252Fisland.is%252Fbff%252Fcallbacks%252Flogin%26response_type%3Dcode%26response_mode%3Dquery%26scope%3Dopenid%2520profile%2520offline_access%2520api_resource.scope%2520%40island.is%252Fapplications%253Aread%2520%40island.is%252Fapplications%253Awrite%2520%40island.is%252Fuser-profile%253Aread%2520%40island.is%252Fuser-profile%253Awrite%2520%40island.is%252Fauth%252Factor-delegations%2520%40island.is%252Fauth%252Fdelegations%253Awrite%2520%40island.is%252Fauth%252Fconsents%2520%40skra.is%252Findividuals%2520%40island.is%252Fdocuments%2520%40island.is%252Fendorsements%2520%40admin.island.is%252Fpetitions%2520%40island.is%252Fassets%252Fip%2520%40island.is%252Fassets%2520%40island.is%252Feducation%2520%40island.is%252Feducation-license%2520%40island.is%252Ffinance%253Aoverview%2520%40island.is%252Ffinance%252Fsalary%2520%40island.is%252Ffinance%252Fschedule%253Aread%2520%40island.is%252Ffinance%252Floans%2520%40island.is%252Finternal%2520%40island.is%252Finternal%253Aprocuring%2520%40island.is%252Fme%253Adetails%2520%40island.is%252Flaw-and-order%2520%40island.is%252Flicenses%2520%40island.is%252Flicenses%253Averify%2520%40island.is%252Fcompany%2520%40island.is%252Fships%2520%40island.is%252Fvehicles%2520%40island.is%252Fwork-machines%2520%40island.is%252Fhealth%2520%40island.is%252Fhealth%252Fpayments%2520%40island.is%252Fhealth%252Fmedicines%2520%40island.is%252Fhealth%252Fassistive-devices-and-nutrition%2520%40island.is%252Fhealth%252Ftherapies%2520%40island.is%252Fhealth%252Fhealthcare%2520%40island.is%252Fhealth%252Frights-status%2520%40island.is%252Fhealth%252Fdentists%2520%40island.is%252Fhealth%252Forgan-donation%2520%40island.is%252Fhealth%252Fvaccinations%2520%40island.is%252Fsignature-collection%2520%40island.is%252Fapplications%252Furvinnslusjodur%2520%40island.is%252Fapplications%252Forkusjodur%2520%40island.is%252Ffishing-license%2520%40island.is%252Fapplications%252Ficeland-health%2520%40island.is%252Fapplications%252Fsamgongustofa-vehicles%2520%40island.is%252Fapplications%252Fsocial-insurance-administration%2520%40island.is%252Fapplications%252Frsk%2520%40island.is%252Fapplications%252Fver%2520%40island.is%252Fapplications%252Fver%253Aaccidents%2520%40island.is%252Fapplications%252Fmms%2520%40island.is%252Fapplications%252Fdmr%253Astjornartidindi%2520%40island.is%252Fapplications%252Fhms%2520%40samband.is%252Ffinancial-aid%252Fapplicant%2520%40samband.is%252Ffinancial-aid%253Aread%2520%40samband.is%252Ffinancial-aid%253Awrite%26state%3De2c4fd0c-26d9-4936-8b1c-705569bd9230%26code_challenge%3DhonN3GwJOZ97fDERUnvqIdsz36v9kqU9xsMwSv_y3J4%26code_challenge_method%3DS256" target="_blank" class="btn-blue" data-en="Apply for a vehicle deregistration certificate →">Sækja um skilavottorð ökutækja →</a>
+    <details class="bilaf-more">
+      <summary data-en="More information">Nánari upplýsingar</summary>
+      <div class="bilaf-more-body">
+        <p data-en="⚠️ We do not accept electric or hybrid cars unless the battery has been removed from the vehicle.">⚠️ Við tökum ekki við rafmagns- eða hybrid-bílum nema búið sé að fjarlægja batteríið úr bílnum.</p>
+        <p data-en="Please mark the car for deregistration before it is scrapped or collected.">Vinsamlegast merkið bílinn til afskráningar áður en honum er fargað eða hann sóttur.</p>
+      </div>
+    </details>
     </div>
-    <div class="news-card">
-      <div class="news-date">20. JANÚAR 2023</div>
-      <h3>Hertar flokkunarreglur</h3>
-      <p>Nýjar og hertar flokkunarreglur tóku gildi í ársbyrjun. Við höfum uppfært ferli okkar til að uppfylla allar kröfur.</p>
-      <a href="#" class="news-link">Lesa meira →</a>
-    </div>
-    <div class="news-card">
-      <div class="news-date">18. JANÚAR 2023</div>
-      <h3>Niðurrif skipa og báta</h3>
-      <p>Fura býður nú upp á faglega þjónustu við niðurrif skipa og báta. Hafðu samband til að fá nánari upplýsingar.</p>
-      <a href="#" class="news-link">Lesa meira →</a>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="hafdu-samband">
-  <div class="contact">
-    <div class="contact-photo">
-      <img src="https://assets.mango.is/media/8/cvYg0pAODDDtwtRj.jpeg" alt="Hafa samband" />
-    </div>
-    <div class="contact-text">
-      <p class="label">Hafðu samband</p>
-      <div class="rule"></div>
-      <h2 class="big-heading">Við erum hér fyrir þig</h2>
-      <p class="body-text">
-        Ertu með málma til sölu? Þarftu gám? Hafðu samband og við finnum lausnina sem hentar þér best.
-      </p>
-      <div class="contact-info">
-        <div class="contact-item">
-          <h4>Staðsetning</h4>
-          <p>Hringhellu 3, 221 Hafnarfjörður, Ísland</p>
-        </div>
-        <div class="contact-item">
-          <h4>Sími</h4>
-          <a href="tel:5653557">565 3557</a>
-        </div>
-        <div class="contact-item">
-          <h4>Netfang</h4>
-          <a href="mailto:fura@fura.is">fura@fura.is</a>
-        </div>
-        <div class="contact-item">
-          <h4>Opnunartímar</h4>
-          <div class="hours-grid">
-            <div class="hours-row">
-              <span class="day">Mánudagur – Föstudagur</span>
-              <span class="time">08:00 – 20:00</span>
-            </div>
-            <div class="hours-row">
-              <span class="day">Laugardagur</span>
-              <span class="time">08:00 – 14:00</span>
-            </div>
-            <div class="hours-row">
-              <span class="day">Sunnudagur</span>
-              <span class="time">Lokað</span>
-            </div>
-          </div>
+    <div class="bilaf-side">
+      <div class="bilaf-contact">
+        <span class="bilaf-contact-label" data-en="Questions about your vehicle? Get in touch:">Spurningar um ökutækið þitt? Hafðu samband:</span>
+        <div class="bilaf-contact-links">
+          <a href="tel:5653557"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>565 3557</a>
+          <a href="mailto:afgreidsla@fura.is"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>afgreidsla@fura.is</a>
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- WHY FURA -->
+<section class="why" id="afhverju-fura">
+  <div class="section-label" data-en="Why Fura?">Afhverju Fura?</div>
+  <div class="rule"></div>
+  <div class="why-grid">
+    <div class="why-card">
+      <h3 data-en="Great, fast service">Góð og hröð þjónusta</h3>
+      <p data-en="We pride ourselves on personal service and quick responses — we provide containers or bins, collect the metal, and handle the transport from start to finish.">Við leggjum okkur fram um persónulega þjónustu og skjót viðbrögð — útvegum gáma eða kör, sækjum málmana og sjáum um flutninginn frá upphafi til enda.</p>
+    </div>
+    <div class="why-card">
+      <h3 data-en="Environmentally friendly">Umhverfisvæn</h3>
+      <p data-en="Recycling metals saves raw materials and energy and reduces waste. We make sure all material is handled correctly, in line with Icelandic and European regulations.">Endurvinnsla málma sparar hráefni, orku og minnkar sóun. Við tryggjum að allt efni fari í réttan farveg í samræmi við íslenskar og evrópskar reglur.</p>
+      <a href="umhverfisstefna.html" class="why-card-link" data-en="Read more about Fura's environmental policy →">Lesa meira um umhverfisstefnu Furu →</a>
+    </div>
+    <div class="why-card">
+      <h3 data-en="Experience">Reynsla</h3>
+      <p data-en="Over 40 years of experience in metal recycling in Iceland, all the way back to 1981 — we know the material and the process inside out.">Yfir 40 ára reynsla í málmendurvinnslu á Íslandi, allt frá árinu 1981 — við þekkjum hráefnið og ferlið út og inn.</p>
+    </div>
+  </div>
+  <a href="um-furu.html" class="why-link-main" data-en="More about us →">Meira um okkur →</a>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo">
-    <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+<footer id="samband">
+  <div class="footer-locations">
+
+    <!-- Hafnarfjörður -->
+    <div class="location-card" id="hafnarfjordur">
+      <div class="location-name">Hafnarfjörður</div>
+      <div class="location-grid">
+        <div class="footer-col">
+          <h4 data-en="Contact">Samband</h4>
+          <ul>
+            <li><a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank">Hringhellu 3, 221 Hafnarfjörður</a></li>
+            <li><a href="tel:5653557">565 3557</a></li>
+            <li><a href="mailto:fura@fura.is">fura@fura.is</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 data-en="Opening hours">Opnunartímar</h4>
+          <div class="hours-row"><span data-en="Mon–Fri">Mán–Fös</span><span>08:00 – 20:00</span></div>
+          <div class="hours-row"><span data-en="Saturday">Laugardagur</span><span>08:00 – 14:00</span></div>
+          <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
+        </div>
+      </div>
+      <a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
+    </div>
+
+    <!-- Akureyri -->
+    <div class="location-card" id="akureyri">
+      <div class="location-name">Akureyri</div>
+      <div class="location-grid">
+        <div class="footer-col">
+          <h4 data-en="Contact">Samband</h4>
+          <ul>
+            <li><a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank">Óseyri 3, 600 Akureyri</a></li>
+            <li><a href="tel:8944238">894 4238</a></li>
+            <li><a href="mailto:gunnar@fura.is">gunnar@fura.is</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 data-en="Opening hours">Opnunartímar</h4>
+          <div class="hours-row"><span data-en="Mon–Fri">Mán–Fös</span><span>08:00 – 17:00</span></div>
+          <div class="hours-row"><span data-en="Saturday">Laugardagur</span><span data-en="Closed">Lokað</span></div>
+          <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
+        </div>
+      </div>
+      <a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
+    </div>
+
   </div>
-  <p>© 2024 Fura Málmendurvinnsla · Kt. 621281-1009 · Hringhellu 3, 221 Hafnarfjörður</p>
-  <ul class="footer-links">
-    <li><a href="#um-furu">Um Furu</a></li>
-    <li><a href="#thjonusta">Þjónusta</a></li>
-    <li><a href="#hafdu-samband">Samband</a></li>
-  </ul>
+  <div class="footer-bottom">
+    <p>© 2025 Fura Málmendurvinnsla · Kt. 621281-1009</p>
+    <a href="https://www.instagram.com/fura.ehf/" target="_blank" rel="noopener" class="footer-ig" aria-label="Fylgdu Furu á Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+      <span data-en="Follow us">Fylgdu okkur</span>
+    </a>
+    <a href="https://fura.is" target="_blank">fura.is</a>
+  </div>
 </footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+  // Close the mobile drawer if the window grows past the mobile breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1100) menu.classList.remove('open');
+  });
+
+  // ── Language switch (IS default, EN optional) ──
+  (function () {
+    const KEY = 'fura-lang';
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.is === undefined) el.dataset.is = el.innerHTML;
+        el.innerHTML = (lang === 'en') ? el.dataset.en : el.dataset.is;
+      });
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang));
+      try { localStorage.setItem(KEY, lang); } catch (e) {}
+    }
+    let saved = 'is';
+    try { saved = localStorage.getItem(KEY) || 'is'; } catch (e) {}
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.addEventListener('click', () => apply(b.dataset.lang)));
+    apply(saved);
+  })();
+
+  // Metals picker
+  const metalChips = document.querySelectorAll('.chip[data-target]');
+  const metalPanes = document.querySelectorAll('.metal-pane');
+  metalChips.forEach(chip => chip.addEventListener('click', () => {
+    const target = chip.dataset.target;
+    metalChips.forEach(c => c.classList.toggle('active', c === chip));
+    metalPanes.forEach(p => p.classList.toggle('active', p.dataset.pane === target));
+  }));
+
+  // On mobile/touch devices just show all steps immediately — no tap required
+  const stepCards = Array.from(document.querySelectorAll('.steps .step'));
+  const isMobile = window.matchMedia('(max-width: 900px)').matches || ('ontouchstart' in window);
+
+  if (isMobile) {
+    stepCards.forEach(c => c.classList.add('play'));
+  } else if ('IntersectionObserver' in window && stepCards.length) {
+    const STEP_GAP_MS = 3500;
+    const queue = [];
+    const queued = new WeakSet();
+    let running = false;
+
+    const runNext = () => {
+      if (running || queue.length === 0) return;
+      running = true;
+      queue.sort((a, b) => stepCards.indexOf(a) - stepCards.indexOf(b));
+      const card = queue.shift();
+      card.classList.add('play');
+      setTimeout(() => { running = false; runNext(); }, STEP_GAP_MS);
+    };
+
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const t = entry.target;
+        if (entry.isIntersecting && !queued.has(t)) {
+          queued.add(t);
+          queue.push(t);
+          stepObserver.unobserve(t);
+          runNext();
+        }
+      });
+    }, { rootMargin: '-20% 0px -20% 0px', threshold: 0.01 });
+
+    stepCards.forEach(c => stepObserver.observe(c));
+  } else {
+    stepCards.forEach(c => c.classList.add('play'));
+  }
+
+  // Scroll-spy: underline the nav link for the section currently in view
+  const spyLinks = Array.from(document.querySelectorAll('.nav-links a[data-spy]'));
+  const spySections = spyLinks
+    .map(a => document.getElementById(a.dataset.spy))
+    .filter(Boolean);
+
+  if (spySections.length) {
+    const setActive = (id) => {
+      spyLinks.forEach(a => a.classList.toggle('active', a.dataset.spy === id));
+    };
+
+    const onScroll = () => {
+      const marker = window.innerHeight * 0.35;
+      let current = null;
+      for (const sec of spySections) {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= marker && rect.bottom > marker) { current = sec.id; break; }
+      }
+      setActive(current);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  }
+</script>
 
 </body>
 </html>

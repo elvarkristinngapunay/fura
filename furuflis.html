@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furuflís — Fura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:   #1a1512;
+      --warm:  #f5f0ea;
+      --mid:   #e8e0d5;
+      --blue:  #1a50a2;
+      --green: #2f5233;
+      --muted: #6b6259;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--warm);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(20,16,13,0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 80px;
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { height: 28px; filter: brightness(0) invert(1); }
+    .nav-logo-sub {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding-left: 0.75rem;
+      border-left: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      position: relative;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: #fff; }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: #5b8def;
+      border-radius: 2px;
+    }
+    .nav-links .nav-ff.active::after { left: 0; right: 0; bottom: -2px; }
+    .nav-links .nav-ff { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .nav-links .nav-ff img {
+      height: 36px;
+      display: block;
+      filter: invert(1);
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+    .nav-links .nav-ff:hover img, .nav-links .nav-ff.active img { opacity: 1; }
+    .nav-cta {
+      background: var(--blue) !important;
+      color: #fff !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+    }
+
+    /* Right cluster + language switch */
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .lang-switch { display: flex; gap: 4px; flex-shrink: 0; }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .lang-btn:hover { opacity: 1; }
+    .lang-btn.active { opacity: 1; border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.12); }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; }
+
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      background: rgba(20,16,13,0.98);
+      padding: 1rem 5% 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-mobile a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile .nav-cta { margin-top: 0.5rem; text-align: center; border-radius: 4px; border-bottom: none !important; }
+    .nav-mobile.open { display: flex; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 5% 5%;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://assets.mango.is/media/8/LccEr1NB7Ysl8WoW.jpeg');
+      background-size: cover;
+      background-position: center 40%;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,21,18,0.85) 0%, rgba(26,21,18,0.3) 60%, rgba(26,21,18,0.1) 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-logo {
+      height: 70px;
+      display: block;
+      filter: invert(1);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 540px;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.25rem 5% 5rem;
+    }
+
+    .back-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .back-top:hover { text-decoration: underline; }
+
+    .page-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0;
+    }
+
+    .content h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .content h2:first-child { margin-top: 0; }
+
+    .rule {
+      width: 40px; height: 3px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .content p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    /* ── PRODUCT PHOTO ── */
+    .product-photo {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 2.5rem 0;
+    }
+
+    .product-photo img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── PRODUCT PICKER ── */
+    .product-picker {
+      margin: 2rem 0 3rem;
+    }
+
+    .picker-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .picker-tab {
+      flex: 1;
+      min-width: 130px;
+      background: var(--white);
+      border: 1.5px solid var(--mid);
+      color: var(--ink);
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .picker-tab:hover { border-color: var(--blue); color: var(--blue); }
+
+    .picker-tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .picker-display {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      align-items: stretch;
+      background: var(--white);
+      border: 1px solid var(--mid);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .picker-image {
+      min-height: 260px;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.3s;
+    }
+
+    .picker-text {
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .picker-text h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .picker-text p {
+      font-size: 0.92rem !important;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 !important;
+    }
+
+    .picker-pane { display: none; }
+    .picker-pane.active { display: contents; }
+
+    /* ── CONTACT BLOCK ── */
+    .ff-contact {
+      margin-top: 3rem;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 12px;
+      padding: 2.25rem 2rem;
+    }
+
+    .ff-contact h2 {
+      color: #fff !important;
+      margin-top: 0 !important;
+    }
+
+    .ff-contact .rule { background: #fff; }
+
+    .ff-contact p {
+      color: rgba(255,255,255,0.7) !important;
+      margin-bottom: 1.5rem !important;
+    }
+
+    .ff-contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .ff-contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.7rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .ff-contact-link:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .ff-contact-link svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .ff-fb {
+      background: #1877f2 !important;
+      border-color: #1877f2 !important;
+    }
+    .ff-fb:hover { background: #0c5cc5 !important; border-color: #0c5cc5 !important; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+    /* On desktop the drawer must never show, even if left open on mobile */
+    @media (min-width: 1101px) {
+      .nav-mobile { display: none !important; }
+    }
+
+    @media (max-width: 700px) {
+      .picker-display { grid-template-columns: 1fr; }
+      .picker-image { min-height: 220px; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-top { padding: 0 4%; }
+      .nav-logo img { height: auto; max-width: 200px; }
+      .nav-right { gap: 0.85rem; }
+    }
+    @media (max-width: 380px) {
+      .nav-logo img { max-width: 150px; }
+      .nav-right { gap: 0.55rem; }
+      .lang-btn { padding: 2px 5px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a href="index.html" class="nav-logo">
+      <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura" />
+      
+    </a>
+    <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="thjonusta.html" data-en="Services">Þjónusta</a></li>
+      <li><a href="index.html#malmar" data-en="Metals">Málmar</a></li>
+      <li><a href="index.html#bilaforgun" data-en="Car scrapping">Bílaförgun</a></li>
+      <li><a href="um-furu.html" data-en="About Fura">Um Furu</a></li>
+      <li><a href="furuflis.html" class="nav-ff active"><img src="furuflis-logo.png" alt="Furuflís" /></a></li>
+      <li><a href="index.html#samband" class="nav-cta" data-en="Contact">Hafa samband</a></li>
+    </ul>
+    <div class="lang-switch" role="group" aria-label="Tungumál / Language">
+      <button type="button" class="lang-btn" data-lang="is" aria-label="Íslenska" title="Íslenska">🇮🇸</button>
+      <button type="button" class="lang-btn" data-lang="en" aria-label="English" title="English">🇬🇧</button>
+    </div>
+    <button class="nav-burger" id="burger" aria-label="Valmynd">
+      <span></span><span></span><span></span>
+    </button>
+    </div>
+  </div>
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="thjonusta.html" data-en="Services">Þjónusta</a>
+    <a href="index.html#malmar" data-en="Metals">Málmar</a>
+    <a href="index.html#bilaforgun" data-en="Car scrapping">Bílaförgun</a>
+    <a href="um-furu.html" data-en="About Fura">Um Furu</a>
+    <a href="furuflis.html" class="nav-ff-mobile"><img src="furuflis-logo.png" alt="Furuflís" /></a>
+    <a href="index.html#samband" class="nav-cta" data-en="Contact">Hafa samband</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <img src="furuflis-logo.png" alt="Furuflís" class="hero-logo" />
+    <p class="hero-sub" data-en="Environmentally friendly bedding made from Icelandic wood shavings">Umhverfisvænt undirlag úr íslenskum tréspæni</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+  <a href="index.html" class="back-top" data-en="← Back">← Til baka</a>
+  <h1 class="page-title">Furuflís</h1>
+  <div class="rule"></div>
+  <p data-en="Fura began producing wood shavings from timber waste in the autumn of 2013, and production has grown steadily alongside investments in more advanced equipment. Fura's shavings plant is today the most productive of its kind in the country, with a capacity of up to 5,000 tonnes per year. Furuflís is environmentally friendly bedding made from recycled timber sourced domestically. It is well suited for riding arenas, stables and livestock housing. Once the material has been used, the manure from the stables becomes fertiliser for the forests of the future — closing the cycle.">Fura hóf framleiðslu á tréspæni úr timburúrgangi haustið 2013 og hefur framleiðslan aukist jafnt og þétt samhliða fjárfestingum í fullkomnari búnaði. Spænaverksmiðja Furu er í dag sú afkastamesta sinnar tegundar á landinu með allt að 5.000 tonna framleiðslugetu á ári. Furuflís er umhverfisvænt undirlag úr endurunnu timbri sem fellur til innanlands. Það hentar vel í reiðhallir, hesthús og gripahús. Þegar efnið hefur verið notað verður haugurinn úr hesthúsunum að áburði fyrir skóga framtíðarinnar og þannig lokast hringrásin.</p>
+
+  <h2 data-en="Three product types">Þrjár vörutegundir</h2>
+  <div class="rule"></div>
+  <p data-en="Fura produces and sells three product types under the Furuflís brand, all intended as bedding for livestock. Click each type to see more.">Fura framleiðir og selur þrjár vörutegundir undir vörumerkinu Furuflís, allar ætlaðar sem undirlag fyrir búpening. Smelltu á hverja tegund til að sjá nánar.</p>
+
+  <div class="product-picker">
+    <div class="picker-tabs">
+      <button class="picker-tab active" data-target="furuflis">Furuflís</button>
+      <button class="picker-tab" data-target="golfflis">Gólfflís</button>
+      <button class="picker-tab" data-target="furukogglar">Furukögglar</button>
+    </div>
+
+    <div class="picker-display">
+      <div class="picker-pane active" data-pane="furuflis">
+        <div class="picker-image" style="background-image: url('https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg');"></div>
+        <div class="picker-text">
+          <h3>Furuflís</h3>
+          <p data-en="Finely shredded wood shavings. A popular bedding for stable stalls — retains moisture well and is soft under hooves.">Fínni kurlaður tréspænir. Vinsælt undirlag í stíur hesthúsa — heldur vel raka og er mjúkt undir hófa.</p>
+        </div>
+      </div>
+
+      <div class="picker-pane" data-pane="golfflis">
+        <div class="picker-image" style="background-image: url('https://assets.mango.is/media/8/gsfGXcziFkw3VhME.jpeg');"></div>
+        <div class="picker-text">
+          <h3>Gólfflís</h3>
+          <p data-en="Shredded wood shavings with a coarser texture, designed especially as a surface for riding arenas used for training, shows and competitions.">Kurlaður tréspænir í grófari áferð, sérstaklega ætlaður sem undirlag í reiðhöllum þar sem stundaðar eru tamningar, sýningar og keppnir.</p>
+        </div>
+      </div>
+
+      <div class="picker-pane" data-pane="furukogglar">
+        <div class="picker-image" style="background-image: url('furukogglar.jpg');"></div>
+        <div class="picker-text">
+          <h3>Furukögglar</h3>
+          <p data-en="Made from the wood dust produced when milling the timber. They ensure full use of the raw material and reduce dust. Widely used in stable stalls.">Framleiddir úr viðarryki sem fylgir mölun timbursins. Tryggja fullnýtingu hráefnis og draga úr rykmengun. Mikið notaðir í stíur hesthúsa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 data-en="Bedding for stalls and riding arenas">Undirlag í stíum og reiðhöllum</h2>
+  <div class="rule"></div>
+  <p data-en="Furuflís products are by far the most popular among horse owners, who use Furuflís and Furukögglar in their stable stalls and Gólfflís as a surface in riding arenas. The floors of the riding arenas are then often covered with Gólfflís from Fura.">Afurðir Furuflísar eru lang vinsælastar meðal hestafólks sem nýtir Furuflís og Furuköggla í stíur hesthúsa sinna og Gólfflís sem undirlag í reiðhöllum. Eru gólf reiðhallanna þá gjarnan þakin Gólfflísinni frá Furu.</p>
+
+
+  <!-- CONTACT -->
+  <div class="ff-contact">
+    <h2 data-en="More information">Nánari upplýsingar</h2>
+    <div class="rule"></div>
+    <p data-en="More information about Furuflís, price categories and retailers around the country can be found on Facebook. You can also send enquiries to our email or call us.">Nánari upplýsingar um Furuflís, verðflokka og söluaðila víða um land eru að finna á Facebook. Einnig má senda fyrirspurnir á netfangið okkar eða hringja.</p>
+
+    <div class="ff-contact-grid">
+      <a href="https://www.facebook.com/furuflisin" target="_blank" class="ff-contact-link ff-fb">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg>
+        <span data-en="Furuflís on Facebook">Furuflís á Facebook</span>
+      </a>
+      <a href="mailto:fura@fura.is" class="ff-contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        fura@fura.is
+      </a>
+      <a href="tel:5653557" class="ff-contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        565 3557
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+  // Close the mobile drawer if the window grows past the mobile breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1100) menu.classList.remove('open');
+  });
+
+  // ── Language switch (IS default, EN optional) ──
+  (function () {
+    const KEY = 'fura-lang';
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.is === undefined) el.dataset.is = el.innerHTML;
+        el.innerHTML = (lang === 'en') ? el.dataset.en : el.dataset.is;
+      });
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang));
+      try { localStorage.setItem(KEY, lang); } catch (e) {}
+    }
+    let saved = 'is';
+    try { saved = localStorage.getItem(KEY) || 'is'; } catch (e) {}
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.addEventListener('click', () => apply(b.dataset.lang)));
+    apply(saved);
+  })();
+
+  // Product picker tabs
+  const tabs = document.querySelectorAll('.picker-tab');
+  const panes = document.querySelectorAll('.picker-pane');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.target;
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      panes.forEach(p => p.classList.toggle('active', p.dataset.pane === target));
+    });
+  });
+</script>
+
+</body>
+</html>
