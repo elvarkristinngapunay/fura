@@ -128,6 +128,19 @@
       border-color: rgba(255,255,255,0.55);
       background: rgba(255,255,255,0.12);
     }
+    .lang-switch .lang-btn { display: flex; align-items: center; padding: 4px 5px; }
+    .lang-flag { height: 16px; width: auto; display: block; border-radius: 2px; }
+    /* Language dropdown */
+    .lang-switch { position: relative; }
+    .lang-current { display: flex; align-items: center; gap: 5px; background: transparent; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 4px 7px; cursor: pointer; }
+    .lang-current:hover { border-color: rgba(255,255,255,0.5); }
+    .lang-caret { color: #fff; font-size: 0.6rem; line-height: 1; opacity: 0.75; transition: transform 0.2s; }
+    .lang-current[aria-expanded="true"] .lang-caret { transform: rotate(180deg); }
+    .lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: rgba(20,16,13,0.98); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 4px; display: none; flex-direction: column; gap: 2px; min-width: 150px; z-index: 200; box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+    .lang-menu.open { display: flex; }
+    .lang-option { display: flex; align-items: center; gap: 9px; background: transparent; border: none; color: rgba(255,255,255,0.8); font-family: inherit; font-size: 0.9rem; font-weight: 500; padding: 7px 9px; border-radius: 5px; cursor: pointer; width: 100%; text-align: left; }
+    .lang-option:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .lang-option.active { color: #fff; }
 
     /* Hamburger */
     .nav-burger {
@@ -1059,6 +1072,9 @@
     .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
     .footer-bottom > a { color: rgba(255,255,255,0.3); text-decoration: none; }
     .footer-bottom > a:hover { color: rgba(255,255,255,0.65); }
+    .footer-bottom-info { display: flex; align-items: center; gap: 1.4rem; }
+    .footer-bottom-info a { color: rgba(255,255,255,0.3); text-decoration: none; }
+    .footer-bottom-info a:hover { color: rgba(255,255,255,0.65); }
 
     .footer-ig {
       display: inline-flex;
@@ -1121,6 +1137,28 @@
       .nav-right { gap: 0.55rem; }
       .lang-btn { padding: 2px 5px; font-size: 0.95rem; }
     }
+    /* Cookie consent banner */
+    .cookie-banner {
+      position: fixed; left: 50%; bottom: 18px;
+      transform: translateX(-50%) translateY(140%);
+      width: calc(100% - 32px); max-width: 560px; z-index: 300;
+      background: rgba(20,16,13,0.98); color: #fff;
+      border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+      padding: 1.1rem 1.25rem; box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem;
+      opacity: 0; pointer-events: none;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+    .cookie-banner.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+    .cookie-text { flex: 1 1 260px; font-size: 0.86rem; line-height: 1.55; color: rgba(255,255,255,0.8); margin: 0; }
+    .cookie-text a { color: #7aaee8; text-decoration: none; }
+    .cookie-text a:hover { text-decoration: underline; }
+    .cookie-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .cookie-btn { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid transparent; transition: opacity 0.2s, background 0.2s, border-color 0.2s, color 0.2s; }
+    .cookie-accept { background: var(--blue); color: #fff; }
+    .cookie-accept:hover { opacity: 0.88; }
+    .cookie-decline { background: transparent; color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.25); }
+    .cookie-decline:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
   </style>
 </head>
 <body>
@@ -1140,9 +1178,15 @@
       <li><a href="furuflis.html" class="nav-ff"><img src="furuflis-logo.png" alt="Furuflís" /></a></li>
       <li><a href="#samband" class="nav-cta" data-en="Contact">Hafa samband</a></li>
     </ul>
-    <div class="lang-switch" role="group" aria-label="Tungumál / Language">
-      <button type="button" class="lang-btn" data-lang="is" aria-label="Íslenska" title="Íslenska">🇮🇸</button>
-      <button type="button" class="lang-btn" data-lang="en" aria-label="English" title="English">🇬🇧</button>
+    <div class="lang-switch" aria-label="Tungumál / Language">
+      <button type="button" class="lang-current" aria-haspopup="true" aria-expanded="false" aria-label="Velja tungumál / Select language">
+        <img src="flag-is.png" alt="" class="lang-flag">
+        <span class="lang-caret">▾</span>
+      </button>
+      <div class="lang-menu">
+        <button type="button" class="lang-option" data-lang="is"><img src="flag-is.png" alt="" class="lang-flag"><span>Íslenska</span></button>
+        <button type="button" class="lang-option" data-lang="en"><img src="flag-en.png" alt="" class="lang-flag"><span>English</span></button>
+      </div>
     </div>
     <button class="nav-burger" id="burger" aria-label="Valmynd">
       <span></span><span></span><span></span>
@@ -1364,7 +1408,7 @@
       <div class="metal-image" style="background-image: url('kopar.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Copper">Kopar</h3>
-        <p data-en="Copper is widely used in electrical systems, cables and connectors. Its reddish colour makes it easy to tell apart from most other metals.">Kopar er mikið notaður í rafkerfum, kaplum og tengingum. Rauðleitur litur hans gerir hann auðþekkjanlegan frá flestum öðrum málmum.</p>
+        <p data-en="Copper is widely used in electrical systems, cables and connectors. Its reddish colour makes it easy to tell apart from most other metals.">Kopar er mikið notaður í rafkerfum, köplum og tengingum. Rauðleitur litur hans gerir hann auðþekkjanlegan frá flestum öðrum málmum.</p>
       </div>
     </div>
     <div class="metal-pane" data-pane="messing">
@@ -1375,7 +1419,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="bly">
-      <div class="metal-image" style="background-image: url('bly.jpg?v=2');"></div>
+      <div class="metal-image" style="background-image: url('bly.jpg?v=3');"></div>
       <div class="metal-text">
         <h3 data-en="Lead">Blý</h3>
         <p data-en="A heavy metal that must be handled correctly. We accept lead and take care of safe, environmentally friendly recycling.">Þungur málmur sem þarf að meðhöndla rétt. Við tökum við blýi og sjáum um örugga og umhverfisvæna endurvinnslu.</p>
@@ -1421,7 +1465,7 @@
     <div class="rule"></div>
     <h2 class="section-title" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
     <p class="bilaf-intro" data-en="We accept all vehicles for scrapping. You can now complete the deregistration with electronic ID, and vehicle owners are paid 30,000 ISK in return from the State Treasury (Fjársýsla ríkisins).">Við tökum á móti öllum ökutækjum í förgun. Nú er hægt að klára afskráningu með rafrænum skilríkjum og eigendur ökutækja fá í staðinn greiddar 30.000 kr. frá Fjársýslu ríkisins.</p>
-    <a href="https://innskra.island.is/app/login/sim?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3D%40island.is%252Fweb%26redirect_uri%3Dhttps%253A%252F%252Fisland.is%252Fbff%252Fcallbacks%252Flogin%26response_type%3Dcode%26response_mode%3Dquery%26scope%3Dopenid%2520profile%2520offline_access%2520api_resource.scope%2520%40island.is%252Fapplications%253Aread%2520%40island.is%252Fapplications%253Awrite%2520%40island.is%252Fuser-profile%253Aread%2520%40island.is%252Fuser-profile%253Awrite%2520%40island.is%252Fauth%252Factor-delegations%2520%40island.is%252Fauth%252Fdelegations%253Awrite%2520%40island.is%252Fauth%252Fconsents%2520%40skra.is%252Findividuals%2520%40island.is%252Fdocuments%2520%40island.is%252Fendorsements%2520%40admin.island.is%252Fpetitions%2520%40island.is%252Fassets%252Fip%2520%40island.is%252Fassets%2520%40island.is%252Feducation%2520%40island.is%252Feducation-license%2520%40island.is%252Ffinance%253Aoverview%2520%40island.is%252Ffinance%252Fsalary%2520%40island.is%252Ffinance%252Fschedule%253Aread%2520%40island.is%252Ffinance%252Floans%2520%40island.is%252Finternal%2520%40island.is%252Finternal%253Aprocuring%2520%40island.is%252Fme%253Adetails%2520%40island.is%252Flaw-and-order%2520%40island.is%252Flicenses%2520%40island.is%252Flicenses%253Averify%2520%40island.is%252Fcompany%2520%40island.is%252Fships%2520%40island.is%252Fvehicles%2520%40island.is%252Fwork-machines%2520%40island.is%252Fhealth%2520%40island.is%252Fhealth%252Fpayments%2520%40island.is%252Fhealth%252Fmedicines%2520%40island.is%252Fhealth%252Fassistive-devices-and-nutrition%2520%40island.is%252Fhealth%252Ftherapies%2520%40island.is%252Fhealth%252Fhealthcare%2520%40island.is%252Fhealth%252Frights-status%2520%40island.is%252Fhealth%252Fdentists%2520%40island.is%252Fhealth%252Forgan-donation%2520%40island.is%252Fhealth%252Fvaccinations%2520%40island.is%252Fsignature-collection%2520%40island.is%252Fapplications%252Furvinnslusjodur%2520%40island.is%252Fapplications%252Forkusjodur%2520%40island.is%252Ffishing-license%2520%40island.is%252Fapplications%252Ficeland-health%2520%40island.is%252Fapplications%252Fsamgongustofa-vehicles%2520%40island.is%252Fapplications%252Fsocial-insurance-administration%2520%40island.is%252Fapplications%252Frsk%2520%40island.is%252Fapplications%252Fver%2520%40island.is%252Fapplications%252Fver%253Aaccidents%2520%40island.is%252Fapplications%252Fmms%2520%40island.is%252Fapplications%252Fdmr%253Astjornartidindi%2520%40island.is%252Fapplications%252Fhms%2520%40samband.is%252Ffinancial-aid%252Fapplicant%2520%40samband.is%252Ffinancial-aid%253Aread%2520%40samband.is%252Ffinancial-aid%253Awrite%26state%3De2c4fd0c-26d9-4936-8b1c-705569bd9230%26code_challenge%3DhonN3GwJOZ97fDERUnvqIdsz36v9kqU9xsMwSv_y3J4%26code_challenge_method%3DS256" target="_blank" class="btn-blue" data-en="Apply for a vehicle deregistration certificate →">Sækja um skilavottorð ökutækja →</a>
+    <a href="https://island.is/umsoknir/skilavottord/e2a1d19b-4b95-4085-8922-dbbb70632b98" target="_blank" class="btn-blue" data-en="Apply for a vehicle deregistration certificate →">Sækja um skilavottorð ökutækja →</a>
     <details class="bilaf-more">
       <summary data-en="More information">Nánari upplýsingar</summary>
       <div class="bilaf-more-body">
@@ -1514,7 +1558,6 @@
 
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Fura Málmendurvinnsla · Kt. 621281-1009</p>
     <a href="https://www.instagram.com/fura.ehf/" target="_blank" rel="noopener" class="footer-ig" aria-label="Fylgdu Furu á Instagram">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -1523,9 +1566,21 @@
       </svg>
       <span data-en="Follow us">Fylgdu okkur</span>
     </a>
-    <a href="https://fura.is" target="_blank">fura.is</a>
+    <div class="footer-bottom-info">
+      <p>© 2025 Fura Málmendurvinnsla · Kt. 621281-1009</p>
+      <a href="https://fura.is" target="_blank">fura.is</a>
+    </div>
   </div>
 </footer>
+
+<!-- COOKIE CONSENT -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Vafrakökur / Cookies">
+  <p class="cookie-text" data-en="We use cookies to measure traffic and improve the website. You can accept or decline.">Við notum vafrakökur (cookies) til að mæla umferð og bæta vefinn. Þú getur samþykkt eða hafnað.</p>
+  <div class="cookie-actions">
+    <button type="button" class="cookie-btn cookie-decline" id="cookieDecline" data-en="Decline">Hafna</button>
+    <button type="button" class="cookie-btn cookie-accept" id="cookieAccept" data-en="Accept">Samþykkja</button>
+  </div>
+</div>
 
 <script>
   const burger = document.getElementById('burger');
@@ -1537,23 +1592,45 @@
     if (window.innerWidth > 1100) menu.classList.remove('open');
   });
 
-  // ── Language switch (IS default, EN optional) ──
+  // ── Language switch dropdown (IS default, EN optional) ──
   (function () {
     const KEY = 'fura-lang';
+    const sw = document.querySelector('.lang-switch');
+    if (!sw) return;
+    const toggle = sw.querySelector('.lang-current');
+    const menu = sw.querySelector('.lang-menu');
+    const flag = toggle.querySelector('.lang-flag');
+    const flagSrc = { is: 'flag-is.png', en: 'flag-en.png' };
     function apply(lang) {
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-en]').forEach(el => {
         if (el.dataset.is === undefined) el.dataset.is = el.innerHTML;
         el.innerHTML = (lang === 'en') ? el.dataset.en : el.dataset.is;
       });
-      document.querySelectorAll('.lang-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.lang === lang));
-      try { localStorage.setItem(KEY, lang); } catch (e) {}
+      flag.src = flagSrc[lang] || flagSrc.is;
+      sw.querySelectorAll('.lang-option').forEach(o =>
+        o.classList.toggle('active', o.dataset.lang === lang));
+      try { sessionStorage.setItem(KEY, lang); } catch (e) {}
     }
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    sw.querySelectorAll('.lang-option').forEach(o =>
+      o.addEventListener('click', () => {
+        apply(o.dataset.lang);
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }));
+    document.addEventListener('click', (e) => {
+      if (!sw.contains(e.target)) {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
     let saved = 'is';
-    try { saved = localStorage.getItem(KEY) || 'is'; } catch (e) {}
-    document.querySelectorAll('.lang-btn').forEach(b =>
-      b.addEventListener('click', () => apply(b.dataset.lang)));
+    try { saved = sessionStorage.getItem(KEY) || 'is'; } catch (e) {}
     apply(saved);
   })();
 
@@ -1629,6 +1706,44 @@
     window.addEventListener('resize', onScroll);
     onScroll();
   }
+
+  // ── Cookie consent + Google Analytics (loads ONLY after acceptance) ──
+  (function () {
+    const KEY = 'fura-cookie-consent';
+    const GA_ID = 'G-XXXXXXXXXX'; // ← settu Google Analytics auðkennið hér þegar vefurinn er kominn á netið
+    const banner = document.getElementById('cookieBanner');
+    function loadGA() {
+      if (window.__furaGA || !GA_ID || GA_ID.indexOf('XXXX') !== -1) return;
+      window.__furaGA = true;
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+    }
+    let consent = null;
+    try { consent = localStorage.getItem(KEY); } catch (e) {}
+    if (consent === 'accepted') {
+      loadGA();
+    } else if (!consent && banner) {
+      setTimeout(() => banner.classList.add('show'), 600);
+    }
+    const accept = document.getElementById('cookieAccept');
+    const decline = document.getElementById('cookieDecline');
+    if (accept) accept.addEventListener('click', () => {
+      try { localStorage.setItem(KEY, 'accepted'); } catch (e) {}
+      if (banner) banner.classList.remove('show');
+      loadGA();
+    });
+    if (decline) decline.addEventListener('click', () => {
+      try { localStorage.setItem(KEY, 'declined'); } catch (e) {}
+      if (banner) banner.classList.remove('show');
+    });
+  })();
 </script>
 
 </body>
