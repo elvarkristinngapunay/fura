@@ -4,9 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fura — Málmendurvinnsla</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2-variations'),
+           url('fonts/Switzer-Variable.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Scroll-reveal: rules slide in from the left when they enter the viewport */
+    .rule { transform: scaleX(0); transform-origin: left center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+    .rule.in-view { transform: scaleX(1); }
+    @media (prefers-reduced-motion: reduce) {
+      .rule { transform: none !important; transition: none !important; }
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -22,7 +34,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       background: var(--warm);
       color: var(--ink);
       line-height: 1.6;
@@ -60,10 +72,11 @@
     .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
     .nav-links a {
       position: relative;
-      color: rgba(255,255,255,0.85);
+      color: #fff;
       text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: #fff; }
@@ -266,14 +279,61 @@
     .how {
       background: var(--blue);
       padding: 5rem 5%;
+      text-align: center;
     }
+    .how .rule { width: 40px; height: 3px; background: #fff; border-radius: 2px; margin: 0.75rem auto 1.75rem; transform-origin: center; }
+    .how-intro {
+      max-width: 760px;
+      margin: 3.5rem auto 1.75rem;
+      color: #fff;
+      font-size: 1.55rem;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: -0.005em;
+    }
+    .how-intro::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: #fff;
+      margin: 0 auto 1.25rem;
+      opacity: 0.6;
+    }
+    .how-intro b {
+      font-weight: 700;
+    }
+    .how-intro a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+      transition: opacity 0.2s;
+    }
+    .how-intro a:hover { opacity: 0.75; }
+    @media (max-width: 700px) {
+      .how-intro { font-size: 1.2rem; }
+    }
+    .btn-outline-light {
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      border: 1.5px solid #fff;
+      padding: 0.6rem 1.3rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline-light:hover { background: #fff; color: var(--blue); }
 
     .section-label {
-      font-size: 0.72rem;
+      font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.85);
       margin-bottom: 0.6rem;
     }
 
@@ -1019,17 +1079,17 @@
     }
 
     .location-card {
-      padding: 3rem 5%;
+      padding: 2.25rem 5%;
       border-right: 1px solid rgba(255,255,255,0.07);
     }
     .location-card:last-child { border-right: none; }
 
     .location-name {
-      font-size: 1.1rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.8rem;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
@@ -1040,37 +1100,76 @@
     }
 
     .footer-col h4 {
-      font-size: 0.65rem;
+      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 0.75rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.7rem;
     }
 
     .footer-col ul { list-style: none; }
-    .footer-col li { font-size: 0.82rem; margin-bottom: 0.35rem; color: rgba(255,255,255,0.6); }
-    .footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .footer-col li { font-size: 1rem; margin-bottom: 0.3rem; color: rgba(255,255,255,0.85); }
+    .footer-col a { color: rgba(255,255,255,0.85); text-decoration: none; }
     .footer-col a:hover { color: #fff; }
+
+    /* Phone + email — extra prominence */
+    .footer-col a[href^="tel:"],
+    .footer-col a[href^="mailto:"] {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.01em;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .footer-col a[href^="tel:"]::before,
+    .footer-col a[href^="mailto:"]::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 18px;
+      background: var(--blue);
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+      flex-shrink: 0;
+    }
+    .footer-col a[href^="tel:"]::before {
+      mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'/></svg>");
+      -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'/></svg>");
+    }
+    .footer-col a[href^="mailto:"]::before {
+      mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22,6 12,13 2,6'/></svg>");
+      -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22,6 12,13 2,6'/></svg>");
+    }
+    .footer-col a[href^="tel:"]:hover,
+    .footer-col a[href^="mailto:"]:hover { color: var(--blue); }
+    .footer-col li:has(a[href^="tel:"]),
+    .footer-col li:has(a[href^="mailto:"]) { margin-bottom: 0.55rem; }
 
     .hours-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
-      margin-bottom: 0.3rem;
-      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: rgba(255,255,255,0.85);
     }
-    .hours-row span:last-child { font-weight: 600; color: rgba(255,255,255,0.8); }
+    .hours-row span:last-child { font-weight: 600; color: #fff; }
 
     .footer-map-btn {
       display: inline-block;
-      margin-top: 1.25rem;
+      margin-top: 1rem;
       padding: 0.5rem 1.1rem;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
       border-radius: 4px;
-      color: rgba(255,255,255,0.65);
-      font-size: 0.8rem;
-      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      font-weight: 600;
       text-decoration: none;
       transition: all 0.2s;
     }
@@ -1232,8 +1331,9 @@
 
 
 <!-- HOW IT WORKS -->
-<section class="how" id="um-furu">
-  <div class="section-label" data-en="How does it work?">Hvernig virkar þetta?</div>
+<section class="how" id="thjonusta">
+  <div class="section-label" data-en="Services">Þjónusta</div>
+  <div class="rule"></div>
   <h2 class="section-title" data-en="Three simple steps">Þrjú einföld skref</h2>
   <div class="steps">
 
@@ -1372,19 +1472,9 @@
     </div>
 
   </div>
-</section>
 
-<!-- SERVICES -->
-<section class="services" id="thjonusta">
-  <div class="services-wrap">
-    <div class="services-text">
-      <div class="section-label" data-en="Services">Þjónusta</div>
-      <div class="rule"></div>
-      <h2 class="section-title" data-en="We handle the process<br>from start to finish">Við sjáum um ferlið<br>frá upphafi til enda</h2>
-      <p class="services-intro" data-en="Fura offers customers in the capital area, Akureyri and the surrounding regions a range of container sizes for metal recycling.">Fura býður viðskiptavinum á höfuðborgarsvæðinu, Akureyri og nágrenni upp á mismunandi gámastærðir fyrir málma til endurvinnslu.</p>
-      <a href="thjonusta.html" class="btn-outline" data-en="Learn more →">Nánari upplýsingar →</a>
-    </div>
-  </div>
+  <p class="how-intro" data-en='Fura offers customers in the <b>capital area</b>, <b>Akureyri</b> and the surrounding regions a range of <b>container sizes</b> for metal recycling.'>Fura býður viðskiptavinum á <b>höfuðborgarsvæðinu</b>, <b>Akureyri</b> og nágrenni upp á <b>mismunandi gámastærðir</b> fyrir málma til endurvinnslu.</p>
+  <a href="thjonusta.html" class="btn-outline-light" data-en="Learn more →">Nánari upplýsingar →</a>
 </section>
 
 <!-- METALS -->
@@ -1535,9 +1625,9 @@
         <div class="footer-col">
           <h4 data-en="Contact">Samband</h4>
           <ul>
-            <li><a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank">Hringhellu 3, 221 Hafnarfjörður</a></li>
             <li><a href="tel:5653557">565 3557</a></li>
             <li><a href="mailto:fura@fura.is">fura@fura.is</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank">Hringhellu 3, 221 Hafnarfjörður</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1557,9 +1647,9 @@
         <div class="footer-col">
           <h4 data-en="Contact">Samband</h4>
           <ul>
-            <li><a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank">Óseyri 3, 600 Akureyri</a></li>
             <li><a href="tel:8944238">894 4238</a></li>
             <li><a href="mailto:gunnar@fura.is">gunnar@fura.is</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank">Óseyri 3, 600 Akureyri</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1759,6 +1849,25 @@
       try { localStorage.setItem(KEY, 'declined'); } catch (e) {}
       if (banner) banner.classList.remove('show');
     });
+  })();
+
+  // ── Reveal section rules on scroll ──
+  (function () {
+    const rules = document.querySelectorAll(".rule");
+    if (!rules.length) return;
+    if (!("IntersectionObserver" in window)) {
+      rules.forEach(r => r.classList.add("in-view"));
+      return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in-view");
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.6, rootMargin: "0px 0px -10% 0px" });
+    rules.forEach(r => obs.observe(r));
   })();
 </script>
 

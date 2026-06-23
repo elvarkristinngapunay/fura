@@ -4,9 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Þjónusta — Fura</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2-variations'),
+           url('fonts/Switzer-Variable.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    /* Scroll-reveal: rules slide in from the left when they enter the viewport */
+    .rule { transform: scaleX(0); transform-origin: left center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+    .rule.in-view { transform: scaleX(1); }
+    @media (prefers-reduced-motion: reduce) {
+      .rule { transform: none !important; transition: none !important; }
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -22,7 +34,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       background: var(--warm);
       color: var(--ink);
       line-height: 1.6;
@@ -60,10 +72,11 @@
     .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
     .nav-links a {
       position: relative;
-      color: rgba(255,255,255,0.85);
+      color: #fff;
       text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: #fff; }
@@ -201,6 +214,13 @@
       max-width: 640px;
       margin-bottom: 3rem;
     }
+    .page-intro a {
+      color: var(--blue);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .page-intro a:hover { opacity: 0.75; }
 
     .rule {
       width: 40px; height: 3px;
@@ -485,7 +505,7 @@
   <a href="index.html" class="back-top" data-en="← Back">← Til baka</a>
   <h1 class="page-title" data-en="Services">Þjónusta</h1>
   <div class="rule"></div>
-  <p class="page-intro" data-en="Fura offers customers in the capital area, Akureyri and the surrounding regions a range of container sizes for metal recycling.">Fura býður viðskiptavinum á höfuðborgarsvæðinu, Akureyri og nágrenni upp á mismunandi gámastærðir fyrir málma til endurvinnslu.</p>
+  <p class="page-intro" data-en='Fura offers customers in the capital area, Akureyri and the surrounding regions a range of container sizes for metal recycling. We accept all valuable metals — more information about metals can be found <a href="index.html#malmar">here</a>. Container sizes and truck deliveries depend on the size of each project and are assessed by Fura&rsquo;s specialists.'>Fura býður viðskiptavinum á höfuðborgarsvæðinu, Akureyri og nágrenni upp á mismunandi gámastærðir fyrir málma til endurvinnslu. Við tökum á móti öllum góðmálmum — nánari upplýsingar um málma má finna <a href="index.html#malmar">hér</a>. Gámastærðir sem bílasendingar fara eftir stærð verkefna og verða metin eftir sérfræðingum Furu.</p>
 
   <div class="location-blocks">
 
@@ -627,6 +647,25 @@
       try { localStorage.setItem(KEY, 'declined'); } catch (e) {}
       if (banner) banner.classList.remove('show');
     });
+  })();
+
+  // ── Reveal section rules on scroll ──
+  (function () {
+    const rules = document.querySelectorAll(".rule");
+    if (!rules.length) return;
+    if (!("IntersectionObserver" in window)) {
+      rules.forEach(r => r.classList.add("in-view"));
+      return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in-view");
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.6, rootMargin: "0px 0px -10% 0px" });
+    rules.forEach(r => obs.observe(r));
   })();
 </script>
 
