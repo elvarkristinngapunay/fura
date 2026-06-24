@@ -277,56 +277,58 @@
 
     /* ── HOW IT WORKS ── */
     .how {
-      background: var(--blue);
-      padding: 5rem 5%;
-      text-align: center;
-    }
-    .how .rule { width: 40px; height: 3px; background: #fff; border-radius: 2px; margin: 0.75rem auto 1.75rem; transform-origin: center; }
-    .how-intro {
-      max-width: 760px;
-      margin: 3.5rem auto 1.75rem;
-      color: #fff;
-      font-size: 1.55rem;
-      font-weight: 500;
-      line-height: 1.4;
-      letter-spacing: -0.005em;
-    }
-    .how-intro::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 2px;
       background: #fff;
-      margin: 0 auto 1.25rem;
-      opacity: 0.6;
+      padding: 5rem 5%;
     }
-    .how-intro b {
-      font-weight: 700;
+    .how .section-label { color: var(--blue); }
+    .how .rule { width: 40px; height: 3px; background: var(--blue); border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+    .how-cta {
+      margin-top: 4.5rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(20,16,13,0.08);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
     }
-    .how-intro a {
-      color: #fff;
-      font-weight: 700;
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
-      transition: opacity 0.2s;
+    .how-intro {
+      max-width: 680px;
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.65rem;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: -0.018em;
     }
-    .how-intro a:hover { opacity: 0.75; }
-    @media (max-width: 700px) {
-      .how-intro { font-size: 1.2rem; }
-    }
-    .btn-outline-light {
-      display: inline-block;
-      font-size: 0.95rem;
+    .btn-premium {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.875rem;
       font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: #fff;
-      border: 1.5px solid #fff;
-      padding: 0.6rem 1.3rem;
-      border-radius: 4px;
+      background: var(--ink);
+      padding: 1.1rem 2.2rem;
+      border-radius: 2px;
       text-decoration: none;
-      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+      transition: background 0.25s ease, transform 0.25s ease;
     }
-    .btn-outline-light:hover { background: #fff; color: var(--blue); }
+    .btn-premium::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.25s ease;
+    }
+    .btn-premium:hover { background: var(--blue); }
+    .btn-premium:hover::after { width: 32px; }
+    @media (max-width: 800px) {
+      .how-cta { grid-template-columns: 1fr; gap: 2rem; }
+      .how-intro { font-size: 1.3rem; }
+    }
 
     .section-label {
       font-size: 0.95rem;
@@ -337,7 +339,7 @@
       margin-bottom: 0.6rem;
     }
 
-    .how .section-title { color: #fff; }
+    .how .section-title { color: var(--ink); }
 
     .section-title {
       font-size: clamp(1.9rem, 4vw, 2.8rem);
@@ -354,9 +356,105 @@
       margin-top: 2.5rem;
     }
 
+    /* ── TVÆR LEIÐIR ── */
+    .paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .path-card {
+      position: relative;
+      padding: 2.5rem 2.25rem 2.75rem;
+      border-radius: 4px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .path-card.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .path-card.path-pickup {
+      background: var(--blue);
+      color: #fff;
+      transition-delay: 0s;
+    }
+    .path-card.path-dropoff {
+      background: var(--ink);
+      color: #fff;
+      transition-delay: 0.12s;
+    }
+    .path-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 0.85rem;
+    }
+    .path-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .path-body {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.88);
+      max-width: 28em;
+      margin-bottom: 1.25rem;
+    }
+    .path-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(255,255,255,0.45);
+      transition: text-decoration-color 0.2s, opacity 0.2s;
+    }
+    .path-link:hover { text-decoration-color: #fff; }
+    .path-icon {
+      position: absolute;
+      right: 1.5rem;
+      bottom: 1.25rem;
+      width: 64px;
+      height: 64px;
+      color: rgba(255,255,255,0.18);
+      pointer-events: none;
+    }
+    .path-help {
+      text-align: center;
+      margin: 2.25rem auto 0;
+      max-width: 540px;
+      font-size: 1rem;
+      color: var(--ink);
+      opacity: 0.78;
+    }
+    .path-help a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    @media (max-width: 800px) {
+      .paths { grid-template-columns: 1fr; }
+      .path-card { padding: 2rem 1.5rem 2.25rem; }
+      .path-title { font-size: 1.5rem; }
+      .path-card.path-dropoff { transition-delay: 0s; }
+    }
+
     .step {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
+      background: var(--blue);
+      border: 1px solid var(--blue);
       border-radius: 12px;
       padding: 1.25rem 1.75rem;
       display: flex;
@@ -720,7 +818,12 @@
       background-image: url('bilaforgun.jpg');
       background-size: cover;
       background-position: center;
-      opacity: 0.28;
+      opacity: 0.55;
+    }
+    .bilaf-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(20,16,13,0.85) 0%, rgba(20,16,13,0.5) 40%, rgba(20,16,13,0) 75%);
     }
 
     .bilaf-content {
@@ -1112,6 +1215,13 @@
     .footer-col li { font-size: 1rem; margin-bottom: 0.3rem; color: rgba(255,255,255,0.85); }
     .footer-col a { color: rgba(255,255,255,0.85); text-decoration: none; }
     .footer-col a:hover { color: #fff; }
+    .footer-col a.addr-link {
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.35);
+      text-underline-offset: 4px;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .footer-col a.addr-link:hover { color: #fff; text-decoration-color: #fff; }
 
     /* Phone + email — extra prominence */
     .footer-col a[href^="tel:"],
@@ -1330,151 +1440,45 @@
 </section>
 
 
-<!-- HOW IT WORKS -->
+<!-- THJONUSTA: TVÆR LEIÐIR -->
 <section class="how" id="thjonusta">
   <div class="section-label" data-en="Services">Þjónusta</div>
   <div class="rule"></div>
-  <h2 class="section-title" data-en="Three simple steps">Þrjú einföld skref</h2>
-  <div class="steps">
+  <h2 class="section-title" data-en="Two ways to recycle with Fura">Tvær leiðir til endurvinnslu</h2>
+  <div class="paths">
 
-    <div class="step step-1">
-      <div class="step-text">
-        <div class="step-num">1</div>
-        <h3 data-en="We bring a container">Við komum með ílát</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Forklift body (faces right) -->
-          <g class="anim-forklift">
-            <!-- Cabin / driver -->
-            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
-            <path d="M 8 26 L 14 26"/>
-            <!-- Chassis -->
-            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
-            <!-- Mast -->
-            <path d="M 22 14 L 22 52"/>
-            <path d="M 26 14 L 26 52"/>
-            <path d="M 22 14 L 26 14"/>
-            <!-- Wheels -->
-            <circle cx="5" cy="52" r="4"/>
-            <circle cx="17" cy="52" r="4"/>
-          </g>
-          <!-- Forks (lift independently) -->
-          <g class="anim-forks">
-            <path d="M 26 40 L 54 40"/>
-            <path d="M 26 48 L 54 48"/>
-            <path d="M 26 40 L 26 48"/>
-          </g>
-          <!-- Tub (final position on ground) -->
-          <g class="anim-tub-1">
-            <path d="M 32 40 L 35 60 L 71 60 L 74 40 Z"/>
-            <path d="M 35 44 L 71 44"/>
-          </g>
-        </svg>
-      </div>
+    <div class="path-card path-pickup">
+      <div class="path-eyebrow" data-en="Larger projects">Stærri verkefni</div>
+      <h3 class="path-title" data-en="We come to you">Við sækjum til þín</h3>
+      <p class="path-body" data-en="We deliver a container or tub, you fill it, and we collect it when it's full. The size depends on the project — call us and we'll find what fits.">Við komum með gám eða kar, þú fyllir, og við sækjum þegar fullt er. Stærð veltur á verkefninu — hringdu og við finnum það sem hentar.</p>
+      <svg class="path-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M 4 38 L 4 46 L 56 46 L 56 38"/>
+        <path d="M 4 38 L 12 22 L 38 22 L 46 38"/>
+        <path d="M 46 38 L 56 38 L 56 30 L 46 30"/>
+        <circle cx="16" cy="48" r="4"/>
+        <circle cx="44" cy="48" r="4"/>
+        <path d="M 22 28 L 30 28"/>
+      </svg>
     </div>
 
-    <div class="step step-2">
-      <div class="step-text">
-        <div class="step-num">2</div>
-        <h3 data-en="You fill it with metal">Þú setur málmana í ílátið</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Tub sitting on the ground (already delivered in step 1) -->
-          <g class="anim-tub-fill">
-            <path d="M 43 40 L 46 60 L 84 60 L 87 40 Z"/>
-            <path d="M 46 44 L 84 44"/>
-          </g>
-          <!-- Metal chunk 1 (lands bottom-left) -->
-          <g class="anim-chunk-1">
-            <path d="M 50 49 L 49 58 L 61 59 L 62 50 Z"/>
-            <path d="M 52 52 L 59 53"/>
-          </g>
-          <!-- Metal chunk 2 (lands bottom-right) -->
-          <g class="anim-chunk-2">
-            <path d="M 66 51 L 65 59 L 80 58 L 81 50 Z"/>
-            <path d="M 69 53 L 77 53"/>
-          </g>
-          <!-- Metal chunk 3 (lands on top, sticking out above rim) -->
-          <g class="anim-chunk-3">
-            <path d="M 57 31 L 55 42 L 76 42 L 74 30 Z"/>
-            <path d="M 60 35 L 70 35"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-
-    <div class="step step-3">
-      <div class="step-text">
-        <div class="step-num">3</div>
-        <h3 data-en="We collect, weigh and assess">Við sækjum, vigtum og metum</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Scale (right side) -->
-          <g class="anim-scale">
-            <path d="M 66 50 L 104 50"/>
-            <path d="M 72 50 L 72 60"/>
-            <path d="M 98 50 L 98 60"/>
-            <path d="M 104 50 L 104 26"/>
-            <rect x="98" y="18" width="30" height="14" rx="2"/>
-          </g>
-          <!-- Forklift body (faces right) -->
-          <g class="anim-forklift-2">
-            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
-            <path d="M 8 26 L 14 26"/>
-            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
-            <path d="M 22 14 L 22 52"/>
-            <path d="M 26 14 L 26 52"/>
-            <path d="M 22 14 L 26 14"/>
-            <circle cx="5" cy="52" r="4"/>
-            <circle cx="17" cy="52" r="4"/>
-          </g>
-          <!-- Forks (lift independently) -->
-          <g class="anim-forks-2">
-            <path d="M 26 40 L 58 40"/>
-            <path d="M 26 48 L 58 48"/>
-            <path d="M 26 40 L 26 48"/>
-          </g>
-          <!-- Full tub (chunks sticking out); animates from ground left onto scale -->
-          <g class="anim-tub-2">
-            <path d="M 68 30 L 71 50 L 99 50 L 102 30 Z"/>
-            <path d="M 71 34 L 99 34"/>
-            <!-- chunks inside -->
-            <path d="M 74 39 L 73 48 L 83 49 L 84 40 Z"/>
-            <path d="M 76 42 L 82 42"/>
-            <path d="M 86 40 L 85 49 L 97 48 L 98 39 Z"/>
-            <path d="M 88 42 L 95 42"/>
-            <!-- chunk sticking out above the rim -->
-            <path d="M 78 21 L 76 32 L 94 32 L 92 20 Z"/>
-            <path d="M 81 25 L 90 25"/>
-          </g>
-          <!-- Weight display numbers -->
-          <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="9" font-weight="700" fill="#fff" stroke="none">
-            <text x="113" y="28" text-anchor="middle" class="w w-a">0 kg</text>
-            <text x="113" y="28" text-anchor="middle" class="w w-b">50 kg</text>
-            <text x="113" y="28" text-anchor="middle" class="w w-c">100 kg</text>
-          </g>
-          <!-- Wallet (appears bottom-left after weighing) -->
-          <g class="anim-wallet">
-            <rect x="2" y="34" width="42" height="26" rx="2.5"/>
-            <path d="M 2 42 L 44 42"/>
-            <circle cx="36" cy="53" r="2"/>
-          </g>
-          <!-- Bill popping out of wallet -->
-          <g class="anim-bill">
-            <rect x="9" y="22" width="28" height="14" rx="1.5"/>
-            <text x="23" y="33" text-anchor="middle" font-size="9" font-weight="700" font-family="ui-monospace, Menlo, monospace" fill="#fff" stroke="none">kr</text>
-          </g>
-        </svg>
-      </div>
+    <div class="path-card path-dropoff">
+      <div class="path-eyebrow" data-en="Smaller amounts">Minni magn</div>
+      <h3 class="path-title" data-en="Come to us">Komdu til okkar</h3>
+      <p class="path-body" data-en="Bring the metals to our station in Hafnarfjörður or in Akureyri. We weigh and pay on the spot.">Komdu með málmana á stöðina okkar í Hafnarfirði eða á Akureyri. Við vigtum og greiðum á staðnum.</p>
+      <a href="#samband" class="path-link" data-en="See locations →">Sjá staðsetningar →</a>
+      <svg class="path-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M 30 6 C 22 6 16 12 16 20 C 16 30 30 50 30 50 C 30 50 44 30 44 20 C 44 12 38 6 30 6 Z"/>
+        <circle cx="30" cy="20" r="5"/>
+      </svg>
     </div>
 
   </div>
 
-  <p class="how-intro" data-en='Fura offers customers in the <b>capital area</b>, <b>Akureyri</b> and the surrounding regions a range of <b>container sizes</b> for metal recycling.'>Fura býður viðskiptavinum á <b>höfuðborgarsvæðinu</b>, <b>Akureyri</b> og nágrenni upp á <b>mismunandi gámastærðir</b> fyrir málma til endurvinnslu.</p>
-  <a href="thjonusta.html" class="btn-outline-light" data-en="Learn more →">Nánari upplýsingar →</a>
+  <p class="path-help" data-en='Not sure which suits you? Call us at <a href="tel:5653557">565 3557</a> and we&rsquo;ll help.'>Ekki viss hvort hentar? Hringdu í <a href="tel:5653557">565 3557</a> og við aðstoðum.</p>
+
+  <div class="how-cta">
+    <a href="thjonusta.html" class="btn-premium" data-en="Learn more">Nánari upplýsingar</a>
+  </div>
 </section>
 
 <!-- METALS -->
@@ -1627,7 +1631,7 @@
           <ul>
             <li><a href="tel:5653557">565 3557</a></li>
             <li><a href="mailto:fura@fura.is">fura@fura.is</a></li>
-            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank">Hringhellu 3, 221 Hafnarfjörður</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Hringhellu+3,+221+Hafnarfjörður" target="_blank" class="addr-link">Hringhellu 3, 221 Hafnarfjörður →</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1637,7 +1641,6 @@
           <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
         </div>
       </div>
-      <a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
     </div>
 
     <!-- Akureyri -->
@@ -1649,7 +1652,7 @@
           <ul>
             <li><a href="tel:8944238">894 4238</a></li>
             <li><a href="mailto:gunnar@fura.is">gunnar@fura.is</a></li>
-            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank">Óseyri 3, 600 Akureyri</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Óseyri+3,+600+Akureyri" target="_blank" class="addr-link">Óseyri 3, 600 Akureyri →</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1659,7 +1662,6 @@
           <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
         </div>
       </div>
-      <a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
     </div>
 
   </div>
@@ -1851,12 +1853,12 @@
     });
   })();
 
-  // ── Reveal section rules on scroll ──
+  // ── Reveal section rules + path cards on scroll ──
   (function () {
-    const rules = document.querySelectorAll(".rule");
-    if (!rules.length) return;
+    const reveals = document.querySelectorAll(".rule, .path-card");
+    if (!reveals.length) return;
     if (!("IntersectionObserver" in window)) {
-      rules.forEach(r => r.classList.add("in-view"));
+      reveals.forEach(r => r.classList.add("in-view"));
       return;
     }
     const obs = new IntersectionObserver((entries) => {
@@ -1866,8 +1868,8 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.6, rootMargin: "0px 0px -10% 0px" });
-    rules.forEach(r => obs.observe(r));
+    }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+    reveals.forEach(r => obs.observe(r));
   })();
 </script>
 
