@@ -433,17 +433,88 @@
     }
     .path-help {
       text-align: center;
-      margin: 2.25rem auto 0;
-      max-width: 540px;
-      font-size: 1rem;
+      margin: 4rem auto 2.25rem;
+      max-width: 640px;
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: -0.015em;
       color: var(--ink);
-      opacity: 0.78;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    .path-help a {
-      color: var(--blue);
+    .path-help.in-view { opacity: 1; transform: translateY(0); }
+
+    .path-contacts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s;
+    }
+    .path-contacts.in-view { opacity: 1; transform: translateY(0); }
+    .path-contact {
+      background: #fafaf8;
+      border: 1px solid rgba(20,16,13,0.07);
+      border-radius: 10px;
+      padding: 1.75rem 1.85rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .path-contact:hover {
+      border-color: rgba(20,16,13,0.18);
+      box-shadow: 0 8px 24px rgba(20,16,13,0.06);
+      transform: translateY(-2px);
+    }
+    .path-contact-label {
+      font-size: 1.15rem;
       font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(20,16,13,0.08);
+    }
+    .path-contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .path-contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s, transform 0.2s;
+      width: fit-content;
+    }
+    .path-contact-links a:first-child {
+      font-size: 1.65rem;
+      letter-spacing: -0.015em;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .path-contact-links a:last-child {
+      font-size: 1.02rem;
+      color: rgba(20,16,13,0.7);
+    }
+    .path-contact-links a:hover { color: var(--blue); transform: translateX(2px); }
+    .path-contact-links a svg {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--blue);
+      opacity: 0.85;
+    }
+    .path-contact-links a:first-child svg { width: 22px; height: 22px; }
+    @media (max-width: 700px) {
+      .path-contacts { grid-template-columns: 1fr; }
+      .path-help { font-size: 1.2rem; }
+      .path-contact-links a:first-child { font-size: 1.4rem; }
     }
     @media (max-width: 800px) {
       .paths { grid-template-columns: 1fr; }
@@ -667,15 +738,30 @@
     }
 
     .metal-display {
+      position: relative;
+      display: grid;
+      grid-template-areas: "pane";
+      margin: 2rem auto 0;
+      max-width: 880px;
+    }
+    .metal-summary { display: none; }
+    .metal-pane {
+      grid-area: pane;
       display: grid;
       grid-template-columns: 1.05fr 1fr;
       align-items: stretch;
       background: var(--white);
       border-radius: 16px;
       overflow: hidden;
-      margin: 2rem auto 0;
-      max-width: 880px;
       box-shadow: 0 18px 40px -22px rgba(20,16,13,0.35), 0 2px 0 rgba(20,16,13,0.04);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+    .metal-pane.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 2;
     }
     .metal-image {
       aspect-ratio: 4 / 3;
@@ -736,19 +822,82 @@
       line-height: 1.75;
       margin: 1.1rem 0 0;
     }
-    .metal-pane { display: none; }
-    .metal-pane.active { display: contents; }
     @media (max-width: 960px) {
-      .metal-display { grid-template-columns: 1fr; max-width: 560px; }
+      .metal-pane { grid-template-columns: 1fr; }
+      .metal-display { max-width: 560px; }
       .metal-image { aspect-ratio: 16 / 10; }
       .metal-text { padding: 1.75rem 1.5rem; }
       .metal-text h3 { font-size: 1.7rem; }
       .metal-text p { font-size: 1rem; }
     }
-    @media (max-width: 420px) {
-      .metal-text { padding: 1.4rem 1.15rem; }
-      .metal-text h3 { font-size: 1.45rem; }
-      .metal-text p { font-size: 0.95rem; line-height: 1.65; }
+    @media (max-width: 700px) {
+      .metals-chips { display: none; }
+      .metal-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        max-width: 100%;
+      }
+      .metal-pane {
+        grid-area: auto;
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        background: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(20,16,13,0.06);
+        transition: box-shadow 0.25s ease;
+      }
+      .metal-pane.active { box-shadow: 0 8px 22px rgba(20,16,13,0.1); }
+      .metal-summary {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1.1rem 1.3rem;
+        font-family: inherit;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--ink);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .metal-summary::after {
+        content: '+';
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--blue);
+        line-height: 1;
+        transition: transform 0.25s ease;
+      }
+      .metal-pane.active .metal-summary { color: var(--blue); }
+      .metal-pane.active .metal-summary::after {
+        content: '−';
+        transform: rotate(0deg);
+      }
+      .metal-pane:not(.active) .metal-image,
+      .metal-pane:not(.active) .metal-text { display: none; }
+      .metal-pane.active .metal-image {
+        aspect-ratio: 16 / 10;
+        animation: metal-fade 0.4s ease;
+      }
+      .metal-pane.active .metal-text {
+        padding: 0 1.3rem 1.4rem;
+        background: #fff;
+        animation: metal-fade 0.4s ease 0.05s both;
+      }
+      .metal-pane.active .metal-text::before { display: none; }
+      .metal-pane.active .metal-text h3 { font-size: 1.35rem; }
+      .metal-pane.active .metal-text h3::after { width: 32px; margin-top: 0.6rem; }
+      .metal-pane.active .metal-text p { font-size: 0.95rem; line-height: 1.65; margin-top: 0.85rem; }
+    }
+    @keyframes metal-fade {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ── SERVICES ── */
@@ -1396,7 +1545,7 @@
     </a>
     <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="thjonusta.html" data-spy="thjonusta" data-en="Services">Þjónusta</a></li>
+      <li><a href="#thjonusta" data-spy="thjonusta" data-en="Services">Þjónusta</a></li>
       <li><a href="#malmar" data-spy="malmar" data-en="Metals">Málmar</a></li>
       <li><a href="#bilaforgun" data-spy="bilaforgun" data-en="Car scrapping">Bílaförgun</a></li>
       <li><a href="um-furu.html" data-en="About Fura">Um Furu</a></li>
@@ -1420,7 +1569,7 @@
   </div>
   <!-- Mobile drawer -->
   <div class="nav-mobile" id="mobile-menu">
-    <a href="thjonusta.html" data-en="Services">Þjónusta</a>
+    <a href="#thjonusta" data-en="Services">Þjónusta</a>
     <a href="#malmar" data-en="Metals">Málmar</a>
     <a href="#bilaforgun" data-en="Car scrapping">Bílaförgun</a>
     <a href="um-furu.html" data-en="About Fura">Um Furu</a>
@@ -1450,7 +1599,7 @@
     <div class="path-card path-pickup">
       <div class="path-eyebrow" data-en="Larger projects">Stærri verkefni</div>
       <h3 class="path-title" data-en="We come to you">Við sækjum til þín</h3>
-      <p class="path-body" data-en="We deliver a container or tub, you fill it, and we collect it when it's full. The size depends on the project — call us and we'll find what fits.">Við komum með gám eða kar, þú fyllir, og við sækjum þegar fullt er. Stærð veltur á verkefninu — hringdu og við finnum það sem hentar.</p>
+      <p class="path-body" data-en="We bring a container that fits your project. Get in touch and we'll find the right one.">Við komum með ílát sem hentar verkefninu þínu. Hafðu samband og við finnum það sem hentar.</p>
       <svg class="path-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M 4 38 L 4 46 L 56 46 L 56 38"/>
         <path d="M 4 38 L 12 22 L 38 22 L 46 38"/>
@@ -1462,7 +1611,7 @@
     </div>
 
     <div class="path-card path-dropoff">
-      <div class="path-eyebrow" data-en="Smaller amounts">Minni magn</div>
+      <div class="path-eyebrow" data-en="Smaller amounts">Minna magn</div>
       <h3 class="path-title" data-en="Come to us">Komdu til okkar</h3>
       <p class="path-body" data-en="Bring the metals to our station in Hafnarfjörður or in Akureyri. We weigh and pay on the spot.">Komdu með málmana á stöðina okkar í Hafnarfirði eða á Akureyri. Við vigtum og greiðum á staðnum.</p>
       <a href="#samband" class="path-link" data-en="See locations →">Sjá staðsetningar →</a>
@@ -1474,10 +1623,23 @@
 
   </div>
 
-  <p class="path-help" data-en='Not sure which suits you? Call us at <a href="tel:5653557">565 3557</a> and we&rsquo;ll help.'>Ekki viss hvort hentar? Hringdu í <a href="tel:5653557">565 3557</a> og við aðstoðum.</p>
+  <p class="path-help" data-en="Not sure which suits you? Get in touch:">Ekki viss hvort hentar? Hafðu samband:</p>
 
-  <div class="how-cta">
-    <a href="thjonusta.html" class="btn-premium" data-en="Learn more">Nánari upplýsingar</a>
+  <div class="path-contacts">
+    <div class="path-contact">
+      <div class="path-contact-label" data-en="Capital Region">Höfuðborgarsvæðið</div>
+      <div class="path-contact-links">
+        <a href="tel:5653557"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>565 3557</a>
+        <a href="mailto:fura@fura.is"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>fura@fura.is</a>
+      </div>
+    </div>
+    <div class="path-contact">
+      <div class="path-contact-label">Akureyri</div>
+      <div class="path-contact-links">
+        <a href="tel:8944238"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>894 4238</a>
+        <a href="mailto:gunnar@fura.is"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>gunnar@fura.is</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1501,6 +1663,7 @@
 
   <div class="metal-display">
     <div class="metal-pane active" data-pane="jarn">
+      <button type="button" class="metal-summary" data-en="Iron" aria-expanded="false">Járn</button>
       <div class="metal-image" style="background-image: url('jarn.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Iron">Járn</h3>
@@ -1508,6 +1671,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="al">
+      <button type="button" class="metal-summary" data-en="Aluminium" aria-expanded="false">Ál</button>
       <div class="metal-image" style="background-image: url('al.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Aluminium">Ál</h3>
@@ -1515,6 +1679,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="kopar">
+      <button type="button" class="metal-summary" data-en="Copper" aria-expanded="false">Kopar</button>
       <div class="metal-image" style="background-image: url('kopar.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Copper">Kopar</h3>
@@ -1522,6 +1687,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="messing">
+      <button type="button" class="metal-summary" data-en="Brass" aria-expanded="false">Messing</button>
       <div class="metal-image" style="background-image: url('messing.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Brass">Messing</h3>
@@ -1529,6 +1695,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="bly">
+      <button type="button" class="metal-summary" data-en="Lead" aria-expanded="false">Blý</button>
       <div class="metal-image" style="background-image: url('bly.jpg?v=3');"></div>
       <div class="metal-text">
         <h3 data-en="Lead">Blý</h3>
@@ -1536,6 +1703,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="rydfritt">
+      <button type="button" class="metal-summary" data-en="Stainless steel" aria-expanded="false">Ryðfrítt stál</button>
       <div class="metal-image" style="background-image: url('rydfritt.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Stainless steel">Ryðfrítt stál</h3>
@@ -1543,6 +1711,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="alfelgur">
+      <button type="button" class="metal-summary" data-en="Alloy wheels" aria-expanded="false">Álfelgur</button>
       <div class="metal-image" style="background-image: url('alfelgur.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Alloy wheels">Álfelgur</h3>
@@ -1550,6 +1719,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="kaplar">
+      <button type="button" class="metal-summary" data-en="Cables" aria-expanded="false">Kaplar</button>
       <div class="metal-image" style="background-image: url('kaplar.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Cables">Kaplar</h3>
@@ -1557,6 +1727,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="rafgeymar">
+      <button type="button" class="metal-summary" data-en="Batteries" aria-expanded="false">Rafgeymar</button>
       <div class="metal-image" style="background-image: url('rafgeymar.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Batteries">Rafgeymar</h3>
@@ -1742,13 +1913,31 @@
     apply(saved);
   })();
 
-  // Metals picker
+  // Metals picker — chips (desktop) and accordion summaries (mobile) share state
   const metalChips = document.querySelectorAll('.chip[data-target]');
   const metalPanes = document.querySelectorAll('.metal-pane');
-  metalChips.forEach(chip => chip.addEventListener('click', () => {
-    const target = chip.dataset.target;
-    metalChips.forEach(c => c.classList.toggle('active', c === chip));
-    metalPanes.forEach(p => p.classList.toggle('active', p.dataset.pane === target));
+  const metalSummaries = document.querySelectorAll('.metal-summary');
+  function setMetal(target) {
+    metalChips.forEach(c => c.classList.toggle('active', c.dataset.target === target));
+    metalPanes.forEach(p => {
+      const on = p.dataset.pane === target;
+      p.classList.toggle('active', on);
+      const sum = p.querySelector('.metal-summary');
+      if (sum) sum.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  }
+  metalChips.forEach(chip => chip.addEventListener('click', () => setMetal(chip.dataset.target)));
+  metalSummaries.forEach(sum => sum.addEventListener('click', () => {
+    const pane = sum.closest('.metal-pane');
+    if (!pane) return;
+    // On mobile, tapping the open one collapses it
+    const isMobile = window.matchMedia('(max-width: 700px)').matches;
+    if (isMobile && pane.classList.contains('active')) {
+      metalPanes.forEach(p => p.classList.remove('active'));
+      sum.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    setMetal(pane.dataset.pane);
   }));
 
   // On mobile/touch devices just show all steps immediately — no tap required
@@ -1855,7 +2044,7 @@
 
   // ── Reveal section rules + path cards on scroll ──
   (function () {
-    const reveals = document.querySelectorAll(".rule, .path-card");
+    const reveals = document.querySelectorAll(".rule, .path-card, .path-help, .path-contacts");
     if (!reveals.length) return;
     if (!("IntersectionObserver" in window)) {
       reveals.forEach(r => r.classList.add("in-view"));
