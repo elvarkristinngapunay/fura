@@ -16,8 +16,14 @@
     /* Scroll-reveal: rules slide in from the left when they enter the viewport */
     .rule { transform: scaleX(0); transform-origin: left center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
     .rule.in-view { transform: scaleX(1); }
+    /* Generic fade-up reveal for sections */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .reveal.delay-1 { transition-delay: 0.08s; }
+    .reveal.delay-2 { transition-delay: 0.16s; }
+    .reveal.delay-3 { transition-delay: 0.24s; }
     @media (prefers-reduced-motion: reduce) {
-      .rule { transform: none !important; transition: none !important; }
+      .rule, .reveal { transform: none !important; opacity: 1 !important; transition: none !important; }
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -277,56 +283,58 @@
 
     /* ── HOW IT WORKS ── */
     .how {
-      background: var(--blue);
-      padding: 5rem 5%;
-      text-align: center;
-    }
-    .how .rule { width: 40px; height: 3px; background: #fff; border-radius: 2px; margin: 0.75rem auto 1.75rem; transform-origin: center; }
-    .how-intro {
-      max-width: 760px;
-      margin: 3.5rem auto 1.75rem;
-      color: #fff;
-      font-size: 1.55rem;
-      font-weight: 500;
-      line-height: 1.4;
-      letter-spacing: -0.005em;
-    }
-    .how-intro::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 2px;
       background: #fff;
-      margin: 0 auto 1.25rem;
-      opacity: 0.6;
+      padding: 5rem 5%;
     }
-    .how-intro b {
-      font-weight: 700;
+    .how .section-label { color: var(--blue); }
+    .how .rule { width: 40px; height: 3px; background: var(--blue); border-radius: 2px; margin: 0.75rem 0 1.75rem; }
+    .how-cta {
+      margin-top: 4.5rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(20,16,13,0.08);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
     }
-    .how-intro a {
-      color: #fff;
-      font-weight: 700;
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
-      transition: opacity 0.2s;
+    .how-intro {
+      max-width: 680px;
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.65rem;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: -0.018em;
     }
-    .how-intro a:hover { opacity: 0.75; }
-    @media (max-width: 700px) {
-      .how-intro { font-size: 1.2rem; }
-    }
-    .btn-outline-light {
-      display: inline-block;
-      font-size: 0.95rem;
+    .btn-premium {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.875rem;
       font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: #fff;
-      border: 1.5px solid #fff;
-      padding: 0.6rem 1.3rem;
-      border-radius: 4px;
+      background: var(--ink);
+      padding: 1.1rem 2.2rem;
+      border-radius: 2px;
       text-decoration: none;
-      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+      transition: background 0.25s ease, transform 0.25s ease;
     }
-    .btn-outline-light:hover { background: #fff; color: var(--blue); }
+    .btn-premium::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.25s ease;
+    }
+    .btn-premium:hover { background: var(--blue); }
+    .btn-premium:hover::after { width: 32px; }
+    @media (max-width: 800px) {
+      .how-cta { grid-template-columns: 1fr; gap: 2rem; }
+      .how-intro { font-size: 1.3rem; }
+    }
 
     .section-label {
       font-size: 0.95rem;
@@ -337,7 +345,7 @@
       margin-bottom: 0.6rem;
     }
 
-    .how .section-title { color: #fff; }
+    .how .section-title { color: var(--ink); }
 
     .section-title {
       font-size: clamp(1.9rem, 4vw, 2.8rem);
@@ -354,9 +362,176 @@
       margin-top: 2.5rem;
     }
 
+    /* ── TVÆR LEIÐIR ── */
+    .paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .path-card {
+      position: relative;
+      padding: 2.5rem 2.25rem 2.75rem;
+      border-radius: 4px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .path-card.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .path-card.path-pickup {
+      background: var(--blue);
+      color: #fff;
+      transition-delay: 0s;
+    }
+    .path-card.path-dropoff {
+      background: var(--ink);
+      color: #fff;
+      transition-delay: 0.12s;
+    }
+    .path-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 0.85rem;
+    }
+    .path-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .path-body {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.88);
+      max-width: 28em;
+      margin-bottom: 1.25rem;
+    }
+    .path-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(255,255,255,0.45);
+      transition: text-decoration-color 0.2s, opacity 0.2s;
+    }
+    .path-link:hover { text-decoration-color: #fff; }
+    .path-icon {
+      position: absolute;
+      right: 1.5rem;
+      bottom: 1.25rem;
+      width: 64px;
+      height: 64px;
+      color: rgba(255,255,255,0.18);
+      pointer-events: none;
+    }
+    .path-help {
+      text-align: center;
+      margin: 4rem auto 2.25rem;
+      max-width: 640px;
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .path-help.in-view { opacity: 1; transform: translateY(0); }
+
+    .path-contacts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s;
+    }
+    .path-contacts.in-view { opacity: 1; transform: translateY(0); }
+    .path-contact {
+      background: #fafaf8;
+      border: 1px solid rgba(20,16,13,0.07);
+      border-radius: 10px;
+      padding: 1.75rem 1.85rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .path-contact:hover {
+      border-color: rgba(20,16,13,0.18);
+      box-shadow: 0 8px 24px rgba(20,16,13,0.06);
+      transform: translateY(-2px);
+    }
+    .path-contact-label {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(20,16,13,0.08);
+    }
+    .path-contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .path-contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s, transform 0.2s;
+      width: fit-content;
+    }
+    .path-contact-links a:first-child {
+      font-size: 1.65rem;
+      letter-spacing: -0.015em;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .path-contact-links a:last-child {
+      font-size: 1.02rem;
+      color: rgba(20,16,13,0.7);
+    }
+    .path-contact-links a:hover { color: var(--blue); transform: translateX(2px); }
+    .path-contact-links a svg {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--blue);
+      opacity: 0.85;
+    }
+    .path-contact-links a:first-child svg { width: 22px; height: 22px; }
+    @media (max-width: 700px) {
+      .path-contacts { grid-template-columns: 1fr; }
+      .path-help { font-size: 1.2rem; }
+      .path-contact-links a:first-child { font-size: 1.4rem; }
+    }
+    @media (max-width: 800px) {
+      .paths { grid-template-columns: 1fr; }
+      .path-card { padding: 2rem 1.5rem 2.25rem; }
+      .path-title { font-size: 1.5rem; }
+      .path-card.path-dropoff { transition-delay: 0s; }
+    }
+
     .step {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
+      background: var(--blue);
+      border: 1px solid var(--blue);
       border-radius: 12px;
       padding: 1.25rem 1.75rem;
       display: flex;
@@ -579,6 +754,9 @@
       max-width: 880px;
       box-shadow: 0 18px 40px -22px rgba(20,16,13,0.35), 0 2px 0 rgba(20,16,13,0.04);
     }
+    .metal-summary { display: none; }
+    .metal-pane { display: none; }
+    .metal-pane.active { display: contents; }
     .metal-image {
       aspect-ratio: 4 / 3;
       background-color: #ffffff;
@@ -638,19 +816,82 @@
       line-height: 1.75;
       margin: 1.1rem 0 0;
     }
-    .metal-pane { display: none; }
-    .metal-pane.active { display: contents; }
     @media (max-width: 960px) {
-      .metal-display { grid-template-columns: 1fr; max-width: 560px; }
+      .metal-pane { grid-template-columns: 1fr; }
+      .metal-display { max-width: 560px; }
       .metal-image { aspect-ratio: 16 / 10; }
       .metal-text { padding: 1.75rem 1.5rem; }
       .metal-text h3 { font-size: 1.7rem; }
       .metal-text p { font-size: 1rem; }
     }
-    @media (max-width: 420px) {
-      .metal-text { padding: 1.4rem 1.15rem; }
-      .metal-text h3 { font-size: 1.45rem; }
-      .metal-text p { font-size: 0.95rem; line-height: 1.65; }
+    @media (max-width: 700px) {
+      .metals-chips { display: none; }
+      .metal-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        max-width: 100%;
+      }
+      .metal-pane {
+        grid-area: auto;
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        background: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(20,16,13,0.06);
+        transition: box-shadow 0.25s ease;
+      }
+      .metal-pane.active { box-shadow: 0 8px 22px rgba(20,16,13,0.1); }
+      .metal-summary {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1.1rem 1.3rem;
+        font-family: inherit;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--ink);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .metal-summary::after {
+        content: '+';
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--blue);
+        line-height: 1;
+        transition: transform 0.25s ease;
+      }
+      .metal-pane.active .metal-summary { color: var(--blue); }
+      .metal-pane.active .metal-summary::after {
+        content: '−';
+        transform: rotate(0deg);
+      }
+      .metal-pane:not(.active) .metal-image,
+      .metal-pane:not(.active) .metal-text { display: none; }
+      .metal-pane.active .metal-image {
+        aspect-ratio: 16 / 10;
+        animation: metal-fade 0.4s ease;
+      }
+      .metal-pane.active .metal-text {
+        padding: 0 1.3rem 1.4rem;
+        background: #fff;
+        animation: metal-fade 0.4s ease 0.05s both;
+      }
+      .metal-pane.active .metal-text::before { display: none; }
+      .metal-pane.active .metal-text h3 { font-size: 1.35rem; }
+      .metal-pane.active .metal-text h3::after { width: 32px; margin-top: 0.6rem; }
+      .metal-pane.active .metal-text p { font-size: 0.95rem; line-height: 1.65; margin-top: 0.85rem; }
+    }
+    @keyframes metal-fade {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ── SERVICES ── */
@@ -720,7 +961,12 @@
       background-image: url('bilaforgun.jpg');
       background-size: cover;
       background-position: center;
-      opacity: 0.28;
+      opacity: 0.55;
+    }
+    .bilaf-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(20,16,13,0.85) 0%, rgba(20,16,13,0.5) 40%, rgba(20,16,13,0) 75%);
     }
 
     .bilaf-content {
@@ -1079,7 +1325,7 @@
     }
 
     .location-card {
-      padding: 2.25rem 5%;
+      padding: 1.4rem 5%;
       border-right: 1px solid rgba(255,255,255,0.07);
     }
     .location-card:last-child { border-right: none; }
@@ -1088,15 +1334,15 @@
       font-size: 1.35rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 1.1rem;
-      padding-bottom: 0.8rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.55rem;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .location-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     .footer-col h4 {
@@ -1105,13 +1351,20 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.55);
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.5rem;
     }
 
     .footer-col ul { list-style: none; }
-    .footer-col li { font-size: 1rem; margin-bottom: 0.3rem; color: rgba(255,255,255,0.85); }
+    .footer-col li { font-size: 1rem; margin-bottom: 0.2rem; color: rgba(255,255,255,0.85); }
     .footer-col a { color: rgba(255,255,255,0.85); text-decoration: none; }
     .footer-col a:hover { color: #fff; }
+    .footer-col a.addr-link {
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.35);
+      text-underline-offset: 4px;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .footer-col a.addr-link:hover { color: #fff; text-decoration-color: #fff; }
 
     /* Phone + email — extra prominence */
     .footer-col a[href^="tel:"],
@@ -1150,13 +1403,13 @@
     .footer-col a[href^="tel:"]:hover,
     .footer-col a[href^="mailto:"]:hover { color: var(--blue); }
     .footer-col li:has(a[href^="tel:"]),
-    .footer-col li:has(a[href^="mailto:"]) { margin-bottom: 0.55rem; }
+    .footer-col li:has(a[href^="mailto:"]) { margin-bottom: 0.35rem; }
 
     .hours-row {
       display: flex;
       justify-content: space-between;
       font-size: 1rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.15rem;
       color: rgba(255,255,255,0.85);
     }
     .hours-row span:last-child { font-weight: 600; color: #fff; }
@@ -1176,7 +1429,7 @@
     .footer-map-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
     .footer-bottom {
-      padding: 1.25rem 5%;
+      padding: 0.75rem 5%;
       border-top: 1px solid rgba(255,255,255,0.07);
       display: flex;
       align-items: center;
@@ -1227,7 +1480,7 @@
 
     @media (max-width: 600px) {
       .why-grid { grid-template-columns: 1fr; }
-      .location-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .location-grid { grid-template-columns: 1fr; gap: 1rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
       /* stats: stack and swap the vertical divider for a horizontal one */
       .intro-strip { grid-template-columns: 1fr; }
@@ -1286,7 +1539,7 @@
     </a>
     <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="thjonusta.html" data-spy="thjonusta" data-en="Services">Þjónusta</a></li>
+      <li><a href="#thjonusta" data-spy="thjonusta" data-en="Services">Þjónusta</a></li>
       <li><a href="#malmar" data-spy="malmar" data-en="Metals">Málmar</a></li>
       <li><a href="#bilaforgun" data-spy="bilaforgun" data-en="Car scrapping">Bílaförgun</a></li>
       <li><a href="um-furu.html" data-en="About Fura">Um Furu</a></li>
@@ -1310,7 +1563,7 @@
   </div>
   <!-- Mobile drawer -->
   <div class="nav-mobile" id="mobile-menu">
-    <a href="thjonusta.html" data-en="Services">Þjónusta</a>
+    <a href="#thjonusta" data-en="Services">Þjónusta</a>
     <a href="#malmar" data-en="Metals">Málmar</a>
     <a href="#bilaforgun" data-en="Car scrapping">Bílaförgun</a>
     <a href="um-furu.html" data-en="About Fura">Um Furu</a>
@@ -1324,166 +1577,72 @@
   <div class="hero-bg"></div>
   <div class="hero-content">
     <h1 data-en="Let your metal <em>pay off</em>">Láttu málminn <em>borga sig</em></h1>
-    <p class="hero-sub" data-en="We assess the value, find the right solution, and handle the transport when needed.">Við metum verðmætið, finnum lausnina og sjáum um flutninginn ef þarf.</p>
-    <a href="#samband" class="btn-blue" data-en="Contact us">Hafa samband</a>
+    <a href="#hafa-samband" class="btn-blue" data-en="Contact us">Hafa samband</a>
   </div>
 </section>
 
 
-<!-- HOW IT WORKS -->
+<!-- THJONUSTA: TVÆR LEIÐIR -->
 <section class="how" id="thjonusta">
   <div class="section-label" data-en="Services">Þjónusta</div>
   <div class="rule"></div>
-  <h2 class="section-title" data-en="Three simple steps">Þrjú einföld skref</h2>
-  <div class="steps">
+  <h2 class="section-title reveal" data-en="Two ways to recycle with Fura">Tvær leiðir til endurvinnslu</h2>
+  <div class="paths">
 
-    <div class="step step-1">
-      <div class="step-text">
-        <div class="step-num">1</div>
-        <h3 data-en="We bring a container">Við komum með ílát</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Forklift body (faces right) -->
-          <g class="anim-forklift">
-            <!-- Cabin / driver -->
-            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
-            <path d="M 8 26 L 14 26"/>
-            <!-- Chassis -->
-            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
-            <!-- Mast -->
-            <path d="M 22 14 L 22 52"/>
-            <path d="M 26 14 L 26 52"/>
-            <path d="M 22 14 L 26 14"/>
-            <!-- Wheels -->
-            <circle cx="5" cy="52" r="4"/>
-            <circle cx="17" cy="52" r="4"/>
-          </g>
-          <!-- Forks (lift independently) -->
-          <g class="anim-forks">
-            <path d="M 26 40 L 54 40"/>
-            <path d="M 26 48 L 54 48"/>
-            <path d="M 26 40 L 26 48"/>
-          </g>
-          <!-- Tub (final position on ground) -->
-          <g class="anim-tub-1">
-            <path d="M 32 40 L 35 60 L 71 60 L 74 40 Z"/>
-            <path d="M 35 44 L 71 44"/>
-          </g>
-        </svg>
-      </div>
+    <div class="path-card path-pickup">
+      <div class="path-eyebrow" data-en="Larger projects">Stærri verkefni</div>
+      <h3 class="path-title" data-en="We come to you">Við sækjum til þín</h3>
+      <p class="path-body" data-en="We bring a container that fits your project. Get in touch and we'll find the right one.">Við komum með ílát sem hentar verkefninu þínu. Hafðu samband og við finnum það sem hentar.</p>
+      <svg class="path-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M 4 38 L 4 46 L 56 46 L 56 38"/>
+        <path d="M 4 38 L 12 22 L 38 22 L 46 38"/>
+        <path d="M 46 38 L 56 38 L 56 30 L 46 30"/>
+        <circle cx="16" cy="48" r="4"/>
+        <circle cx="44" cy="48" r="4"/>
+        <path d="M 22 28 L 30 28"/>
+      </svg>
     </div>
 
-    <div class="step step-2">
-      <div class="step-text">
-        <div class="step-num">2</div>
-        <h3 data-en="You fill it with metal">Þú setur málmana í ílátið</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Tub sitting on the ground (already delivered in step 1) -->
-          <g class="anim-tub-fill">
-            <path d="M 43 40 L 46 60 L 84 60 L 87 40 Z"/>
-            <path d="M 46 44 L 84 44"/>
-          </g>
-          <!-- Metal chunk 1 (lands bottom-left) -->
-          <g class="anim-chunk-1">
-            <path d="M 50 49 L 49 58 L 61 59 L 62 50 Z"/>
-            <path d="M 52 52 L 59 53"/>
-          </g>
-          <!-- Metal chunk 2 (lands bottom-right) -->
-          <g class="anim-chunk-2">
-            <path d="M 66 51 L 65 59 L 80 58 L 81 50 Z"/>
-            <path d="M 69 53 L 77 53"/>
-          </g>
-          <!-- Metal chunk 3 (lands on top, sticking out above rim) -->
-          <g class="anim-chunk-3">
-            <path d="M 57 31 L 55 42 L 76 42 L 74 30 Z"/>
-            <path d="M 60 35 L 70 35"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-
-    <div class="step step-3">
-      <div class="step-text">
-        <div class="step-num">3</div>
-        <h3 data-en="We collect, weigh and assess">Við sækjum, vigtum og metum</h3>
-      </div>
-      <div class="step-anim">
-        <svg viewBox="0 0 130 65" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Scale (right side) -->
-          <g class="anim-scale">
-            <path d="M 66 50 L 104 50"/>
-            <path d="M 72 50 L 72 60"/>
-            <path d="M 98 50 L 98 60"/>
-            <path d="M 104 50 L 104 26"/>
-            <rect x="98" y="18" width="30" height="14" rx="2"/>
-          </g>
-          <!-- Forklift body (faces right) -->
-          <g class="anim-forklift-2">
-            <path d="M 4 22 L 4 36 L 18 36 L 18 22 Z"/>
-            <path d="M 8 26 L 14 26"/>
-            <path d="M 1 36 L 1 48 L 21 48 L 21 36 Z"/>
-            <path d="M 22 14 L 22 52"/>
-            <path d="M 26 14 L 26 52"/>
-            <path d="M 22 14 L 26 14"/>
-            <circle cx="5" cy="52" r="4"/>
-            <circle cx="17" cy="52" r="4"/>
-          </g>
-          <!-- Forks (lift independently) -->
-          <g class="anim-forks-2">
-            <path d="M 26 40 L 58 40"/>
-            <path d="M 26 48 L 58 48"/>
-            <path d="M 26 40 L 26 48"/>
-          </g>
-          <!-- Full tub (chunks sticking out); animates from ground left onto scale -->
-          <g class="anim-tub-2">
-            <path d="M 68 30 L 71 50 L 99 50 L 102 30 Z"/>
-            <path d="M 71 34 L 99 34"/>
-            <!-- chunks inside -->
-            <path d="M 74 39 L 73 48 L 83 49 L 84 40 Z"/>
-            <path d="M 76 42 L 82 42"/>
-            <path d="M 86 40 L 85 49 L 97 48 L 98 39 Z"/>
-            <path d="M 88 42 L 95 42"/>
-            <!-- chunk sticking out above the rim -->
-            <path d="M 78 21 L 76 32 L 94 32 L 92 20 Z"/>
-            <path d="M 81 25 L 90 25"/>
-          </g>
-          <!-- Weight display numbers -->
-          <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="9" font-weight="700" fill="#fff" stroke="none">
-            <text x="113" y="28" text-anchor="middle" class="w w-a">0 kg</text>
-            <text x="113" y="28" text-anchor="middle" class="w w-b">50 kg</text>
-            <text x="113" y="28" text-anchor="middle" class="w w-c">100 kg</text>
-          </g>
-          <!-- Wallet (appears bottom-left after weighing) -->
-          <g class="anim-wallet">
-            <rect x="2" y="34" width="42" height="26" rx="2.5"/>
-            <path d="M 2 42 L 44 42"/>
-            <circle cx="36" cy="53" r="2"/>
-          </g>
-          <!-- Bill popping out of wallet -->
-          <g class="anim-bill">
-            <rect x="9" y="22" width="28" height="14" rx="1.5"/>
-            <text x="23" y="33" text-anchor="middle" font-size="9" font-weight="700" font-family="ui-monospace, Menlo, monospace" fill="#fff" stroke="none">kr</text>
-          </g>
-        </svg>
-      </div>
+    <div class="path-card path-dropoff">
+      <div class="path-eyebrow" data-en="Smaller amounts">Minna magn</div>
+      <h3 class="path-title" data-en="Come to us">Komdu til okkar</h3>
+      <p class="path-body" data-en="Bring the metals to our station in Hafnarfjörður or in Akureyri. We weigh and pay on the spot.">Komdu með málmana á stöðina okkar í Hafnarfirði eða á Akureyri. Við vigtum og greiðum á staðnum.</p>
+      <a href="#samband" class="path-link" data-en="See locations →">Sjá staðsetningar →</a>
+      <svg class="path-icon" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M 30 6 C 22 6 16 12 16 20 C 16 30 30 50 30 50 C 30 50 44 30 44 20 C 44 12 38 6 30 6 Z"/>
+        <circle cx="30" cy="20" r="5"/>
+      </svg>
     </div>
 
   </div>
 
-  <p class="how-intro" data-en='Fura offers customers in the <b>capital area</b>, <b>Akureyri</b> and the surrounding regions a range of <b>container sizes</b> for metal recycling.'>Fura býður viðskiptavinum á <b>höfuðborgarsvæðinu</b>, <b>Akureyri</b> og nágrenni upp á <b>mismunandi gámastærðir</b> fyrir málma til endurvinnslu.</p>
-  <a href="thjonusta.html" class="btn-outline-light" data-en="Learn more →">Nánari upplýsingar →</a>
+  <p class="path-help" id="hafa-samband" data-en="Not sure which suits you? Get in touch:">Ekki viss hvort hentar? Hafðu samband:</p>
+
+  <div class="path-contacts">
+    <div class="path-contact">
+      <div class="path-contact-label" data-en="Capital Region">Höfuðborgarsvæðið</div>
+      <div class="path-contact-links">
+        <a href="tel:5653557"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>565 3557</a>
+        <a href="mailto:fura@fura.is"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>fura@fura.is</a>
+      </div>
+    </div>
+    <div class="path-contact">
+      <div class="path-contact-label">Akureyri</div>
+      <div class="path-contact-links">
+        <a href="tel:8944238"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>894 4238</a>
+        <a href="mailto:gunnar@fura.is"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>gunnar@fura.is</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- METALS -->
 <section class="metals" id="malmar">
   <div class="section-label" data-en="Metals">Málmar</div>
   <div class="rule"></div>
-  <h2 class="section-title" data-en="What we recycle">Það sem við endurnýtum</h2>
-  <p class="metals-sub" data-en='Whether you are getting rid of a little or a lot — we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið — við tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
-  <div class="metals-chips">
+  <h2 class="section-title reveal" data-en="What we recycle">Það sem við endurnýtum</h2>
+  <p class="metals-sub reveal delay-1" data-en='Whether you are getting rid of a little or a lot, we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið þá tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
+  <div class="metals-chips reveal delay-1">
     <button class="chip active" data-target="jarn" data-en="Iron">Járn</button>
     <button class="chip" data-target="al" data-en="Aluminium">Ál</button>
     <button class="chip" data-target="kopar" data-en="Copper">Kopar</button>
@@ -1495,8 +1654,9 @@
     <button class="chip" data-target="rafgeymar" data-en="Batteries">Rafgeymar</button>
   </div>
 
-  <div class="metal-display">
+  <div class="metal-display reveal delay-2">
     <div class="metal-pane active" data-pane="jarn">
+      <button type="button" class="metal-summary" data-en="Iron" aria-expanded="false">Járn</button>
       <div class="metal-image" style="background-image: url('jarn.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Iron">Járn</h3>
@@ -1504,6 +1664,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="al">
+      <button type="button" class="metal-summary" data-en="Aluminium" aria-expanded="false">Ál</button>
       <div class="metal-image" style="background-image: url('al.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Aluminium">Ál</h3>
@@ -1511,6 +1672,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="kopar">
+      <button type="button" class="metal-summary" data-en="Copper" aria-expanded="false">Kopar</button>
       <div class="metal-image" style="background-image: url('kopar.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Copper">Kopar</h3>
@@ -1518,6 +1680,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="messing">
+      <button type="button" class="metal-summary" data-en="Brass" aria-expanded="false">Messing</button>
       <div class="metal-image" style="background-image: url('messing.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Brass">Messing</h3>
@@ -1525,6 +1688,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="bly">
+      <button type="button" class="metal-summary" data-en="Lead" aria-expanded="false">Blý</button>
       <div class="metal-image" style="background-image: url('bly.jpg?v=3');"></div>
       <div class="metal-text">
         <h3 data-en="Lead">Blý</h3>
@@ -1532,6 +1696,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="rydfritt">
+      <button type="button" class="metal-summary" data-en="Stainless steel" aria-expanded="false">Ryðfrítt stál</button>
       <div class="metal-image" style="background-image: url('rydfritt.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Stainless steel">Ryðfrítt stál</h3>
@@ -1539,6 +1704,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="alfelgur">
+      <button type="button" class="metal-summary" data-en="Alloy wheels" aria-expanded="false">Álfelgur</button>
       <div class="metal-image" style="background-image: url('alfelgur.jpg?v=2');"></div>
       <div class="metal-text">
         <h3 data-en="Alloy wheels">Álfelgur</h3>
@@ -1546,6 +1712,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="kaplar">
+      <button type="button" class="metal-summary" data-en="Cables" aria-expanded="false">Kaplar</button>
       <div class="metal-image" style="background-image: url('kaplar.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Cables">Kaplar</h3>
@@ -1553,6 +1720,7 @@
       </div>
     </div>
     <div class="metal-pane" data-pane="rafgeymar">
+      <button type="button" class="metal-summary" data-en="Batteries" aria-expanded="false">Rafgeymar</button>
       <div class="metal-image" style="background-image: url('rafgeymar.jpg');"></div>
       <div class="metal-text">
         <h3 data-en="Batteries">Rafgeymar</h3>
@@ -1566,10 +1734,10 @@
 <section class="bilaforgun-wrap" id="bilaforgun">
   <div class="bilaf-bg"></div>
   <div class="bilaf-content">
-    <div class="bilaf-main">
+    <div class="bilaf-main reveal">
     <div class="section-label" data-en="Car scrapping">Bílaförgun</div>
     <div class="rule"></div>
-    <h2 class="section-title" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
+    <h2 class="section-title reveal" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
     <p class="bilaf-intro" data-en="We accept all vehicles for scrapping. You can now complete the deregistration with electronic ID, and vehicle owners are paid 30,000 ISK in return from the State Treasury (Fjársýsla ríkisins).">Við tökum á móti öllum ökutækjum í förgun. Nú er hægt að klára afskráningu með rafrænum skilríkjum og eigendur ökutækja fá í staðinn greiddar 30.000 kr. frá Fjársýslu ríkisins.</p>
     <a href="https://island.is/umsoknir/skilavottord/e2a1d19b-4b95-4085-8922-dbbb70632b98" target="_blank" class="btn-blue" data-en="Apply for a vehicle deregistration certificate →">Sækja um skilavottorð ökutækja →</a>
     <details class="bilaf-more">
@@ -1580,7 +1748,7 @@
       </div>
     </details>
     </div>
-    <div class="bilaf-side">
+    <div class="bilaf-side reveal delay-1">
       <div class="bilaf-contact">
         <span class="bilaf-contact-label" data-en="Questions about your vehicle? Get in touch:">Spurningar um ökutækið þitt? Hafðu samband:</span>
         <div class="bilaf-contact-links">
@@ -1597,16 +1765,16 @@
   <div class="section-label" data-en="Why Fura?">Afhverju Fura?</div>
   <div class="rule"></div>
   <div class="why-grid">
-    <div class="why-card">
+    <div class="why-card reveal">
       <h3 data-en="Great, fast service">Góð og hröð þjónusta</h3>
       <p data-en="We pride ourselves on personal service and quick responses — we provide containers or bins, collect the metal, and handle the transport from start to finish.">Við leggjum okkur fram um persónulega þjónustu og skjót viðbrögð — útvegum gáma eða kör, sækjum málmana og sjáum um flutninginn frá upphafi til enda.</p>
     </div>
-    <div class="why-card">
+    <div class="why-card reveal delay-1">
       <h3 data-en="Environmentally friendly">Umhverfisvæn</h3>
       <p data-en="Recycling metals saves raw materials and energy and reduces waste. We make sure all material is handled correctly, in line with Icelandic and European regulations.">Endurvinnsla málma sparar hráefni, orku og minnkar sóun. Við tryggjum að allt efni fari í réttan farveg í samræmi við íslenskar og evrópskar reglur.</p>
       <a href="umhverfisstefna.html" class="why-card-link" data-en="Read more about Fura's environmental policy →">Lesa meira um umhverfisstefnu Furu →</a>
     </div>
-    <div class="why-card">
+    <div class="why-card reveal delay-2">
       <h3 data-en="Experience">Reynsla</h3>
       <p data-en="Over 40 years of experience in metal recycling in Iceland, all the way back to 1981 — we know the material and the process inside out.">Yfir 40 ára reynsla í málmendurvinnslu á Íslandi, allt frá árinu 1981 — við þekkjum hráefnið og ferlið út og inn.</p>
     </div>
@@ -1619,7 +1787,7 @@
   <div class="footer-locations">
 
     <!-- Hafnarfjörður -->
-    <div class="location-card" id="hafnarfjordur">
+    <div class="location-card reveal" id="hafnarfjordur">
       <div class="location-name">Hafnarfjörður</div>
       <div class="location-grid">
         <div class="footer-col">
@@ -1627,7 +1795,7 @@
           <ul>
             <li><a href="tel:5653557">565 3557</a></li>
             <li><a href="mailto:fura@fura.is">fura@fura.is</a></li>
-            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank">Hringhellu 3, 221 Hafnarfjörður</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Hringhellu+3,+221+Hafnarfjörður" target="_blank" class="addr-link">Hringhellu 3, 221 Hafnarfjörður →</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1637,11 +1805,10 @@
           <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
         </div>
       </div>
-      <a href="https://maps.google.com/?q=Fura+ehf,+Hringhellu+3,+221+Hafnarfjörður" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
     </div>
 
     <!-- Akureyri -->
-    <div class="location-card" id="akureyri">
+    <div class="location-card reveal delay-1" id="akureyri">
       <div class="location-name">Akureyri</div>
       <div class="location-grid">
         <div class="footer-col">
@@ -1649,17 +1816,15 @@
           <ul>
             <li><a href="tel:8944238">894 4238</a></li>
             <li><a href="mailto:gunnar@fura.is">gunnar@fura.is</a></li>
-            <li class="addr-li"><a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank">Óseyri 3, 600 Akureyri</a></li>
+            <li class="addr-li"><a href="https://maps.google.com/?q=Óseyri+3,+600+Akureyri" target="_blank" class="addr-link">Óseyri 3, 600 Akureyri →</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4 data-en="Opening hours">Opnunartímar</h4>
           <div class="hours-row"><span data-en="Mon–Fri">Mán–Fös</span><span>08:00 – 17:00</span></div>
-          <div class="hours-row"><span data-en="Saturday">Laugardagur</span><span data-en="Closed">Lokað</span></div>
-          <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
+          <div class="hours-row"><span data-en="Closed on weekends">Lokað um helgar</span><span></span></div>
         </div>
       </div>
-      <a href="https://maps.google.com/?q=Fura+ehf,+Óseyri+3,+600+Akureyri" target="_blank" class="footer-map-btn" data-en="Open in Google Maps">Opna á Google Maps</a>
     </div>
 
   </div>
@@ -1740,13 +1905,31 @@
     apply(saved);
   })();
 
-  // Metals picker
+  // Metals picker — chips (desktop) and accordion summaries (mobile) share state
   const metalChips = document.querySelectorAll('.chip[data-target]');
   const metalPanes = document.querySelectorAll('.metal-pane');
-  metalChips.forEach(chip => chip.addEventListener('click', () => {
-    const target = chip.dataset.target;
-    metalChips.forEach(c => c.classList.toggle('active', c === chip));
-    metalPanes.forEach(p => p.classList.toggle('active', p.dataset.pane === target));
+  const metalSummaries = document.querySelectorAll('.metal-summary');
+  function setMetal(target) {
+    metalChips.forEach(c => c.classList.toggle('active', c.dataset.target === target));
+    metalPanes.forEach(p => {
+      const on = p.dataset.pane === target;
+      p.classList.toggle('active', on);
+      const sum = p.querySelector('.metal-summary');
+      if (sum) sum.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  }
+  metalChips.forEach(chip => chip.addEventListener('click', () => setMetal(chip.dataset.target)));
+  metalSummaries.forEach(sum => sum.addEventListener('click', () => {
+    const pane = sum.closest('.metal-pane');
+    if (!pane) return;
+    // On mobile, tapping the open one collapses it
+    const isMobile = window.matchMedia('(max-width: 700px)').matches;
+    if (isMobile && pane.classList.contains('active')) {
+      metalPanes.forEach(p => p.classList.remove('active'));
+      sum.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    setMetal(pane.dataset.pane);
   }));
 
   // On mobile/touch devices just show all steps immediately — no tap required
@@ -1851,12 +2034,12 @@
     });
   })();
 
-  // ── Reveal section rules on scroll ──
+  // ── Reveal section rules + path cards on scroll ──
   (function () {
-    const rules = document.querySelectorAll(".rule");
-    if (!rules.length) return;
+    const reveals = document.querySelectorAll(".rule, .path-card, .path-help, .path-contacts, .reveal");
+    if (!reveals.length) return;
     if (!("IntersectionObserver" in window)) {
-      rules.forEach(r => r.classList.add("in-view"));
+      reveals.forEach(r => r.classList.add("in-view"));
       return;
     }
     const obs = new IntersectionObserver((entries) => {
@@ -1866,8 +2049,8 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.6, rootMargin: "0px 0px -10% 0px" });
-    rules.forEach(r => obs.observe(r));
+    }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+    reveals.forEach(r => obs.observe(r));
   })();
 </script>
 
