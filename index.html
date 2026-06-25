@@ -16,8 +16,14 @@
     /* Scroll-reveal: rules slide in from the left when they enter the viewport */
     .rule { transform: scaleX(0); transform-origin: left center; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
     .rule.in-view { transform: scaleX(1); }
+    /* Generic fade-up reveal for sections */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .reveal.delay-1 { transition-delay: 0.08s; }
+    .reveal.delay-2 { transition-delay: 0.16s; }
+    .reveal.delay-3 { transition-delay: 0.24s; }
     @media (prefers-reduced-motion: reduce) {
-      .rule { transform: none !important; transition: none !important; }
+      .rule, .reveal { transform: none !important; opacity: 1 !important; transition: none !important; }
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -738,31 +744,19 @@
     }
 
     .metal-display {
-      position: relative;
-      display: grid;
-      grid-template-areas: "pane";
-      margin: 2rem auto 0;
-      max-width: 880px;
-    }
-    .metal-summary { display: none; }
-    .metal-pane {
-      grid-area: pane;
       display: grid;
       grid-template-columns: 1.05fr 1fr;
       align-items: stretch;
       background: var(--white);
       border-radius: 16px;
       overflow: hidden;
+      margin: 2rem auto 0;
+      max-width: 880px;
       box-shadow: 0 18px 40px -22px rgba(20,16,13,0.35), 0 2px 0 rgba(20,16,13,0.04);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.45s ease;
     }
-    .metal-pane.active {
-      opacity: 1;
-      pointer-events: auto;
-      z-index: 2;
-    }
+    .metal-summary { display: none; }
+    .metal-pane { display: none; }
+    .metal-pane.active { display: contents; }
     .metal-image {
       aspect-ratio: 4 / 3;
       background-color: #ffffff;
@@ -1331,7 +1325,7 @@
     }
 
     .location-card {
-      padding: 2.25rem 5%;
+      padding: 1.4rem 5%;
       border-right: 1px solid rgba(255,255,255,0.07);
     }
     .location-card:last-child { border-right: none; }
@@ -1340,15 +1334,15 @@
       font-size: 1.35rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 1.1rem;
-      padding-bottom: 0.8rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.55rem;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .location-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     .footer-col h4 {
@@ -1357,11 +1351,11 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.55);
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.5rem;
     }
 
     .footer-col ul { list-style: none; }
-    .footer-col li { font-size: 1rem; margin-bottom: 0.3rem; color: rgba(255,255,255,0.85); }
+    .footer-col li { font-size: 1rem; margin-bottom: 0.2rem; color: rgba(255,255,255,0.85); }
     .footer-col a { color: rgba(255,255,255,0.85); text-decoration: none; }
     .footer-col a:hover { color: #fff; }
     .footer-col a.addr-link {
@@ -1409,13 +1403,13 @@
     .footer-col a[href^="tel:"]:hover,
     .footer-col a[href^="mailto:"]:hover { color: var(--blue); }
     .footer-col li:has(a[href^="tel:"]),
-    .footer-col li:has(a[href^="mailto:"]) { margin-bottom: 0.55rem; }
+    .footer-col li:has(a[href^="mailto:"]) { margin-bottom: 0.35rem; }
 
     .hours-row {
       display: flex;
       justify-content: space-between;
       font-size: 1rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.15rem;
       color: rgba(255,255,255,0.85);
     }
     .hours-row span:last-child { font-weight: 600; color: #fff; }
@@ -1435,7 +1429,7 @@
     .footer-map-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
     .footer-bottom {
-      padding: 1.25rem 5%;
+      padding: 0.75rem 5%;
       border-top: 1px solid rgba(255,255,255,0.07);
       display: flex;
       align-items: center;
@@ -1486,7 +1480,7 @@
 
     @media (max-width: 600px) {
       .why-grid { grid-template-columns: 1fr; }
-      .location-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .location-grid { grid-template-columns: 1fr; gap: 1rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
       /* stats: stack and swap the vertical divider for a horizontal one */
       .intro-strip { grid-template-columns: 1fr; }
@@ -1583,8 +1577,7 @@
   <div class="hero-bg"></div>
   <div class="hero-content">
     <h1 data-en="Let your metal <em>pay off</em>">Láttu málminn <em>borga sig</em></h1>
-    <p class="hero-sub" data-en="We assess the value, find the right solution, and handle the transport when needed.">Við metum verðmætið, finnum lausnina og sjáum um flutninginn ef þarf.</p>
-    <a href="#samband" class="btn-blue" data-en="Contact us">Hafa samband</a>
+    <a href="#hafa-samband" class="btn-blue" data-en="Contact us">Hafa samband</a>
   </div>
 </section>
 
@@ -1593,7 +1586,7 @@
 <section class="how" id="thjonusta">
   <div class="section-label" data-en="Services">Þjónusta</div>
   <div class="rule"></div>
-  <h2 class="section-title" data-en="Two ways to recycle with Fura">Tvær leiðir til endurvinnslu</h2>
+  <h2 class="section-title reveal" data-en="Two ways to recycle with Fura">Tvær leiðir til endurvinnslu</h2>
   <div class="paths">
 
     <div class="path-card path-pickup">
@@ -1623,7 +1616,7 @@
 
   </div>
 
-  <p class="path-help" data-en="Not sure which suits you? Get in touch:">Ekki viss hvort hentar? Hafðu samband:</p>
+  <p class="path-help" id="hafa-samband" data-en="Not sure which suits you? Get in touch:">Ekki viss hvort hentar? Hafðu samband:</p>
 
   <div class="path-contacts">
     <div class="path-contact">
@@ -1647,9 +1640,9 @@
 <section class="metals" id="malmar">
   <div class="section-label" data-en="Metals">Málmar</div>
   <div class="rule"></div>
-  <h2 class="section-title" data-en="What we recycle">Það sem við endurnýtum</h2>
-  <p class="metals-sub" data-en='Whether you are getting rid of a little or a lot — we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið — við tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
-  <div class="metals-chips">
+  <h2 class="section-title reveal" data-en="What we recycle">Það sem við endurnýtum</h2>
+  <p class="metals-sub reveal delay-1" data-en='Whether you are getting rid of a little or a lot, we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið þá tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
+  <div class="metals-chips reveal delay-1">
     <button class="chip active" data-target="jarn" data-en="Iron">Járn</button>
     <button class="chip" data-target="al" data-en="Aluminium">Ál</button>
     <button class="chip" data-target="kopar" data-en="Copper">Kopar</button>
@@ -1661,7 +1654,7 @@
     <button class="chip" data-target="rafgeymar" data-en="Batteries">Rafgeymar</button>
   </div>
 
-  <div class="metal-display">
+  <div class="metal-display reveal delay-2">
     <div class="metal-pane active" data-pane="jarn">
       <button type="button" class="metal-summary" data-en="Iron" aria-expanded="false">Járn</button>
       <div class="metal-image" style="background-image: url('jarn.jpg?v=2');"></div>
@@ -1741,10 +1734,10 @@
 <section class="bilaforgun-wrap" id="bilaforgun">
   <div class="bilaf-bg"></div>
   <div class="bilaf-content">
-    <div class="bilaf-main">
+    <div class="bilaf-main reveal">
     <div class="section-label" data-en="Car scrapping">Bílaförgun</div>
     <div class="rule"></div>
-    <h2 class="section-title" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
+    <h2 class="section-title reveal" data-en="Scrap your car at Fura">Fargaðu bílnum hjá Furu</h2>
     <p class="bilaf-intro" data-en="We accept all vehicles for scrapping. You can now complete the deregistration with electronic ID, and vehicle owners are paid 30,000 ISK in return from the State Treasury (Fjársýsla ríkisins).">Við tökum á móti öllum ökutækjum í förgun. Nú er hægt að klára afskráningu með rafrænum skilríkjum og eigendur ökutækja fá í staðinn greiddar 30.000 kr. frá Fjársýslu ríkisins.</p>
     <a href="https://island.is/umsoknir/skilavottord/e2a1d19b-4b95-4085-8922-dbbb70632b98" target="_blank" class="btn-blue" data-en="Apply for a vehicle deregistration certificate →">Sækja um skilavottorð ökutækja →</a>
     <details class="bilaf-more">
@@ -1755,7 +1748,7 @@
       </div>
     </details>
     </div>
-    <div class="bilaf-side">
+    <div class="bilaf-side reveal delay-1">
       <div class="bilaf-contact">
         <span class="bilaf-contact-label" data-en="Questions about your vehicle? Get in touch:">Spurningar um ökutækið þitt? Hafðu samband:</span>
         <div class="bilaf-contact-links">
@@ -1772,16 +1765,16 @@
   <div class="section-label" data-en="Why Fura?">Afhverju Fura?</div>
   <div class="rule"></div>
   <div class="why-grid">
-    <div class="why-card">
+    <div class="why-card reveal">
       <h3 data-en="Great, fast service">Góð og hröð þjónusta</h3>
       <p data-en="We pride ourselves on personal service and quick responses — we provide containers or bins, collect the metal, and handle the transport from start to finish.">Við leggjum okkur fram um persónulega þjónustu og skjót viðbrögð — útvegum gáma eða kör, sækjum málmana og sjáum um flutninginn frá upphafi til enda.</p>
     </div>
-    <div class="why-card">
+    <div class="why-card reveal delay-1">
       <h3 data-en="Environmentally friendly">Umhverfisvæn</h3>
       <p data-en="Recycling metals saves raw materials and energy and reduces waste. We make sure all material is handled correctly, in line with Icelandic and European regulations.">Endurvinnsla málma sparar hráefni, orku og minnkar sóun. Við tryggjum að allt efni fari í réttan farveg í samræmi við íslenskar og evrópskar reglur.</p>
       <a href="umhverfisstefna.html" class="why-card-link" data-en="Read more about Fura's environmental policy →">Lesa meira um umhverfisstefnu Furu →</a>
     </div>
-    <div class="why-card">
+    <div class="why-card reveal delay-2">
       <h3 data-en="Experience">Reynsla</h3>
       <p data-en="Over 40 years of experience in metal recycling in Iceland, all the way back to 1981 — we know the material and the process inside out.">Yfir 40 ára reynsla í málmendurvinnslu á Íslandi, allt frá árinu 1981 — við þekkjum hráefnið og ferlið út og inn.</p>
     </div>
@@ -1794,7 +1787,7 @@
   <div class="footer-locations">
 
     <!-- Hafnarfjörður -->
-    <div class="location-card" id="hafnarfjordur">
+    <div class="location-card reveal" id="hafnarfjordur">
       <div class="location-name">Hafnarfjörður</div>
       <div class="location-grid">
         <div class="footer-col">
@@ -1815,7 +1808,7 @@
     </div>
 
     <!-- Akureyri -->
-    <div class="location-card" id="akureyri">
+    <div class="location-card reveal delay-1" id="akureyri">
       <div class="location-name">Akureyri</div>
       <div class="location-grid">
         <div class="footer-col">
@@ -1829,8 +1822,7 @@
         <div class="footer-col">
           <h4 data-en="Opening hours">Opnunartímar</h4>
           <div class="hours-row"><span data-en="Mon–Fri">Mán–Fös</span><span>08:00 – 17:00</span></div>
-          <div class="hours-row"><span data-en="Saturday">Laugardagur</span><span data-en="Closed">Lokað</span></div>
-          <div class="hours-row"><span data-en="Sunday">Sunnudagur</span><span data-en="Closed">Lokað</span></div>
+          <div class="hours-row"><span data-en="Closed on weekends">Lokað um helgar</span><span></span></div>
         </div>
       </div>
     </div>
@@ -2044,7 +2036,7 @@
 
   // ── Reveal section rules + path cards on scroll ──
   (function () {
-    const reveals = document.querySelectorAll(".rule, .path-card, .path-help, .path-contacts");
+    const reveals = document.querySelectorAll(".rule, .path-card, .path-help, .path-contacts, .reveal");
     if (!reveals.length) return;
     if (!("IntersectionObserver" in window)) {
       reveals.forEach(r => r.classList.add("in-view"));
