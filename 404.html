@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Síðan fannst ekki — Fura Málmendurvinnsla</title>
+  <meta name="description" content="Síðan sem þú leitar að er ekki til. Farðu aftur á forsíðu Furu Málmendurvinnslu." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#1a50a2" />
+  <link rel="canonical" href="https://fura.is/404.html" />
+  <style>
+    @font-face {
+      font-family: 'Switzer';
+      src: url('fonts/Switzer-Variable.woff2') format('woff2-variations'),
+           url('fonts/Switzer-Variable.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1512;
+      --blue: #1a50a2;
+      --warm: #f5f0ea;
+      --muted: #6b6259;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Switzer', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--warm);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 5%;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .logo {
+      height: 32px;
+      margin-bottom: 4rem;
+      opacity: 0.85;
+    }
+    .num {
+      font-size: clamp(5rem, 18vw, 9rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--blue);
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.9rem;
+    }
+    p {
+      max-width: 480px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.25rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--ink);
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 2px;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .btn::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.25s ease;
+    }
+    .btn:hover { background: var(--blue); }
+    .btn:hover::after { width: 32px; }
+    .links {
+      margin-top: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    .links a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(20,16,13,0.15);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .links a:hover { color: var(--blue); border-color: var(--blue); }
+  </style>
+</head>
+<body>
+  <img src="https://assets.mango.is/media/8/u_Fura_Logo_Long.svg" alt="Fura Málmendurvinnsla" class="logo" />
+
+  <div class="num">404</div>
+  <h1>Síðan fannst ekki</h1>
+  <p>Slóðin sem þú slóst inn er ekki til, eða hefur verið færð. Þú getur farið aftur á forsíðuna eða haft samband við okkur.</p>
+
+  <a href="/" class="btn">Aftur á forsíðu</a>
+
+  <div class="links">
+    <a href="/#thjonusta">Þjónusta</a>
+    <a href="/#malmar">Málmar</a>
+    <a href="/#bilaforgun">Bílaförgun</a>
+    <a href="/um-furu.html">Um Furu</a>
+    <a href="/#samband">Hafa samband</a>
+  </div>
+</body>
+</html>
