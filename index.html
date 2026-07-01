@@ -543,11 +543,7 @@
       line-height: 1.3;
       letter-spacing: -0.015em;
       color: var(--ink);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    .path-help.in-view { opacity: 1; transform: translateY(0); }
 
     .path-contacts {
       display: grid;
@@ -555,11 +551,7 @@
       gap: 1.25rem;
       max-width: 900px;
       margin: 0 auto;
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s;
     }
-    .path-contacts.in-view { opacity: 1; transform: translateY(0); }
     .path-contact {
       background: #fafaf8;
       border: 1px solid rgba(20,16,13,0.07);
@@ -1737,8 +1729,8 @@
   <div class="section-label" data-en="Metals">Málmar</div>
   <div class="rule"></div>
   <h2 class="section-title reveal" data-en="What we recycle">Það sem við endurnýtum</h2>
-  <p class="metals-sub reveal delay-1" data-en='Whether you are getting rid of a little or a lot, we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið þá tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
-  <div class="metals-chips reveal delay-1">
+  <p class="metals-sub" data-en='Whether you are getting rid of a little or a lot, we take it and pay a fair price. To get our assessment of your material, contact <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.'>Hvort sem þú ert að losa þig við lítið eða mikið þá tökum við því og greiðum sanngjarnt verð. Til að fá okkar álit á þínu efni, hafðu samband við <a href="mailto:afgreidsla@fura.is">afgreidsla@fura.is</a>.</p>
+  <div class="metals-chips">
     <button class="chip active" data-target="jarn" data-en="Iron">Járn</button>
     <button class="chip" data-target="al" data-en="Aluminium">Ál</button>
     <button class="chip" data-target="kopar" data-en="Copper">Kopar</button>
@@ -1750,7 +1742,7 @@
     <button class="chip" data-target="rafgeymar" data-en="Batteries">Rafgeymar</button>
   </div>
 
-  <div class="metal-display reveal delay-2">
+  <div class="metal-display">
     <div class="metal-pane active" data-pane="jarn">
       <button type="button" class="metal-summary" data-en="Iron" aria-expanded="false">Járn</button>
       <div class="metal-image" style="background-image: url('jarn.jpg?v=2');"></div>
